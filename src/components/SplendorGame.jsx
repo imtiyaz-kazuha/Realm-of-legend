@@ -4,7 +4,7 @@ import { p2p } from '../utils/multiplayer';
 import SplendorCard from './SplendorCard';
 import PlayerBoard from './PlayerBoard';
 import confetti from 'canvas-confetti';
-import { Trophy, Crown, CircleDot, Info, ArrowLeft, Layers, Loader2, Copy, Check, Shuffle } from 'lucide-react';
+import { Trophy, RotateCcw, Crown, CircleDot, Info, ArrowLeft, Share2, Layers, Loader2, Copy, Check, Shuffle } from 'lucide-react';
 
 export default function SplendorGame({ roomName, playerOneName, onExitToLobby }) {
   const [isWaitingForOpponent, setIsWaitingForOpponent] = useState(Boolean(roomName));
@@ -12,16 +12,20 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
   const [myPlayerIndex, setMyPlayerIndex] = useState(0);
   const [copiedLink, setCopiedLink] = useState(false);
 
+  // Deck pools separated by tiers
   const [deckTier1, setDeckTier1] = useState([]);
   const [deckTier2, setDeckTier2] = useState([]);
   const [deckTier3, setDeckTier3] = useState([]);
 
+  // Market: 4 cards per tier
   const [market, setMarket] = useState({ 1: [], 2: [], 3: [] });
   const [gemBank, setGemBank] = useState({ ruby: 7, sapphire: 7, emerald: 7, amber: 7, onyx: 7, gold: 5 });
   const [nobles, setNobles] = useState([]);
   const [selectedTokens, setSelectedTokens] = useState([]);
   const [winner, setWinner] = useState(null);
   const [log, setLog] = useState([`Decks shuffled! Match initialized.`]);
+
+  const [mobileTab, setMobileTab] = useState('market');
 
   const [players, setPlayers] = useState([
     {
@@ -46,6 +50,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
 
   const [activePlayerIdx, setActivePlayerIdx] = useState(0);
 
+  // Setup completely shuffled decks
   const setupBoard = () => {
     const { tier1, tier2, tier3, nobles: pickedNobles } = getShuffledSplendorDecks();
 
@@ -92,7 +97,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
             { ...prev[1], name: isHost ? remoteName : playerOneName }
           ]);
 
-          addLog(`🎮 Opponent ${remoteName} connected! Game is live.`);
+          addLog(`🎮 Opponent ${remoteName} connected! Shuffled decks synchronized.`);
 
           if (isHost) {
             p2p.send({
@@ -289,7 +294,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       }
       if (meetsReq) {
         nextScore += n.points;
-        addLog(`👑 ${activePlayer.name} visited by ${n.name}! (+${n.points} pts)`);
+        addLog(`👑 ${activePlayer.name} was visited by Noble patron ${n.name}! (+${n.points} pts)`);
         return false;
       }
       return true;
@@ -322,7 +327,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     }
 
     const nextTurn = activePlayerIdx === 0 ? 1 : 0;
-    const actionMsg = `✨ ${activePlayer.name} recruited ${card.name} (+${card.prestige} pts)!`;
+    const actionMsg = `✨ ${activePlayer.name} recruited ${card.name} (+${card.prestige} prestige)!`;
 
     setGemBank(returnedToBank);
     setNobles(remainingNobles);
@@ -339,20 +344,11 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       newWinner = activePlayer.name;
       setWinner(newWinner);
       confetti({ particleCount: 150, spread: 80 });
+      addLog(`🏆 ${activePlayer.name} HAS REACHED 15 PRESTIGE AND WON THE REALM!`);
+      return;
     }
 
-    broadcastState({
-      gemBank: returnedToBank,
-      nobles: remainingNobles,
-      players: nextPlayers,
-      market: nextMarket,
-      deckTier1: nextT1,
-      deckTier2: nextT2,
-      deckTier3: nextT3,
-      activePlayerIdx: nextTurn,
-      winner: newWinner,
-      newLog: actionMsg
-    });
+    endTurn();
   };
 
   const reserveCard = (card) => {
@@ -361,7 +357,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       return;
     }
     if (activePlayer.reserved.length >= 3) {
-      alert('Max 3 reserved cards.');
+      alert('You can only hold up to 3 reserved cards at a time.');
       return;
     }
 
@@ -397,7 +393,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     nextMarket[card.tier] = (nextMarket[card.tier] || []).map(c => c.id === card.id ? replacement : c).filter(Boolean);
 
     const nextTurn = activePlayerIdx === 0 ? 1 : 0;
-    const actionMsg = `📌 ${activePlayer.name} reserved ${card.name}.`;
+    const actionMsg = `📌 ${activePlayer.name} reserved ${card.name}${gainedGold ? ' and took 1 Gold wildcard' : ''}.`;
 
     setGemBank(nextBank);
     setPlayers(nextPlayers);
@@ -420,6 +416,11 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     });
   };
 
+  const endTurn = () => {
+    setSelectedTokens([]);
+    setActivePlayerIdx(prev => (prev === 0 ? 1 : 0));
+  };
+
   const addLog = (msg) => {
     setLog(prev => [msg, ...prev].slice(0, 15));
   };
@@ -431,33 +432,40 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col p-2 md:p-3">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col pb-16 md:pb-0">
       {/* Waiting Room Modal */}
       {isWaitingForOpponent && roomName && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border-2 border-amber-500/80 rounded-3xl p-6 max-w-md w-full text-center shadow-2xl relative">
-            <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center mb-3">
-              <Loader2 className="w-7 h-7 animate-spin" />
+          <div className="bg-slate-900 border-2 border-amber-500/80 rounded-3xl p-6 md:p-8 max-w-md w-full text-center shadow-2xl relative">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center mb-4">
+              <Loader2 className="w-8 h-8 animate-spin" />
             </div>
-            <h2 className="text-xl font-black text-white">Waiting for Opponent...</h2>
-            <p className="text-xs text-slate-400 mt-1">
-              Both players must join room: <span className="text-amber-400 font-bold">#{roomName}</span>
+            <h2 className="text-2xl font-black text-white">Waiting for Opponent...</h2>
+            <p className="text-xs text-slate-400 mt-2">
+              Both players must enter the exact same room name to match!
             </p>
 
-            <div className="mt-4 p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
-              <span className="text-sm font-black text-amber-400">#{roomName}</span>
+            <div className="mt-5 p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+              <div className="text-left">
+                <span className="text-[10px] text-slate-500 uppercase font-bold block">Room Code</span>
+                <span className="text-sm font-black text-amber-400">#{roomName}</span>
+              </div>
               <button
                 onClick={copyRoomLink}
-                className="px-3 py-1 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center gap-1 cursor-pointer"
+                className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center gap-1.5 transition-all cursor-pointer"
               >
                 {copiedLink ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                 {copiedLink ? 'Copied!' : 'Copy Link'}
               </button>
             </div>
 
+            <p className="text-[11px] text-slate-400 mt-3">
+              Send this link to your friend. As soon as they join, the game will start with freshly shuffled decks!
+            </p>
+
             <button
               onClick={onExitToLobby}
-              className="mt-5 text-xs text-slate-500 hover:text-white cursor-pointer"
+              className="mt-6 text-xs text-slate-500 hover:text-white cursor-pointer"
             >
               Cancel & Exit to Lobby
             </button>
@@ -465,31 +473,36 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
         </div>
       )}
 
-      {/* Header Bar */}
-      <header className="flex-shrink-0 z-40 bg-slate-900/95 backdrop-blur-md border border-slate-800 rounded-xl px-3 h-12 flex items-center justify-between mb-2">
+      {/* Navbar */}
+      <header className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-3 md:px-4 h-14 md:h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <button
             onClick={onExitToLobby}
-            className="p-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer"
+            className="p-1.5 md:p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer"
             title="Back to Lobby"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
+            <ArrowLeft className="w-4 h-4" />
           </button>
-          <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center font-black text-white text-xs shadow">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center font-black text-white text-sm shadow">
             RL
           </div>
-          <span className="font-black text-white text-xs tracking-wider">
-            REALM OF LEGENDS
-          </span>
-          {roomName && (
-            <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] px-1 rounded font-black">
-              #{roomName}
-            </span>
-          )}
+          <div>
+            <h1 className="font-black text-white tracking-wider text-xs md:text-sm">
+              REALM OF LEGENDS
+            </h1>
+            <div className="flex items-center gap-1.5">
+              {roomName && (
+                <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] px-1 rounded font-black">
+                  ROOM: #{roomName}
+                </span>
+              )}
+            </div>
+          </div>
         </div>
 
+        {/* Turn Indicator */}
         <div className="flex items-center gap-2">
-          <div className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 border ${
+          <div className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1.5 border ${
             isMyTurn 
               ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 shadow animate-pulse' 
               : 'bg-slate-800 border-slate-700 text-slate-400'
@@ -502,36 +515,61 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
 
           <button
             onClick={() => window.location.reload()}
-            title="Reshuffle Match"
-            className="p-1 px-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
+            title="Reshuffle & Restart Match"
+            className="p-1.5 md:p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer flex items-center gap-1 text-xs"
           >
-            <Shuffle className="w-3.5 h-3.5 text-amber-400" />
-            <span className="hidden sm:inline">Reshuffle</span>
+            <Shuffle className="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-400" />
+            <span className="hidden sm:inline font-bold">Reshuffle</span>
           </button>
         </div>
       </header>
 
-      {/* Main Board Layout (Naturally flows and shows full character portraits without letterboxing) */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start">
-        {/* Left Column (2 Cols on lg): Nobles & Gem Bank */}
-        <div className="col-span-12 md:col-span-3 lg:col-span-2 space-y-3">
-          {/* Noble Patrons */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 shadow">
-            <h3 className="text-xs font-black uppercase text-amber-400 flex items-center gap-1 mb-2">
-              <Crown className="w-3.5 h-3.5" />
-              Nobles (3 Pts)
+      {/* Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900 border-t border-slate-800 flex justify-around p-2 text-xs font-bold">
+        <button
+          onClick={() => setMobileTab('market')}
+          className={`flex items-center gap-1 px-3 py-1.5 rounded-lg ${mobileTab === 'market' ? 'bg-amber-400 text-slate-950' : 'text-slate-400'}`}
+        >
+          <Layers className="w-4 h-4" />
+          Market
+        </button>
+        <button
+          onClick={() => setMobileTab('bank')}
+          className={`flex items-center gap-1 px-3 py-1.5 rounded-lg ${mobileTab === 'bank' ? 'bg-amber-400 text-slate-950' : 'text-slate-400'}`}
+        >
+          <CircleDot className="w-4 h-4" />
+          Bank
+        </button>
+        <button
+          onClick={() => setMobileTab('players')}
+          className={`flex items-center gap-1 px-3 py-1.5 rounded-lg ${mobileTab === 'players' ? 'bg-amber-400 text-slate-950' : 'text-slate-400'}`}
+        >
+          <Trophy className="w-4 h-4" />
+          Players ({activePlayer.score})
+        </button>
+      </div>
+
+      {/* Main Board Layout (Restored Original Gorgeous Full-Face Cards) */}
+      <div className="flex-1 max-w-7xl mx-auto w-full p-2.5 md:p-4 grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6 items-start">
+        {/* Left Column: Nobles & Bank */}
+        <div className={`space-y-4 md:space-y-6 ${mobileTab !== 'bank' ? 'hidden md:block' : 'block'}`}>
+          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-xl">
+            <h3 className="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5 mb-2.5">
+              <Crown className="w-4 h-4" />
+              Noble Patrons (3 Pts Each)
             </h3>
-            <div className="space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2">
               {nobles.map(noble => (
-                <div key={noble.id} className="flex items-center gap-2 bg-slate-950/80 border border-slate-800/80 p-1.5 rounded-lg">
-                  <img src={noble.image} className="w-10 h-10 rounded-md object-cover flex-shrink-0" />
+                <div key={noble.id} className="flex items-center gap-2.5 bg-slate-950/80 border border-slate-800/80 p-2 rounded-xl">
+                  <img src={noble.image} className="w-11 h-11 rounded-lg object-cover" />
                   <div className="flex-1 min-w-0">
-                    <h5 className="text-[11px] font-bold text-white truncate leading-tight">{noble.name}</h5>
-                    <div className="flex gap-1 mt-1">
+                    <h5 className="text-xs font-bold text-white truncate">{noble.name}</h5>
+                    <p className="text-[10px] text-slate-400 truncate">{noble.title}</p>
+                    <div className="flex gap-1.5 mt-1">
                       {Object.entries(noble.requires).map(([gemId, req]) => {
                         const g = GEM_TYPES.find(x => x.id === gemId);
                         return (
-                          <span key={gemId} className={`w-3.5 h-3.5 rounded-full ${g?.color} text-[8px] font-black flex items-center justify-center text-white`}>
+                          <span key={gemId} className={`w-4 h-4 rounded-full ${g?.color} text-[9px] font-black flex items-center justify-center text-white`}>
                             {req}
                           </span>
                         );
@@ -543,24 +581,23 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
             </div>
           </div>
 
-          {/* Gem Token Bank */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 shadow">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-xs font-black uppercase text-indigo-400 flex items-center gap-1">
-                <CircleDot className="w-3.5 h-3.5" />
+          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-xl">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-xs font-black uppercase text-indigo-400 flex items-center gap-1.5">
+                <CircleDot className="w-4 h-4" />
                 Gem Bank
               </h3>
               {selectedTokens.length > 0 && isMyTurn && (
                 <button
                   onClick={confirmGemSelection}
-                  className="px-2.5 py-0.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-[11px] rounded shadow active:scale-95 transition-all cursor-pointer"
+                  className="px-3 py-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-lg shadow active:scale-95 transition-all cursor-pointer"
                 >
                   Take ({selectedTokens.length})
                 </button>
               )}
             </div>
 
-            <div className="grid grid-cols-3 gap-1.5 text-center">
+            <div className="grid grid-cols-3 gap-2 text-center">
               {GEM_TYPES.map(gem => {
                 const count = gemBank[gem.id] || 0;
                 const isSelected = selectedTokens.includes(gem.id);
@@ -569,13 +606,13 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
                     key={gem.id}
                     disabled={count === 0 || !isMyTurn}
                     onClick={() => toggleSelectGem(gem.id)}
-                    className={`p-1.5 rounded-lg border flex flex-col items-center justify-center transition-all cursor-pointer ${
+                    className={`p-2 rounded-xl border flex flex-col items-center justify-center transition-all cursor-pointer ${
                       isSelected 
-                        ? 'border-amber-400 ring-1 ring-amber-400 bg-amber-500/20 scale-102' 
-                        : 'border-slate-800 bg-slate-950'
+                        ? 'border-amber-400 ring-2 ring-amber-400 bg-amber-500/20 scale-105' 
+                        : 'border-slate-800 hover:border-slate-700 bg-slate-950'
                     } disabled:opacity-30 disabled:cursor-not-allowed`}
                   >
-                    <div className={`w-7 h-7 rounded-full ${gem.color} border border-white/60 shadow flex items-center justify-center text-xs font-black text-white`}>
+                    <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full ${gem.color} border border-white/60 shadow flex items-center justify-center text-xs font-black text-white`}>
                       {count}
                     </div>
                     <span className="text-[10px] font-bold text-slate-300 mt-1 capitalize">{gem.name.split(' ')[0]}</span>
@@ -586,21 +623,21 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
           </div>
         </div>
 
-        {/* Center: All 3 Tiers (Tier 3, Tier 2, Tier 1) */}
-        <div className="col-span-12 md:col-span-6 lg:col-span-7 space-y-3">
+        {/* Center: Market Cards (Original Big Beautiful Portraits) */}
+        <div className={`lg:col-span-2 space-y-3.5 ${mobileTab !== 'market' ? 'hidden md:block' : 'block'}`}>
           {[3, 2, 1].map(tier => {
-            const count = tier === 3 ? deckTier3.length : tier === 2 ? deckTier2.length : deckTier1.length;
+            const remainingDeckCount = tier === 3 ? deckTier3.length : tier === 2 ? deckTier2.length : deckTier1.length;
             return (
-              <div key={tier} className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-2 shadow-sm">
-                <div className="flex items-center justify-between px-1 mb-1.5">
+              <div key={tier} className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-2.5 md:p-3 shadow-lg">
+                <div className="flex items-center justify-between mb-2 px-1">
                   <span className="text-xs font-black uppercase text-slate-300 tracking-wider">
-                    {tier === 3 ? 'Tier III (Legendary)' : tier === 2 ? 'Tier II (Champions)' : 'Tier I (Recruits)'}
+                    {tier === 3 ? 'Tier III (Legendary Heroes)' : tier === 2 ? 'Tier II (Skilled Champions)' : 'Tier I (Recruits & Apprentices)'}
                   </span>
                   <span className="text-[10px] text-amber-400 font-bold bg-slate-800 px-2 py-0.5 rounded-full">
-                    Deck: {count} left
+                    Deck: {remainingDeckCount} in deck
                   </span>
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-2.5">
                   {(market[tier] || []).map(card => (
                     <SplendorCard
                       key={card.id}
@@ -616,8 +653,8 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
           })}
         </div>
 
-        {/* Right Column: Players & Telemetry Log */}
-        <div className="col-span-12 md:col-span-3 lg:col-span-3 space-y-3">
+        {/* Right: Players & Telemetry */}
+        <div className={`space-y-3.5 ${mobileTab !== 'players' ? 'hidden md:block' : 'block'}`}>
           {players.map((p, idx) => (
             <PlayerBoard
               key={p.id}
@@ -628,15 +665,14 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
             />
           ))}
 
-          {/* Telemetry Log */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-2.5 shadow">
-            <h4 className="text-xs font-black uppercase text-slate-400 flex items-center gap-1 mb-1.5">
+          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-xl">
+            <h4 className="text-xs font-black uppercase text-slate-400 mb-2 flex items-center gap-1.5">
               <Info className="w-3.5 h-3.5 text-indigo-400" />
               Game Telemetry Log
             </h4>
-            <div className="space-y-1 max-h-36 overflow-y-auto text-xs font-mono text-slate-300 pr-1">
+            <div className="space-y-1 max-h-32 overflow-y-auto text-xs font-mono text-slate-300">
               {log.map((entry, i) => (
-                <p key={i} className="leading-tight py-0.5 border-b border-slate-850 truncate">{entry}</p>
+                <p key={i} className="leading-snug text-[11px]">{entry}</p>
               ))}
             </div>
           </div>
@@ -646,15 +682,15 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       {/* Winner Overlay */}
       {winner && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-900 border-2 border-amber-400 rounded-3xl p-6 max-w-sm w-full text-center shadow-2xl">
-            <Trophy className="w-14 h-14 text-amber-400 mx-auto animate-bounce mb-2" />
-            <h2 className="text-2xl font-black text-white">{winner} WINS!</h2>
-            <p className="text-slate-300 text-xs mt-1">
-              Gathered 15 Prestige points and won the Realm!
+          <div className="bg-slate-900 border-2 border-amber-400 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl">
+            <Trophy className="w-16 h-16 text-amber-400 mx-auto animate-bounce mb-3" />
+            <h2 className="text-3xl font-black text-white">{winner} WINS!</h2>
+            <p className="text-slate-300 text-sm mt-2">
+              Gathered 15 Prestige points by recruiting anime champions and winning over noble patrons!
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="mt-5 px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-xs transition-all cursor-pointer"
+              className="mt-6 px-6 py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-sm transition-all cursor-pointer"
             >
               Play Again
             </button>

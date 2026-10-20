@@ -3796,7 +3796,7 @@ export const NOBLE_PATRONS = [
     "id": "n10",
     "name": "Naruto Uzumaki",
     "title": "Seventh Hokage",
-    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b17-740bX3Q9P591.png",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b17-phjcWCkRuIhu.png",
     "points": 3,
     "requires": {
       "amber": 3,
@@ -3808,7 +3808,7 @@ export const NOBLE_PATRONS = [
     "id": "n11",
     "name": "Ichigo Kurosaki",
     "title": "True Bankai",
-    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b5-bYj14iV4iM2O.png",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b5-a7bkJgjhhigE.png",
     "points": 3,
     "requires": {
       "sapphire": 4,
@@ -3854,7 +3854,7 @@ export const NOBLE_PATRONS = [
     "id": "n15",
     "name": "Saitama",
     "title": "Hero for Fun",
-    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b73935-Fv11hU0E7gN3.png",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b73935-ON5d0mAcrItd.jpg",
     "points": 3,
     "requires": {
       "amber": 4,
