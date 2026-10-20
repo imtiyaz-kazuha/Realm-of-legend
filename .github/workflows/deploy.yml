@@ -1,4 +1,4 @@
-name: Deploy AniGame to GitHub Pages
+name: Deploy Realm of Legends to GitHub Pages
 
 on:
   push:
