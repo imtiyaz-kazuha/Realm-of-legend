@@ -1,4 +1,4 @@
-import { EXPANDED_CHARACTERS, NOBLE_PATRONS as ALL_NOBLES } from './reliableCharacters';
+import { TIER_1_CARDS, TIER_2_CARDS, TIER_3_CARDS, NOBLE_PATRONS as ALL_NOBLES } from './massiveDeck';
 
 export const GEM_TYPES = [
   { id: 'ruby', name: 'Ruby (Fire)', color: 'bg-rose-600', text: 'text-rose-400', border: 'border-rose-500' },
@@ -9,7 +9,6 @@ export const GEM_TYPES = [
   { id: 'gold', name: 'Gold (Wildcard)', color: 'bg-yellow-400', text: 'text-yellow-950 font-black', border: 'border-yellow-300', isWildcard: true },
 ];
 
-// Fisher-Yates array shuffle algorithm
 export function shuffleArray(array) {
   const arr = [...array];
   for (let i = arr.length - 1; i > 0; i--) {
@@ -19,24 +18,19 @@ export function shuffleArray(array) {
   return arr;
 }
 
-// Generate randomized, fully shuffled decks for a match
+// Generates 100 fully randomized & shuffled cards per tier + 4 random nobles from the pool of 15
 export function getShuffledSplendorDecks() {
-  const cards = EXPANDED_CHARACTERS.map((char, index) => ({
-    ...char,
-    id: `card_${char.tier}_${index}_${Math.random().toString(36).substr(2, 4)}`,
-  }));
+  const tier1 = shuffleArray(TIER_1_CARDS.map((c, i) => ({ ...c, id: `t1_${i}_${Math.random().toString(36).substr(2, 4)}` })));
+  const tier2 = shuffleArray(TIER_2_CARDS.map((c, i) => ({ ...c, id: `t2_${i}_${Math.random().toString(36).substr(2, 4)}` })));
+  const tier3 = shuffleArray(TIER_3_CARDS.map((c, i) => ({ ...c, id: `t3_${i}_${Math.random().toString(36).substr(2, 4)}` })));
 
-  const tier1 = shuffleArray(cards.filter(c => c.tier === 1));
-  const tier2 = shuffleArray(cards.filter(c => c.tier === 2));
-  const tier3 = shuffleArray(cards.filter(c => c.tier === 3));
-
-  // Pick 3 random Nobles out of the noble pool for each match
-  const shuffledNobles = shuffleArray(ALL_NOBLES).slice(0, 3);
+  // Pick 4 random Nobles from the expanded pool of 15 iconic Nobles
+  const pickedNobles = shuffleArray(ALL_NOBLES).slice(0, 4);
 
   return {
     tier1,
     tier2,
     tier3,
-    nobles: shuffledNobles
+    nobles: pickedNobles
   };
 }
