@@ -5,37 +5,42 @@ import { fetchLiveAniListCards } from '../api/anilist';
 const GameContext = createContext();
 
 export function GameProvider({ children }) {
-  // Load local state from localStorage or set defaults
-  const [gold, setGold] = useState(() => {
-    return parseInt(localStorage.getItem('anigame_gold')) || 10000;
-  });
-  const [gems, setGems] = useState(() => {
-    return parseInt(localStorage.getItem('anigame_gems')) || 1500;
-  });
-  const [highestFloor, setHighestFloor] = useState(() => {
-    return parseInt(localStorage.getItem('anigame_floor')) || 1;
-  });
-  const [inventory, setInventory] = useState(() => {
+  // Account state: current logged in user
+  const [currentUser, setCurrentUser] = useState(() => {
     try {
-      const saved = localStorage.getItem('anigame_inventory');
-      return saved ? JSON.parse(saved) : [];
+      const saved = localStorage.getItem('rol_current_user');
+      return saved ? JSON.parse(saved) : null;
     } catch {
-      return [];
+      return null;
     }
   });
-  const [teamIds, setTeamIds] = useState(() => {
+
+  // User database stored in localStorage
+  const [userDb, setUserDb] = useState(() => {
     try {
-      const saved = localStorage.getItem('anigame_team');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
+      const saved = localStorage.getItem('rol_user_db');
+      if (saved) return JSON.parse(saved);
+    } catch {}
+
+    // Initial admin account setup
+    return {
+      'Imtinos': {
+        username: 'Imtinos',
+        password: 'Imtiyaz#$ecure',
+        role: 'ADMIN',
+        gold: 999999,
+        gems: 50000,
+        floor: 1,
+        inventory: [],
+        team: []
+      }
+    };
   });
 
   const [cardPool, setCardPool] = useState(DEFAULT_CARDS);
   const [loadingPool, setLoadingPool] = useState(true);
 
-  // Fetch updated cards from AniList on mount
+  // Fetch AniList live cards
   useEffect(() => {
     async function loadCards() {
       const liveCards = await fetchLiveAniListCards(1, 40);
@@ -45,90 +50,214 @@ export function GameProvider({ children }) {
     loadCards();
   }, []);
 
-  // Sync to localStorage
+  // Sync userDb and currentUser to localStorage
   useEffect(() => {
-    localStorage.setItem('anigame_gold', gold);
-    localStorage.setItem('anigame_gems', gems);
-    localStorage.setItem('anigame_floor', highestFloor);
-    localStorage.setItem('anigame_inventory', JSON.stringify(inventory));
-    localStorage.setItem('anigame_team', JSON.stringify(teamIds));
-  }, [gold, gems, highestFloor, inventory, teamIds]);
+    localStorage.setItem('rol_user_db', JSON.stringify(userDb));
+  }, [userDb]);
 
-  // Give a starter card if brand new player
   useEffect(() => {
-    if (inventory.length === 0 && cardPool.length > 0) {
-      const starterCard = {
-        ...cardPool[0],
-        instanceId: `starter_${Date.now()}`,
-        level: 1,
-        exp: 0,
-      };
-      setInventory([starterCard]);
-      setTeamIds([starterCard.instanceId]);
+    if (currentUser) {
+      localStorage.setItem('rol_current_user', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('rol_current_user');
     }
-  }, [cardPool]);
+  }, [currentUser]);
 
-  // Add cards to inventory
-  const addCards = (newCards) => {
-    setInventory(prev => [...newCards, ...prev]);
-  };
+  // Give default starter card if inventory empty
+  useEffect(() => {
+    if (currentUser && cardPool.length > 0) {
+      const userData = userDb[currentUser.username];
+      if (userData && userData.inventory.length === 0) {
+        const starterCard = {
+          ...cardPool[0],
+          instanceId: `starter_${Date.now()}`,
+          level: 1,
+          exp: 0,
+        };
+        updateUserData(currentUser.username, {
+          inventory: [starterCard],
+          team: [starterCard.instanceId]
+        });
+      }
+    }
+  }, [currentUser, cardPool]);
 
-  // Toggle card in battle team (Max 3 members)
-  const toggleTeamMember = (instanceId) => {
-    setTeamIds(prev => {
-      if (prev.includes(instanceId)) {
-        return prev.filter(id => id !== instanceId);
+  // Helper to update specific user's state
+  const updateUserData = (username, updates) => {
+    setUserDb(prev => {
+      const existing = prev[username] || {};
+      const updated = { ...existing, ...updates };
+      if (currentUser?.username === username) {
+        setCurrentUser(curr => ({ ...curr, ...updates }));
       }
-      if (prev.length >= 3) {
-        alert('Your squad already has the maximum of 3 cards. Remove one first!');
-        return prev;
-      }
-      return [...prev, instanceId];
+      return { ...prev, [username]: updated };
     });
   };
 
-  // Level up card
+  // Auth Functions
+  const login = (username, password) => {
+    const user = userDb[username];
+    if (!user) {
+      return { success: false, message: 'Account not found. Please register or check username.' };
+    }
+    if (user.password !== password) {
+      return { success: false, message: 'Incorrect password.' };
+    }
+    setCurrentUser(user);
+    return { success: true };
+  };
+
+  const register = (username, password) => {
+    if (!username.trim() || !password.trim()) {
+      return { success: false, message: 'Username and password cannot be empty.' };
+    }
+    if (userDb[username]) {
+      return { success: false, message: 'Username is already taken.' };
+    }
+
+    const starterCard = cardPool[0] ? [{
+      ...cardPool[0],
+      instanceId: `starter_${Date.now()}`,
+      level: 1,
+      exp: 0,
+    }] : [];
+
+    const newUser = {
+      username,
+      password,
+      role: 'PLAYER',
+      gold: 10000,
+      gems: 1500,
+      floor: 1,
+      inventory: starterCard,
+      team: starterCard[0] ? [starterCard[0].instanceId] : []
+    };
+
+    setUserDb(prev => ({ ...prev, [username]: newUser }));
+    setCurrentUser(newUser);
+    return { success: true };
+  };
+
+  const logout = () => {
+    setCurrentUser(null);
+  };
+
+  // Active user data shortcuts
+  const activeData = currentUser ? (userDb[currentUser.username] || currentUser) : null;
+  const gold = activeData?.gold || 0;
+  const gems = activeData?.gems || 0;
+  const highestFloor = activeData?.floor || 1;
+  const inventory = activeData?.inventory || [];
+  const teamIds = activeData?.team || [];
+  const isAdmin = activeData?.role === 'ADMIN';
+
+  // Game actions for active user
+  const setGold = (val) => {
+    if (!currentUser) return;
+    const nextVal = typeof val === 'function' ? val(gold) : val;
+    updateUserData(currentUser.username, { gold: nextVal });
+  };
+
+  const setGems = (val) => {
+    if (!currentUser) return;
+    const nextVal = typeof val === 'function' ? val(gems) : val;
+    updateUserData(currentUser.username, { gems: nextVal });
+  };
+
+  const setHighestFloor = (val) => {
+    if (!currentUser) return;
+    const nextVal = typeof val === 'function' ? val(highestFloor) : val;
+    updateUserData(currentUser.username, { floor: nextVal });
+  };
+
+  const addCards = (newCards) => {
+    if (!currentUser) return;
+    updateUserData(currentUser.username, {
+      inventory: [...newCards, ...inventory]
+    });
+  };
+
+  const toggleTeamMember = (instanceId) => {
+    if (!currentUser) return;
+    let nextTeam = [...teamIds];
+    if (nextTeam.includes(instanceId)) {
+      nextTeam = nextTeam.filter(id => id !== instanceId);
+    } else {
+      if (nextTeam.length >= 3) {
+        alert('Your squad already has the maximum of 3 cards. Remove one first!');
+        return;
+      }
+      nextTeam.push(instanceId);
+    }
+    updateUserData(currentUser.username, { team: nextTeam });
+  };
+
   const upgradeCard = (instanceId) => {
+    if (!currentUser) return false;
     const cost = 500;
     if (gold < cost) {
       alert('Not enough gold to upgrade this card (Cost: 500 Gold)');
       return false;
     }
-
-    setGold(g => g - cost);
-    setInventory(prev => prev.map(c => {
+    const nextInventory = inventory.map(c => {
       if (c.instanceId === instanceId) {
-        const nextLevel = c.level + 1;
         return {
           ...c,
-          level: nextLevel,
+          level: (c.level || 1) + 1,
           hp: Math.round(c.hp * 1.08),
           atk: Math.round(c.atk * 1.08),
           def: Math.round(c.def * 1.08),
         };
       }
       return c;
-    }));
+    });
+    updateUserData(currentUser.username, {
+      gold: gold - cost,
+      inventory: nextInventory
+    });
     return true;
   };
 
-  // Claim daily rewards
   const claimDaily = () => {
-    setGold(g => g + 2500);
-    setGems(gem => gem + 300);
-    alert('Daily Claimed! +2,500 Gold and +300 Gems added to your balance.');
+    if (!currentUser) return;
+    updateUserData(currentUser.username, {
+      gold: gold + 2500,
+      gems: gems + 300
+    });
+    alert('Daily Claimed! +2,500 Gold and +300 Gems added.');
   };
 
-  // Reset entire game
-  const resetSave = () => {
-    if (confirm('Are you sure you want to reset all game data?')) {
-      localStorage.clear();
-      window.location.reload();
-    }
+  // ADMIN Cheat: Add custom resources
+  const adminSetResources = (addGold, addGems, setFloor) => {
+    if (!isAdmin) return;
+    updateUserData(currentUser.username, {
+      gold: Math.max(0, gold + (addGold || 0)),
+      gems: Math.max(0, gems + (addGems || 0)),
+      floor: setFloor ? parseInt(setFloor) : highestFloor,
+    });
+    alert('Admin Resources Applied!');
+  };
+
+  // ADMIN Cheat: Spawn any card
+  const adminSpawnCard = (rarity) => {
+    if (!isAdmin) return;
+    const matches = cardPool.filter(c => c.rarity === rarity);
+    const chosen = matches.length > 0 ? matches[0] : cardPool[0];
+    const newCard = {
+      ...chosen,
+      instanceId: `admin_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
+      level: 1,
+      exp: 0,
+    };
+    addCards([newCard]);
+    alert(`Admin spawned [${rarity}] ${newCard.name}!`);
   };
 
   return (
     <GameContext.Provider value={{
+      currentUser,
+      login, register, logout,
+      isAdmin,
       gold, setGold,
       gems, setGems,
       highestFloor, setHighestFloor,
@@ -136,7 +265,9 @@ export function GameProvider({ children }) {
       teamIds, toggleTeamMember,
       upgradeCard,
       cardPool, loadingPool,
-      claimDaily, resetSave
+      claimDaily,
+      adminSetResources,
+      adminSpawnCard
     }}>
       {children}
     </GameContext.Provider>
