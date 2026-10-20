@@ -12,7 +12,7 @@ export default function SplendorCard({ card, onBuy, onReserve, canAfford, isRese
         : 'border-slate-800'
     }`}>
       {/* Top Bar: Prestige & Gem Discount */}
-      <div className="flex items-center justify-between px-2 py-0.5 bg-black/85 backdrop-blur-sm z-10">
+      <div className="flex items-center justify-between px-2 py-0.5 bg-black/85 backdrop-blur-sm z-10 flex-shrink-0">
         <div>
           {card.prestige > 0 ? (
             <span className="text-[11px] font-black text-amber-400 flex items-center gap-0.5 bg-amber-500/20 px-1 rounded border border-amber-500/40">
@@ -29,24 +29,24 @@ export default function SplendorCard({ card, onBuy, onReserve, canAfford, isRese
         </div>
       </div>
 
-      {/* Character Image (Compact Height) */}
-      <div className="relative h-16 sm:h-20 lg:h-22 w-full overflow-hidden bg-slate-950">
+      {/* Character Image (Clean Portrait View centering face & eyes) */}
+      <div className="relative flex-1 min-h-[90px] sm:min-h-[110px] w-full overflow-hidden bg-slate-950">
         <img 
           src={card.image} 
           alt={card.name} 
-          className="w-full h-full object-cover object-top" 
+          className="w-full h-full object-cover object-[center_15%]" 
           loading="lazy" 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-95" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/25 to-transparent opacity-95" />
         
-        <div className="absolute bottom-0.5 left-1.5 right-1.5">
+        <div className="absolute bottom-1 left-1.5 right-1.5">
           <h4 className="text-[11px] font-black text-white truncate drop-shadow leading-tight">{card.name}</h4>
           <p className="text-[8px] text-slate-400 truncate leading-none">{card.series}</p>
         </div>
       </div>
 
       {/* Costs & Action Buttons */}
-      <div className="p-1.5 bg-slate-950 border-t border-slate-800 flex items-center justify-between gap-1">
+      <div className="p-1.5 bg-slate-950 border-t border-slate-800 flex items-center justify-between gap-1 flex-shrink-0">
         <div className="flex items-center gap-1 flex-wrap">
           {Object.entries(card.cost).map(([gemId, amount]) => {
             const gem = GEM_TYPES.find(g => g.id === gemId);
