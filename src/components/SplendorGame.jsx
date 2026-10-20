@@ -6,6 +6,8 @@ import PlayerBoard from './PlayerBoard';
 import confetti from 'canvas-confetti';
 import { Trophy, RotateCcw, Crown, CircleDot, Info, ArrowLeft, Share2, Layers, Loader2, Copy, Check, Shuffle } from 'lucide-react';
 
+import { sendDiscordMatchWebhook } from '../utils/discordWebhook';
+
 export default function SplendorGame({ roomName, playerOneName, onExitToLobby }) {
   const [isWaitingForOpponent, setIsWaitingForOpponent] = useState(Boolean(roomName));
   const [opponentName, setOpponentName] = useState(roomName ? 'Waiting for opponent...' : 'Player 2');
@@ -345,6 +347,19 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       setWinner(newWinner);
       confetti({ particleCount: 150, spread: 80 });
       addLog(`🏆 ${activePlayer.name} HAS REACHED 15 PRESTIGE AND WON THE REALM!`);
+
+      // Send Discord Webhook Announcement
+      const savedWebhook = localStorage.getItem('rol_discord_webhook');
+      if (savedWebhook) {
+        const otherPlayer = nextPlayers.find(p => p.name !== activePlayer.name) || nextPlayers[1];
+        sendDiscordMatchWebhook(savedWebhook, {
+          winner: activePlayer.name,
+          loser: otherPlayer.name,
+          winnerScore: nextScore,
+          loserScore: otherPlayer.score,
+          roomName: roomName || null
+        });
+      }
       return;
     }
 

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Play, Users, Hash, ShieldCheck, Sparkles, Plus, ArrowRight, BookOpen, Trophy } from 'lucide-react';
+import { Play, Users, Hash, ShieldCheck, Sparkles, Plus, ArrowRight, BookOpen, Trophy, MessageSquare } from 'lucide-react';
 import RulesModal from './RulesModal';
 import LeaderboardModal from './LeaderboardModal';
+import DiscordSettingsModal from './DiscordSettingsModal';
 
 export default function LobbyMenu({ onStartLocal, onJoinRoom, onCreateRoom }) {
   const [roomInput, setRoomInput] = useState('');
   const [playerName, setPlayerName] = useState('Hero_' + Math.floor(100 + Math.random() * 900));
   const [showRules, setShowRules] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showDiscord, setShowDiscord] = useState(false);
 
   const quickRooms = ['dragon-ball', 'jujutsu-arena', 'straw-hats', 'soul-society'];
 
@@ -16,24 +18,33 @@ export default function LobbyMenu({ onStartLocal, onJoinRoom, onCreateRoom }) {
       {/* Modals */}
       {showRules && <RulesModal onClose={() => setShowRules(false)} />}
       {showLeaderboard && <LeaderboardModal onClose={() => setShowLeaderboard(false)} />}
+      {showDiscord && <DiscordSettingsModal onClose={() => setShowDiscord(false)} />}
 
       <div className="max-w-xl w-full">
-        {/* Top Floating Action Buttons (Rules & Leaderboard) */}
-        <div className="flex items-center justify-center gap-3 mb-6">
+        {/* Top Action Pills (Rules, Leaderboard, Discord Webhook) */}
+        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 mb-6">
           <button
             onClick={() => setShowRules(true)}
-            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-400/60 rounded-xl text-xs font-bold text-amber-300 flex items-center gap-2 shadow transition-all active:scale-95 cursor-pointer"
+            className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-400/60 rounded-xl text-xs font-bold text-amber-300 flex items-center gap-1.5 shadow transition-all active:scale-95 cursor-pointer"
           >
-            <BookOpen className="w-4 h-4 text-amber-400" />
-            Learn The Rules
+            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+            Learn Rules
           </button>
 
           <button
             onClick={() => setShowLeaderboard(true)}
-            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-indigo-400/60 rounded-xl text-xs font-bold text-indigo-300 flex items-center gap-2 shadow transition-all active:scale-95 cursor-pointer"
+            className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-indigo-400/60 rounded-xl text-xs font-bold text-indigo-300 flex items-center gap-1.5 shadow transition-all active:scale-95 cursor-pointer"
           >
-            <Trophy className="w-4 h-4 text-indigo-400" />
-            Hall of Fame (Leaderboard)
+            <Trophy className="w-3.5 h-3.5 text-indigo-400" />
+            Leaderboard
+          </button>
+
+          <button
+            onClick={() => setShowDiscord(true)}
+            className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-violet-400/60 rounded-xl text-xs font-bold text-violet-300 flex items-center gap-1.5 shadow transition-all active:scale-95 cursor-pointer"
+          >
+            <MessageSquare className="w-3.5 h-3.5 text-violet-400" />
+            Discord Webhook
           </button>
         </div>
 
