@@ -3,7 +3,7 @@ import { GEM_TYPES, NOBLE_PATRONS, getSplendorDeck } from '../utils/splendorData
 import SplendorCard from './SplendorCard';
 import PlayerBoard from './PlayerBoard';
 import confetti from 'canvas-confetti';
-import { Trophy, RotateCcw, Crown, CircleDot, Info, ArrowLeft, Share2 } from 'lucide-react';
+import { Trophy, RotateCcw, Crown, CircleDot, Info, ArrowLeft, Share2, Layers } from 'lucide-react';
 
 export default function SplendorGame({ roomName, playerOneName, onExitToLobby }) {
   const [deck, setDeck] = useState([]);
@@ -12,9 +12,11 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
   const [nobles, setNobles] = useState([]);
   const [selectedTokens, setSelectedTokens] = useState([]);
   const [winner, setWinner] = useState(null);
-  const [log, setLog] = useState([`Match started! First player to 15 Prestige points wins.`]);
+  const [log, setLog] = useState([`Match started! First player to 15 Prestige wins.`]);
 
-  // Players
+  // Mobile Tab selector: 'market' | 'bank' | 'players'
+  const [mobileTab, setMobileTab] = useState('market');
+
   const [players, setPlayers] = useState([
     {
       id: 1,
@@ -38,28 +40,23 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
 
   const [activePlayerIdx, setActivePlayerIdx] = useState(0);
 
-  // Initialize board with reliable character deck
   useEffect(() => {
     const allCards = getSplendorDeck();
-
     const tier1 = allCards.filter(c => c.tier === 1);
     const tier2 = allCards.filter(c => c.tier === 2);
     const tier3 = allCards.filter(c => c.tier === 3);
 
-    // Initial 4 visible cards for each tier
     setMarket({
       3: tier3.slice(0, 4),
       2: tier2.slice(0, 4),
       1: tier1.slice(0, 4),
     });
 
-    // The remaining cards form the deck
-    const remainingDeck = [
+    setDeck([
       ...tier3.slice(4),
       ...tier2.slice(4),
       ...tier1.slice(4)
-    ];
-    setDeck(remainingDeck);
+    ]);
     setNobles(NOBLE_PATRONS);
   }, []);
 
@@ -83,17 +80,15 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       alert('Gold gems cannot be taken directly. Reserve a card to claim a Gold wildcard!');
       return;
     }
-
     if (gemBank[gemId] <= 0) {
-      alert('No more gems of this type left in the bank.');
+      alert('No more gems of this color left in bank.');
       return;
     }
 
     let next = [...selectedTokens];
-
     if (next.length === 1 && next[0] === gemId) {
       if (gemBank[gemId] < 4) {
-        alert('You can only take 2 of the same color if there are at least 4 in the bank.');
+        alert('You can only take 2 of the same color if 4+ are in bank.');
         return;
       }
       next.push(gemId);
@@ -110,7 +105,6 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       }
       next.push(gemId);
     }
-
     setSelectedTokens(next);
   };
 
@@ -170,7 +164,6 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
 
     let nextScore = activePlayer.score + (card.prestige || 0);
 
-    // Check Noble Visits
     let remainingNobles = [...nobles];
     remainingNobles = remainingNobles.filter(n => {
       let meetsReq = true;
@@ -211,7 +204,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     if (nextScore >= 15) {
       setWinner(activePlayer.name);
       confetti({ particleCount: 150, spread: 80 });
-      addLog(`🏆 ${activePlayer.name} HAS REACHED 15 PRESTIGE AND WON THE REALM!`);
+      addLog(`🏆 ${activePlayer.name} WON THE REALM!`);
       return;
     }
 
@@ -270,86 +263,93 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     setLog(prev => [msg, ...prev].slice(0, 15));
   };
 
-  const copyRoomLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    alert('Room link copied to clipboard! Send it to your friend to join.');
-  };
-
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col pb-16 md:pb-0">
       {/* Navbar */}
-      <header className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-3 md:px-4 h-14 md:h-16 flex items-center justify-between">
+        <div className="flex items-center gap-2">
           <button
             onClick={onExitToLobby}
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all mr-1 cursor-pointer"
+            className="p-1.5 md:p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer"
             title="Back to Lobby"
           >
             <ArrowLeft className="w-4 h-4" />
           </button>
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center font-black text-white text-base shadow-lg">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center font-black text-white text-sm shadow">
             RL
           </div>
           <div>
-            <h1 className="font-black text-white tracking-wider text-base">
+            <h1 className="font-black text-white tracking-wider text-xs md:text-sm">
               REALM OF LEGENDS
             </h1>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] text-amber-400 font-bold uppercase tracking-widest">
-                Anime Splendor
-              </span>
+            <div className="flex items-center gap-1.5">
               {roomName && (
-                <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] px-1.5 py-0.2 rounded font-black">
-                  ROOM: #{roomName}
+                <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] px-1 rounded font-black">
+                  #{roomName}
                 </span>
               )}
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 md:gap-3">
-          {roomName && (
-            <button
-              onClick={copyRoomLink}
-              className="p-1.5 px-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
-            >
-              <Share2 className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Invite Friend</span>
-            </button>
-          )}
-
-          <div className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-xl text-xs font-bold text-white flex items-center gap-2">
-            <span>Turn:</span>
-            <span className="text-amber-400 font-black">{activePlayer.name}</span>
+        {/* Turn Pill & Reset */}
+        <div className="flex items-center gap-2">
+          <div className="bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-xl text-xs font-bold text-white flex items-center gap-1.5">
+            <span className="hidden sm:inline text-slate-400">Turn:</span>
+            <span className="text-amber-400 font-black truncate max-w-[90px]">{activePlayer.name}</span>
           </div>
 
           <button
             onClick={() => window.location.reload()}
             title="Reset Board"
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer"
+            className="p-1.5 md:p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer"
           >
-            <RotateCcw className="w-4 h-4" />
+            <RotateCcw className="w-3.5 h-3.5 md:w-4 md:h-4" />
           </button>
         </div>
       </header>
 
+      {/* Mobile Bottom Navigation Bar (Shown on small screens to easily switch views) */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900 border-t border-slate-800 flex justify-around p-2 text-xs font-bold">
+        <button
+          onClick={() => setMobileTab('market')}
+          className={`flex items-center gap-1 px-3 py-1.5 rounded-lg ${mobileTab === 'market' ? 'bg-amber-400 text-slate-950' : 'text-slate-400'}`}
+        >
+          <Layers className="w-4 h-4" />
+          Market
+        </button>
+        <button
+          onClick={() => setMobileTab('bank')}
+          className={`flex items-center gap-1 px-3 py-1.5 rounded-lg ${mobileTab === 'bank' ? 'bg-amber-400 text-slate-950' : 'text-slate-400'}`}
+        >
+          <CircleDot className="w-4 h-4" />
+          Bank & Nobles
+        </button>
+        <button
+          onClick={() => setMobileTab('players')}
+          className={`flex items-center gap-1 px-3 py-1.5 rounded-lg ${mobileTab === 'players' ? 'bg-amber-400 text-slate-950' : 'text-slate-400'}`}
+        >
+          <Trophy className="w-4 h-4" />
+          Players ({activePlayer.score})
+        </button>
+      </div>
+
       {/* Main Board Layout */}
-      <div className="flex-1 max-w-7xl mx-auto w-full p-4 grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+      <div className="flex-1 max-w-7xl mx-auto w-full p-2.5 md:p-4 grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6 items-start">
         {/* Left Column: Noble Patrons & Gem Bank */}
-        <div className="space-y-6">
+        <div className={`space-y-4 md:space-y-6 ${mobileTab !== 'bank' ? 'hidden md:block' : 'block'}`}>
           {/* Noble Patrons */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 shadow-xl">
-            <h3 className="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5 mb-3">
+          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-xl">
+            <h3 className="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5 mb-2.5">
               <Crown className="w-4 h-4" />
               Noble Patrons (3 Pts Each)
             </h3>
-            <div className="grid grid-cols-1 gap-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2">
               {nobles.map(noble => (
-                <div key={noble.id} className="flex items-center gap-3 bg-slate-950/80 border border-slate-800/80 p-2 rounded-xl">
+                <div key={noble.id} className="flex items-center gap-2.5 bg-slate-950/80 border border-slate-800/80 p-2 rounded-xl">
                   <img 
                     src={noble.image} 
-                    onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&auto=format&fit=crop&q=80"; }}
-                    className="w-12 h-12 rounded-lg object-cover" 
+                    className="w-11 h-11 rounded-lg object-cover" 
                   />
                   <div className="flex-1 min-w-0">
                     <h5 className="text-xs font-bold text-white truncate">{noble.name}</h5>
@@ -371,7 +371,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
           </div>
 
           {/* Gem Token Bank */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 shadow-xl">
+          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-xs font-black uppercase text-indigo-400 flex items-center gap-1.5">
                 <CircleDot className="w-4 h-4" />
@@ -380,7 +380,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
               {selectedTokens.length > 0 && (
                 <button
                   onClick={confirmGemSelection}
-                  className="px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-lg shadow active:scale-95 transition-all cursor-pointer"
+                  className="px-3 py-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-lg shadow active:scale-95 transition-all cursor-pointer"
                 >
                   Take ({selectedTokens.length})
                 </button>
@@ -398,11 +398,11 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
                     onClick={() => toggleSelectGem(gem.id)}
                     className={`p-2 rounded-xl border flex flex-col items-center justify-center transition-all cursor-pointer ${
                       isSelected 
-                        ? 'border-amber-400 ring-2 ring-amber-400 bg-amber-500/10 scale-105' 
+                        ? 'border-amber-400 ring-2 ring-amber-400 bg-amber-500/20 scale-105' 
                         : 'border-slate-800 hover:border-slate-700 bg-slate-950'
                     } disabled:opacity-30 disabled:cursor-not-allowed`}
                   >
-                    <div className={`w-7 h-7 rounded-full ${gem.color} border border-white/60 shadow flex items-center justify-center text-xs font-black text-white`}>
+                    <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full ${gem.color} border border-white/60 shadow flex items-center justify-center text-xs font-black text-white`}>
                       {count}
                     </div>
                     <span className="text-[10px] font-bold text-slate-300 mt-1 capitalize">{gem.name.split(' ')[0]}</span>
@@ -410,25 +410,25 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
                 );
               })}
             </div>
-            <p className="text-[10px] text-slate-500 mt-3 leading-relaxed">
-              Click 3 different gems OR 2 identical (if 4+ left). Click "Take" to claim.
+            <p className="text-[10px] text-slate-500 mt-2.5 leading-relaxed">
+              Pick 3 different colors OR 2 identical (if 4+ in bank). Click "Take" to claim.
             </p>
           </div>
         </div>
 
         {/* Center 2 Columns: Card Market (Tier 3, Tier 2, Tier 1) */}
-        <div className="lg:col-span-2 space-y-4">
+        <div className={`lg:col-span-2 space-y-3.5 ${mobileTab !== 'market' ? 'hidden md:block' : 'block'}`}>
           {[3, 2, 1].map(tier => (
-            <div key={tier} className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-3 shadow-lg">
+            <div key={tier} className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-2.5 md:p-3 shadow-lg">
               <div className="flex items-center justify-between mb-2 px-1">
-                <span className="text-xs font-black uppercase text-slate-400 tracking-wider">
+                <span className="text-xs font-black uppercase text-slate-300 tracking-wider">
                   {tier === 3 ? 'Tier III (Legendary Heroes)' : tier === 2 ? 'Tier II (Skilled Champions)' : 'Tier I (Recruits & Apprentices)'}
                 </span>
                 <span className="text-[10px] text-slate-500 font-bold">
                   Deck: {deck.filter(c => c.tier === tier).length} left
                 </span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-2.5">
                 {(market[tier] || []).map(card => (
                   <SplendorCard
                     key={card.id}
@@ -444,7 +444,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
         </div>
 
         {/* Right Column: Player Dashboards & Action Log */}
-        <div className="space-y-4">
+        <div className={`space-y-3.5 ${mobileTab !== 'players' ? 'hidden md:block' : 'block'}`}>
           {players.map((p, idx) => (
             <PlayerBoard
               key={p.id}
@@ -456,14 +456,14 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
           ))}
 
           {/* Activity Log */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 shadow-xl">
+          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-xl">
             <h4 className="text-xs font-black uppercase text-slate-400 mb-2 flex items-center gap-1.5">
               <Info className="w-3.5 h-3.5 text-indigo-400" />
               Game Telemetry Log
             </h4>
-            <div className="space-y-1.5 max-h-36 overflow-y-auto text-xs font-mono text-slate-300">
+            <div className="space-y-1 max-h-32 overflow-y-auto text-xs font-mono text-slate-300">
               {log.map((entry, i) => (
-                <p key={i} className="leading-snug">{entry}</p>
+                <p key={i} className="leading-snug text-[11px]">{entry}</p>
               ))}
             </div>
           </div>
