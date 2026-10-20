@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { GEM_TYPES, NOBLE_PATRONS, getSplendorDeck } from '../utils/splendorData';
+import { p2p } from '../utils/multiplayer';
 import SplendorCard from './SplendorCard';
 import PlayerBoard from './PlayerBoard';
 import confetti from 'canvas-confetti';
-import { Trophy, RotateCcw, Crown, CircleDot, Info, ArrowLeft, Share2, Layers } from 'lucide-react';
+import { Trophy, RotateCcw, Crown, CircleDot, Info, ArrowLeft, Share2, Layers, Loader2, Copy, Check } from 'lucide-react';
 
 export default function SplendorGame({ roomName, playerOneName, onExitToLobby }) {
+  // Multiplayer Connection State
+  const [isWaitingForOpponent, setIsWaitingForOpponent] = useState(Boolean(roomName));
+  const [opponentName, setOpponentName] = useState(roomName ? 'Waiting for opponent...' : 'Player 2');
+  const [myPlayerIndex, setMyPlayerIndex] = useState(0); // 0 = Player 1, 1 = Player 2
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  // Game Board State
   const [deck, setDeck] = useState([]);
   const [market, setMarket] = useState({ 1: [], 2: [], 3: [] });
   const [gemBank, setGemBank] = useState({ ruby: 7, sapphire: 7, emerald: 7, amber: 7, onyx: 7, gold: 5 });
   const [nobles, setNobles] = useState([]);
   const [selectedTokens, setSelectedTokens] = useState([]);
   const [winner, setWinner] = useState(null);
-  const [log, setLog] = useState([`Match started! First player to 15 Prestige wins.`]);
+  const [log, setLog] = useState([`Match initialized.`]);
 
   // Mobile Tab selector: 'market' | 'bank' | 'players'
   const [mobileTab, setMobileTab] = useState('market');
@@ -29,7 +37,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     },
     {
       id: 2,
-      name: roomName ? 'Player 2 (Friend)' : 'Player 2',
+      name: opponentName,
       score: 0,
       tokens: { ruby: 0, sapphire: 0, emerald: 0, amber: 0, onyx: 0, gold: 0 },
       bonuses: { ruby: 0, sapphire: 0, emerald: 0, amber: 0, onyx: 0 },
@@ -40,27 +48,119 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
 
   const [activePlayerIdx, setActivePlayerIdx] = useState(0);
 
-  useEffect(() => {
+  // Initialize board
+  const setupBoard = () => {
     const allCards = getSplendorDeck();
     const tier1 = allCards.filter(c => c.tier === 1);
     const tier2 = allCards.filter(c => c.tier === 2);
     const tier3 = allCards.filter(c => c.tier === 3);
 
-    setMarket({
+    const initialMarket = {
       3: tier3.slice(0, 4),
       2: tier2.slice(0, 4),
       1: tier1.slice(0, 4),
-    });
-
-    setDeck([
+    };
+    const initialDeck = [
       ...tier3.slice(4),
       ...tier2.slice(4),
       ...tier1.slice(4)
-    ]);
+    ];
+
+    setMarket(initialMarket);
+    setDeck(initialDeck);
     setNobles(NOBLE_PATRONS);
-  }, []);
+
+    return {
+      market: initialMarket,
+      deck: initialDeck,
+      nobles: NOBLE_PATRONS,
+      gemBank: { ruby: 7, sapphire: 7, emerald: 7, amber: 7, onyx: 7, gold: 5 }
+    };
+  };
+
+  // Connect via P2P if room mode
+  useEffect(() => {
+    const initialData = setupBoard();
+
+    if (roomName) {
+      p2p.init(
+        roomName,
+        playerOneName,
+        // onConnected
+        ({ isHost, remoteName }) => {
+          setIsWaitingForOpponent(false);
+          setOpponentName(remoteName);
+          setMyPlayerIndex(isHost ? 0 : 1);
+
+          setPlayers(prev => [
+            { ...prev[0], name: isHost ? playerOneName : remoteName },
+            { ...prev[1], name: isHost ? remoteName : playerOneName }
+          ]);
+
+          addLog(`🎮 Opponent ${remoteName} connected! Game is live.`);
+
+          // If Host, broadcast initial board state to Guest
+          if (isHost) {
+            p2p.send({
+              type: 'INIT_STATE',
+              market: initialData.market,
+              deck: initialData.deck,
+              nobles: initialData.nobles,
+              gemBank: initialData.gemBank,
+              hostName: playerOneName,
+            });
+          }
+        },
+        // onDataReceived (sync game state from other player)
+        (data) => {
+          if (data.type === 'INIT_STATE') {
+            setMarket(data.market);
+            setDeck(data.deck);
+            setNobles(data.nobles);
+            setGemBank(data.gemBank);
+          } else if (data.type === 'GAME_SYNC') {
+            setMarket(data.market);
+            setDeck(data.deck);
+            setNobles(data.nobles);
+            setGemBank(data.gemBank);
+            setPlayers(data.players);
+            setActivePlayerIdx(data.activePlayerIdx);
+            if (data.winner) setWinner(data.winner);
+            if (data.newLog) addLog(data.newLog);
+          }
+        },
+        // onDisconnected
+        () => {
+          addLog('⚠️ Opponent disconnected.');
+          setIsWaitingForOpponent(true);
+        }
+      );
+
+      return () => {
+        p2p.destroy();
+      };
+    }
+  }, [roomName]);
 
   const activePlayer = players[activePlayerIdx];
+  const isMyTurn = !roomName || (activePlayerIdx === myPlayerIndex);
+
+  // Broadcast game state to peer
+  const broadcastState = (updatedState) => {
+    if (roomName) {
+      p2p.send({
+        type: 'GAME_SYNC',
+        market: updatedState.market ?? market,
+        deck: updatedState.deck ?? deck,
+        nobles: updatedState.nobles ?? nobles,
+        gemBank: updatedState.gemBank ?? gemBank,
+        players: updatedState.players ?? players,
+        activePlayerIdx: updatedState.activePlayerIdx ?? activePlayerIdx,
+        winner: updatedState.winner ?? winner,
+        newLog: updatedState.newLog ?? null,
+      });
+    }
+  };
 
   const checkCanAfford = (player, card) => {
     let wildcardsNeeded = 0;
@@ -76,6 +176,10 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
   };
 
   const toggleSelectGem = (gemId) => {
+    if (!isMyTurn) {
+      alert("It's not your turn!");
+      return;
+    }
     if (gemId === 'gold') {
       alert('Gold gems cannot be taken directly. Reserve a card to claim a Gold wildcard!');
       return;
@@ -110,28 +214,42 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
 
   const confirmGemSelection = () => {
     if (selectedTokens.length === 0) return;
+    if (!isMyTurn) return;
 
-    setGemBank(prev => {
-      const updated = { ...prev };
-      selectedTokens.forEach(g => { updated[g] -= 1; });
-      return updated;
-    });
+    const nextBank = { ...gemBank };
+    selectedTokens.forEach(g => { nextBank[g] -= 1; });
 
-    setPlayers(prev => prev.map((p, idx) => {
+    const nextPlayers = players.map((p, idx) => {
       if (idx !== activePlayerIdx) return p;
       const updatedTokens = { ...p.tokens };
       selectedTokens.forEach(g => {
         updatedTokens[g] = (updatedTokens[g] || 0) + 1;
       });
       return { ...p, tokens: updatedTokens };
-    }));
+    });
 
-    addLog(`${activePlayer.name} took ${selectedTokens.length} gems (${selectedTokens.join(', ')}).`);
+    const nextTurn = activePlayerIdx === 0 ? 1 : 0;
+    const actionMsg = `${activePlayer.name} took ${selectedTokens.length} gems (${selectedTokens.join(', ')}).`;
+
+    setGemBank(nextBank);
+    setPlayers(nextPlayers);
     setSelectedTokens([]);
-    endTurn();
+    setActivePlayerIdx(nextTurn);
+    addLog(actionMsg);
+
+    broadcastState({
+      gemBank: nextBank,
+      players: nextPlayers,
+      activePlayerIdx: nextTurn,
+      newLog: actionMsg
+    });
   };
 
   const buyCard = (card, fromReserved = false) => {
+    if (!isMyTurn) {
+      alert("It's not your turn!");
+      return;
+    }
     if (!checkCanAfford(activePlayer, card)) {
       alert('You cannot afford this card yet!');
       return;
@@ -157,11 +275,8 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       }
     }
 
-    setGemBank(returnedToBank);
-
     const nextBonuses = { ...activePlayer.bonuses };
     nextBonuses[card.bonusGem] = (nextBonuses[card.bonusGem] || 0) + 1;
-
     let nextScore = activePlayer.score + (card.prestige || 0);
 
     let remainingNobles = [...nobles];
@@ -181,9 +296,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       return true;
     });
 
-    setNobles(remainingNobles);
-
-    setPlayers(prev => prev.map((p, idx) => {
+    const nextPlayers = players.map((p, idx) => {
       if (idx !== activePlayerIdx) return p;
       return {
         ...p,
@@ -193,37 +306,68 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
         purchased: [...p.purchased, card],
         reserved: fromReserved ? p.reserved.filter(c => c.id !== card.id) : p.reserved
       };
-    }));
+    });
 
+    // Replace card on market from deck
+    let nextMarket = { ...market };
+    let nextDeck = [...deck];
     if (!fromReserved) {
-      replaceMarketCard(card);
+      const tierCards = nextMarket[card.tier] || [];
+      const replacement = nextDeck.find(c => c.tier === card.tier);
+      nextMarket[card.tier] = tierCards.map(c => c.id === card.id ? replacement : c).filter(Boolean);
+      if (replacement) {
+        nextDeck = nextDeck.filter(c => c.id !== replacement.id);
+      }
     }
 
-    addLog(`✨ ${activePlayer.name} recruited ${card.name} (+${card.prestige} prestige)!`);
+    const nextTurn = activePlayerIdx === 0 ? 1 : 0;
+    const actionMsg = `✨ ${activePlayer.name} recruited ${card.name} (+${card.prestige} prestige)!`;
 
+    setGemBank(returnedToBank);
+    setNobles(remainingNobles);
+    setPlayers(nextPlayers);
+    setMarket(nextMarket);
+    setDeck(nextDeck);
+    setActivePlayerIdx(nextTurn);
+    addLog(actionMsg);
+
+    let newWinner = null;
     if (nextScore >= 15) {
-      setWinner(activePlayer.name);
+      newWinner = activePlayer.name;
+      setWinner(newWinner);
       confetti({ particleCount: 150, spread: 80 });
-      addLog(`🏆 ${activePlayer.name} WON THE REALM!`);
-      return;
     }
 
-    endTurn();
+    broadcastState({
+      gemBank: returnedToBank,
+      nobles: remainingNobles,
+      players: nextPlayers,
+      market: nextMarket,
+      deck: nextDeck,
+      activePlayerIdx: nextTurn,
+      winner: newWinner,
+      newLog: actionMsg
+    });
   };
 
   const reserveCard = (card) => {
+    if (!isMyTurn) {
+      alert("It's not your turn!");
+      return;
+    }
     if (activePlayer.reserved.length >= 3) {
       alert('You can only hold up to 3 reserved cards at a time.');
       return;
     }
 
     let gainedGold = false;
-    if (gemBank.gold > 0) {
-      setGemBank(prev => ({ ...prev, gold: prev.gold - 1 }));
+    let nextBank = { ...gemBank };
+    if (nextBank.gold > 0) {
+      nextBank.gold -= 1;
       gainedGold = true;
     }
 
-    setPlayers(prev => prev.map((p, idx) => {
+    const nextPlayers = players.map((p, idx) => {
       if (idx !== activePlayerIdx) return p;
       return {
         ...p,
@@ -233,38 +377,89 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
           gold: p.tokens.gold + (gainedGold ? 1 : 0)
         }
       };
-    }));
-
-    replaceMarketCard(card);
-    addLog(`📌 ${activePlayer.name} reserved ${card.name}${gainedGold ? ' and took 1 Gold wildcard' : ''}.`);
-    endTurn();
-  };
-
-  const replaceMarketCard = (card) => {
-    setMarket(prev => {
-      const tierCards = prev[card.tier] || [];
-      const replacement = deck.find(c => c.tier === card.tier);
-      const nextTier = tierCards.map(c => c.id === card.id ? replacement : c).filter(Boolean);
-
-      if (replacement) {
-        setDeck(d => d.filter(c => c.id !== replacement.id));
-      }
-
-      return { ...prev, [card.tier]: nextTier };
     });
-  };
 
-  const endTurn = () => {
-    setSelectedTokens([]);
-    setActivePlayerIdx(prev => (prev === 0 ? 1 : 0));
+    let nextMarket = { ...market };
+    let nextDeck = [...deck];
+    const tierCards = nextMarket[card.tier] || [];
+    const replacement = nextDeck.find(c => c.tier === card.tier);
+    nextMarket[card.tier] = tierCards.map(c => c.id === card.id ? replacement : c).filter(Boolean);
+    if (replacement) {
+      nextDeck = nextDeck.filter(c => c.id !== replacement.id);
+    }
+
+    const nextTurn = activePlayerIdx === 0 ? 1 : 0;
+    const actionMsg = `📌 ${activePlayer.name} reserved ${card.name}${gainedGold ? ' and took 1 Gold wildcard' : ''}.`;
+
+    setGemBank(nextBank);
+    setPlayers(nextPlayers);
+    setMarket(nextMarket);
+    setDeck(nextDeck);
+    setActivePlayerIdx(nextTurn);
+    addLog(actionMsg);
+
+    broadcastState({
+      gemBank: nextBank,
+      players: nextPlayers,
+      market: nextMarket,
+      deck: nextDeck,
+      activePlayerIdx: nextTurn,
+      newLog: actionMsg
+    });
   };
 
   const addLog = (msg) => {
     setLog(prev => [msg, ...prev].slice(0, 15));
   };
 
+  const copyRoomLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col pb-16 md:pb-0">
+      {/* WAITING ROOM MODAL (Until Opponent Connects) */}
+      {isWaitingForOpponent && roomName && (
+        <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-slate-900 border-2 border-amber-500/80 rounded-3xl p-6 md:p-8 max-w-md w-full text-center shadow-2xl relative">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-amber-500/20 border border-amber-500/40 text-amber-400 flex items-center justify-center mb-4">
+              <Loader2 className="w-8 h-8 animate-spin" />
+            </div>
+            <h2 className="text-2xl font-black text-white">Waiting for Opponent...</h2>
+            <p className="text-xs text-slate-400 mt-2">
+              Both players must enter the exact same room name to match!
+            </p>
+
+            <div className="mt-5 p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between">
+              <div className="text-left">
+                <span className="text-[10px] text-slate-500 uppercase font-bold block">Room Code</span>
+                <span className="text-sm font-black text-amber-400">#{roomName}</span>
+              </div>
+              <button
+                onClick={copyRoomLink}
+                className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+              >
+                {copiedLink ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                {copiedLink ? 'Copied!' : 'Copy Link'}
+              </button>
+            </div>
+
+            <p className="text-[11px] text-slate-400 mt-3">
+              Send this room name or link to your friend. As soon as they type <strong>#{roomName}</strong> or click the link, the game will start automatically!
+            </p>
+
+            <button
+              onClick={onExitToLobby}
+              className="mt-6 text-xs text-slate-500 hover:text-white"
+            >
+              Cancel & Exit to Lobby
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Navbar */}
       <header className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-3 md:px-4 h-14 md:h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -285,18 +480,24 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
             <div className="flex items-center gap-1.5">
               {roomName && (
                 <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] px-1 rounded font-black">
-                  #{roomName}
+                  ROOM: #{roomName}
                 </span>
               )}
             </div>
           </div>
         </div>
 
-        {/* Turn Pill & Reset */}
+        {/* Turn Indicator */}
         <div className="flex items-center gap-2">
-          <div className="bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-xl text-xs font-bold text-white flex items-center gap-1.5">
-            <span className="hidden sm:inline text-slate-400">Turn:</span>
-            <span className="text-amber-400 font-black truncate max-w-[90px]">{activePlayer.name}</span>
+          <div className={`px-2.5 py-1 rounded-xl text-xs font-bold flex items-center gap-1.5 border ${
+            isMyTurn 
+              ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 shadow animate-pulse' 
+              : 'bg-slate-800 border-slate-700 text-slate-400'
+          }`}>
+            <span>Turn:</span>
+            <span className="font-black truncate max-w-[90px]">
+              {isMyTurn ? 'YOUR TURN' : activePlayer.name}
+            </span>
           </div>
 
           <button
@@ -309,7 +510,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
         </div>
       </header>
 
-      {/* Mobile Bottom Navigation Bar (Shown on small screens to easily switch views) */}
+      {/* Mobile Bottom Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900 border-t border-slate-800 flex justify-around p-2 text-xs font-bold">
         <button
           onClick={() => setMobileTab('market')}
@@ -323,7 +524,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
           className={`flex items-center gap-1 px-3 py-1.5 rounded-lg ${mobileTab === 'bank' ? 'bg-amber-400 text-slate-950' : 'text-slate-400'}`}
         >
           <CircleDot className="w-4 h-4" />
-          Bank & Nobles
+          Bank
         </button>
         <button
           onClick={() => setMobileTab('players')}
@@ -338,7 +539,6 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       <div className="flex-1 max-w-7xl mx-auto w-full p-2.5 md:p-4 grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6 items-start">
         {/* Left Column: Noble Patrons & Gem Bank */}
         <div className={`space-y-4 md:space-y-6 ${mobileTab !== 'bank' ? 'hidden md:block' : 'block'}`}>
-          {/* Noble Patrons */}
           <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-xl">
             <h3 className="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5 mb-2.5">
               <Crown className="w-4 h-4" />
@@ -347,10 +547,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2">
               {nobles.map(noble => (
                 <div key={noble.id} className="flex items-center gap-2.5 bg-slate-950/80 border border-slate-800/80 p-2 rounded-xl">
-                  <img 
-                    src={noble.image} 
-                    className="w-11 h-11 rounded-lg object-cover" 
-                  />
+                  <img src={noble.image} className="w-11 h-11 rounded-lg object-cover" />
                   <div className="flex-1 min-w-0">
                     <h5 className="text-xs font-bold text-white truncate">{noble.name}</h5>
                     <p className="text-[10px] text-slate-400 truncate">{noble.title}</p>
@@ -370,14 +567,13 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
             </div>
           </div>
 
-          {/* Gem Token Bank */}
           <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-xl">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-xs font-black uppercase text-indigo-400 flex items-center gap-1.5">
                 <CircleDot className="w-4 h-4" />
                 Gem Bank
               </h3>
-              {selectedTokens.length > 0 && (
+              {selectedTokens.length > 0 && isMyTurn && (
                 <button
                   onClick={confirmGemSelection}
                   className="px-3 py-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-lg shadow active:scale-95 transition-all cursor-pointer"
@@ -394,7 +590,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
                 return (
                   <button
                     key={gem.id}
-                    disabled={count === 0}
+                    disabled={count === 0 || !isMyTurn}
                     onClick={() => toggleSelectGem(gem.id)}
                     className={`p-2 rounded-xl border flex flex-col items-center justify-center transition-all cursor-pointer ${
                       isSelected 
@@ -416,7 +612,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
           </div>
         </div>
 
-        {/* Center 2 Columns: Card Market (Tier 3, Tier 2, Tier 1) */}
+        {/* Center: Card Market */}
         <div className={`lg:col-span-2 space-y-3.5 ${mobileTab !== 'market' ? 'hidden md:block' : 'block'}`}>
           {[3, 2, 1].map(tier => (
             <div key={tier} className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-2.5 md:p-3 shadow-lg">
@@ -433,7 +629,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
                   <SplendorCard
                     key={card.id}
                     card={card}
-                    canAfford={checkCanAfford(activePlayer, card)}
+                    canAfford={checkCanAfford(activePlayer, card) && isMyTurn}
                     onBuy={(c) => buyCard(c, false)}
                     onReserve={(c) => reserveCard(c)}
                   />
@@ -443,7 +639,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
           ))}
         </div>
 
-        {/* Right Column: Player Dashboards & Action Log */}
+        {/* Right: Players & Telemetry */}
         <div className={`space-y-3.5 ${mobileTab !== 'players' ? 'hidden md:block' : 'block'}`}>
           {players.map((p, idx) => (
             <PlayerBoard
@@ -455,7 +651,6 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
             />
           ))}
 
-          {/* Activity Log */}
           <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-xl">
             <h4 className="text-xs font-black uppercase text-slate-400 mb-2 flex items-center gap-1.5">
               <Info className="w-3.5 h-3.5 text-indigo-400" />
