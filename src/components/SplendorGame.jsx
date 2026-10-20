@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { GEM_TYPES, NOBLE_PATRONS, generateSplendorCards } from '../utils/splendorData';
-import { fetchLiveAniListCards } from '../api/anilist';
-import { DEFAULT_CARDS } from '../api/defaultCards';
+import { GEM_TYPES, NOBLE_PATRONS, getSplendorDeck } from '../utils/splendorData';
 import SplendorCard from './SplendorCard';
 import PlayerBoard from './PlayerBoard';
 import confetti from 'canvas-confetti';
-import { Trophy, RotateCcw, Sparkles, Crown, CircleDot, Info } from 'lucide-react';
+import { Trophy, RotateCcw, Crown, CircleDot, Info, ArrowLeft, Share2 } from 'lucide-react';
 
-export default function SplendorGame() {
+export default function SplendorGame({ roomName, playerOneName, onExitToLobby }) {
   const [deck, setDeck] = useState([]);
   const [market, setMarket] = useState({ 1: [], 2: [], 3: [] });
   const [gemBank, setGemBank] = useState({ ruby: 7, sapphire: 7, emerald: 7, amber: 7, onyx: 7, gold: 5 });
   const [nobles, setNobles] = useState([]);
-  const [selectedTokens, setSelectedTokens] = useState([]); // gems selected this turn
+  const [selectedTokens, setSelectedTokens] = useState([]);
   const [winner, setWinner] = useState(null);
-  const [log, setLog] = useState(['Game started! First player to 15 Prestige points wins.']);
+  const [log, setLog] = useState([`Match started! First player to 15 Prestige points wins.`]);
 
-  // Players: Player 1 (You) and Player 2 (Friend / AI)
+  // Players
   const [players, setPlayers] = useState([
     {
       id: 1,
-      name: 'Player 1',
+      name: playerOneName || 'Player 1',
       score: 0,
       tokens: { ruby: 0, sapphire: 0, emerald: 0, amber: 0, onyx: 0, gold: 0 },
       bonuses: { ruby: 0, sapphire: 0, emerald: 0, amber: 0, onyx: 0 },
@@ -29,7 +27,7 @@ export default function SplendorGame() {
     },
     {
       id: 2,
-      name: 'Player 2',
+      name: roomName ? 'Player 2 (Friend)' : 'Player 2',
       score: 0,
       tokens: { ruby: 0, sapphire: 0, emerald: 0, amber: 0, onyx: 0, gold: 0 },
       bonuses: { ruby: 0, sapphire: 0, emerald: 0, amber: 0, onyx: 0 },
@@ -40,49 +38,46 @@ export default function SplendorGame() {
 
   const [activePlayerIdx, setActivePlayerIdx] = useState(0);
 
-  // Initialize board and market
+  // Initialize board with reliable character deck
   useEffect(() => {
-    async function init() {
-      const cardsData = await fetchLiveAniListCards(1, 40);
-      const allSplendorCards = generateSplendorCards(cardsData || DEFAULT_CARDS);
+    const allCards = getSplendorDeck();
 
-      // Separate into tiers
-      const tier1 = allSplendorCards.filter(c => c.tier === 1);
-      const tier2 = allSplendorCards.filter(c => c.tier === 2);
-      const tier3 = allSplendorCards.filter(c => c.tier === 3);
+    const tier1 = allCards.filter(c => c.tier === 1);
+    const tier2 = allCards.filter(c => c.tier === 2);
+    const tier3 = allCards.filter(c => c.tier === 3);
 
-      setMarket({
-        3: tier3.slice(0, 4),
-        2: tier2.slice(0, 4),
-        1: tier1.slice(0, 4),
-      });
+    // Initial 4 visible cards for each tier
+    setMarket({
+      3: tier3.slice(0, 4),
+      2: tier2.slice(0, 4),
+      1: tier1.slice(0, 4),
+    });
 
-      setDeck(allSplendorCards.slice(12));
-      setNobles(NOBLE_PATRONS.slice(0, 3));
-    }
-    init();
+    // The remaining cards form the deck
+    const remainingDeck = [
+      ...tier3.slice(4),
+      ...tier2.slice(4),
+      ...tier1.slice(4)
+    ];
+    setDeck(remainingDeck);
+    setNobles(NOBLE_PATRONS);
   }, []);
 
   const activePlayer = players[activePlayerIdx];
 
-  // Helper: check if player can afford card (using tokens + permanent bonuses + gold wildcards)
   const checkCanAfford = (player, card) => {
     let wildcardsNeeded = 0;
-
     for (const [gemId, costAmount] of Object.entries(card.cost)) {
       const bonus = player.bonuses[gemId] || 0;
       const token = player.tokens[gemId] || 0;
       const effectiveCost = Math.max(0, costAmount - bonus);
-
       if (token < effectiveCost) {
         wildcardsNeeded += (effectiveCost - token);
       }
     }
-
     return (player.tokens.gold || 0) >= wildcardsNeeded;
   };
 
-  // Turn Action 1: Select Gems from Bank
   const toggleSelectGem = (gemId) => {
     if (gemId === 'gold') {
       alert('Gold gems cannot be taken directly. Reserve a card to claim a Gold wildcard!');
@@ -96,7 +91,6 @@ export default function SplendorGame() {
 
     let next = [...selectedTokens];
 
-    // Case 1: Selecting 2 of the same color (requires at least 4 in bank)
     if (next.length === 1 && next[0] === gemId) {
       if (gemBank[gemId] < 4) {
         alert('You can only take 2 of the same color if there are at least 4 in the bank.');
@@ -123,16 +117,12 @@ export default function SplendorGame() {
   const confirmGemSelection = () => {
     if (selectedTokens.length === 0) return;
 
-    // Deduct from bank
     setGemBank(prev => {
       const updated = { ...prev };
-      selectedTokens.forEach(g => {
-        updated[g] -= 1;
-      });
+      selectedTokens.forEach(g => { updated[g] -= 1; });
       return updated;
     });
 
-    // Add to active player
     setPlayers(prev => prev.map((p, idx) => {
       if (idx !== activePlayerIdx) return p;
       const updatedTokens = { ...p.tokens };
@@ -147,14 +137,12 @@ export default function SplendorGame() {
     endTurn();
   };
 
-  // Turn Action 2: Buy / Recruit a Card
   const buyCard = (card, fromReserved = false) => {
     if (!checkCanAfford(activePlayer, card)) {
       alert('You cannot afford this card yet!');
       return;
     }
 
-    // Pay costs (bonuses reduce cost, then tokens, then gold wildcards)
     let remainingTokens = { ...activePlayer.tokens };
     let returnedToBank = { ...gemBank };
 
@@ -169,7 +157,6 @@ export default function SplendorGame() {
         needed -= canPay;
 
         if (needed > 0) {
-          // Pay with gold wildcard
           remainingTokens.gold -= needed;
           returnedToBank.gold += needed;
         }
@@ -178,7 +165,6 @@ export default function SplendorGame() {
 
     setGemBank(returnedToBank);
 
-    // Update Player (gain permanent bonus & prestige points)
     const nextBonuses = { ...activePlayer.bonuses };
     nextBonuses[card.bonusGem] = (nextBonuses[card.bonusGem] || 0) + 1;
 
@@ -216,14 +202,12 @@ export default function SplendorGame() {
       };
     }));
 
-    // Replace card on market from deck
     if (!fromReserved) {
       replaceMarketCard(card);
     }
 
     addLog(`✨ ${activePlayer.name} recruited ${card.name} (+${card.prestige} prestige)!`);
 
-    // Check Win Condition (15 points)
     if (nextScore >= 15) {
       setWinner(activePlayer.name);
       confetti({ particleCount: 150, spread: 80 });
@@ -234,7 +218,6 @@ export default function SplendorGame() {
     endTurn();
   };
 
-  // Turn Action 3: Reserve Card + take 1 gold
   const reserveCard = (card) => {
     if (activePlayer.reserved.length >= 3) {
       alert('You can only hold up to 3 reserved cards at a time.');
@@ -287,15 +270,23 @@ export default function SplendorGame() {
     setLog(prev => [msg, ...prev].slice(0, 15));
   };
 
-  const resetGame = () => {
-    window.location.reload();
+  const copyRoomLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert('Room link copied to clipboard! Send it to your friend to join.');
   };
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
-      {/* Header */}
+      {/* Navbar */}
       <header className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 px-4 h-16 flex items-center justify-between">
         <div className="flex items-center gap-3">
+          <button
+            onClick={onExitToLobby}
+            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all mr-1 cursor-pointer"
+            title="Back to Lobby"
+          >
+            <ArrowLeft className="w-4 h-4" />
+          </button>
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center font-black text-white text-base shadow-lg">
             RL
           </div>
@@ -303,21 +294,39 @@ export default function SplendorGame() {
             <h1 className="font-black text-white tracking-wider text-base">
               REALM OF LEGENDS
             </h1>
-            <p className="text-[10px] text-amber-400 font-bold uppercase tracking-widest -mt-1">
-              Anime Boardgame Edition (Splendor Rules)
-            </p>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] text-amber-400 font-bold uppercase tracking-widest">
+                Anime Splendor
+              </span>
+              {roomName && (
+                <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] px-1.5 py-0.2 rounded font-black">
+                  ROOM: #{roomName}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
+          {roomName && (
+            <button
+              onClick={copyRoomLink}
+              className="p-1.5 px-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+            >
+              <Share2 className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Invite Friend</span>
+            </button>
+          )}
+
           <div className="bg-slate-800 border border-slate-700 px-3 py-1 rounded-xl text-xs font-bold text-white flex items-center gap-2">
             <span>Turn:</span>
             <span className="text-amber-400 font-black">{activePlayer.name}</span>
           </div>
+
           <button
-            onClick={resetGame}
-            title="Reset Game"
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all"
+            onClick={() => window.location.reload()}
+            title="Reset Board"
+            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer"
           >
             <RotateCcw className="w-4 h-4" />
           </button>
@@ -337,7 +346,11 @@ export default function SplendorGame() {
             <div className="grid grid-cols-1 gap-2.5">
               {nobles.map(noble => (
                 <div key={noble.id} className="flex items-center gap-3 bg-slate-950/80 border border-slate-800/80 p-2 rounded-xl">
-                  <img src={noble.image} className="w-12 h-12 rounded-lg object-cover" />
+                  <img 
+                    src={noble.image} 
+                    onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&auto=format&fit=crop&q=80"; }}
+                    className="w-12 h-12 rounded-lg object-cover" 
+                  />
                   <div className="flex-1 min-w-0">
                     <h5 className="text-xs font-bold text-white truncate">{noble.name}</h5>
                     <p className="text-[10px] text-slate-400 truncate">{noble.title}</p>
@@ -362,12 +375,12 @@ export default function SplendorGame() {
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-xs font-black uppercase text-indigo-400 flex items-center gap-1.5">
                 <CircleDot className="w-4 h-4" />
-                Gem Bank (Take Tokens)
+                Gem Bank
               </h3>
               {selectedTokens.length > 0 && (
                 <button
                   onClick={confirmGemSelection}
-                  className="px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-lg shadow active:scale-95 transition-all"
+                  className="px-2.5 py-1 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs rounded-lg shadow active:scale-95 transition-all cursor-pointer"
                 >
                   Take ({selectedTokens.length})
                 </button>
@@ -398,7 +411,7 @@ export default function SplendorGame() {
               })}
             </div>
             <p className="text-[10px] text-slate-500 mt-3 leading-relaxed">
-              Rules: Click to select 3 different gems OR 2 identical gems (if 4+ available). Click "Take" to claim.
+              Click 3 different gems OR 2 identical (if 4+ left). Click "Take" to claim.
             </p>
           </div>
         </div>
@@ -412,7 +425,7 @@ export default function SplendorGame() {
                   {tier === 3 ? 'Tier III (Legendary Heroes)' : tier === 2 ? 'Tier II (Skilled Champions)' : 'Tier I (Recruits & Apprentices)'}
                 </span>
                 <span className="text-[10px] text-slate-500 font-bold">
-                  Deck: {deck.filter(c => c.tier === tier).length} remaining
+                  Deck: {deck.filter(c => c.tier === tier).length} left
                 </span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -467,8 +480,8 @@ export default function SplendorGame() {
               Gathered 15 Prestige points by recruiting anime champions and winning over noble patrons!
             </p>
             <button
-              onClick={resetGame}
-              className="mt-6 px-6 py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-sm transition-all"
+              onClick={() => window.location.reload()}
+              className="mt-6 px-6 py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-black rounded-xl text-sm transition-all cursor-pointer"
             >
               Play Again
             </button>
