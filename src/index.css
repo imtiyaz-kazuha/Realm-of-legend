@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-game-dark text-slate-100 font-sans antialiased select-none;
+    overflow-x: hidden;
+  }
+}
+
+/* Holographic & foil card shine */
+.foil-ur {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 0, 150, 0.25) 0%,
+    rgba(0, 204, 255, 0.25) 50%,
+    rgba(255, 230, 0, 0.25) 100%
+  );
+  background-size: 200% 200%;
+  animation: shimmer 4s infinite linear;
+}
+
+.foil-sec {
+  background: radial-gradient(
+    circle at center,
+    rgba(168, 85, 247, 0.35) 0%,
+    rgba(236, 72, 153, 0.25) 50%,
+    rgba(15, 23, 42, 0.8) 100%
+  );
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0f19;
+}
+::-webkit-scrollbar-thumb {
+  background: #243049;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6;
+}
