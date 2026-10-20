@@ -1,4 +1,4 @@
-import { RELIABLE_CHARACTERS, NOBLES_LIST } from './reliableCharacters';
+import { REAL_ANIME_CHARACTERS, NOBLE_PATRONS as NOBLES } from './reliableCharacters';
 
 export const GEM_TYPES = [
   { id: 'ruby', name: 'Ruby (Fire)', color: 'bg-rose-600', text: 'text-rose-400', border: 'border-rose-500' },
@@ -10,10 +10,10 @@ export const GEM_TYPES = [
 ];
 
 export function getSplendorDeck() {
-  return RELIABLE_CHARACTERS.map((char, index) => ({
+  return REAL_ANIME_CHARACTERS.map((char, index) => ({
     ...char,
     id: `card_${char.tier}_${index}`,
   }));
 }
 
-export const NOBLE_PATRONS = NOBLES_LIST;
+export const NOBLE_PATRONS = NOBLES;
