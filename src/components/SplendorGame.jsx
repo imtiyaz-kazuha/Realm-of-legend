@@ -1,28 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { GEM_TYPES, NOBLE_PATRONS, getSplendorDeck } from '../utils/splendorData';
+import { GEM_TYPES, getShuffledSplendorDecks } from '../utils/splendorData';
 import { p2p } from '../utils/multiplayer';
 import SplendorCard from './SplendorCard';
 import PlayerBoard from './PlayerBoard';
 import confetti from 'canvas-confetti';
-import { Trophy, RotateCcw, Crown, CircleDot, Info, ArrowLeft, Share2, Layers, Loader2, Copy, Check } from 'lucide-react';
+import { Trophy, RotateCcw, Crown, CircleDot, Info, ArrowLeft, Share2, Layers, Loader2, Copy, Check, Shuffle } from 'lucide-react';
 
 export default function SplendorGame({ roomName, playerOneName, onExitToLobby }) {
-  // Multiplayer Connection State
   const [isWaitingForOpponent, setIsWaitingForOpponent] = useState(Boolean(roomName));
   const [opponentName, setOpponentName] = useState(roomName ? 'Waiting for opponent...' : 'Player 2');
-  const [myPlayerIndex, setMyPlayerIndex] = useState(0); // 0 = Player 1, 1 = Player 2
+  const [myPlayerIndex, setMyPlayerIndex] = useState(0);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  // Game Board State
-  const [deck, setDeck] = useState([]);
+  // Deck pools separated by tiers
+  const [deckTier1, setDeckTier1] = useState([]);
+  const [deckTier2, setDeckTier2] = useState([]);
+  const [deckTier3, setDeckTier3] = useState([]);
+
+  // Market: 4 cards per tier
   const [market, setMarket] = useState({ 1: [], 2: [], 3: [] });
   const [gemBank, setGemBank] = useState({ ruby: 7, sapphire: 7, emerald: 7, amber: 7, onyx: 7, gold: 5 });
   const [nobles, setNobles] = useState([]);
   const [selectedTokens, setSelectedTokens] = useState([]);
   const [winner, setWinner] = useState(null);
-  const [log, setLog] = useState([`Match initialized.`]);
+  const [log, setLog] = useState([`Decks shuffled! Match initialized.`]);
 
-  // Mobile Tab selector: 'market' | 'bank' | 'players'
   const [mobileTab, setMobileTab] = useState('market');
 
   const [players, setPlayers] = useState([
@@ -48,37 +50,36 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
 
   const [activePlayerIdx, setActivePlayerIdx] = useState(0);
 
-  // Initialize board
+  // Setup completely shuffled decks
   const setupBoard = () => {
-    const allCards = getSplendorDeck();
-    const tier1 = allCards.filter(c => c.tier === 1);
-    const tier2 = allCards.filter(c => c.tier === 2);
-    const tier3 = allCards.filter(c => c.tier === 3);
+    const { tier1, tier2, tier3, nobles: pickedNobles } = getShuffledSplendorDecks();
 
     const initialMarket = {
       3: tier3.slice(0, 4),
       2: tier2.slice(0, 4),
       1: tier1.slice(0, 4),
     };
-    const initialDeck = [
-      ...tier3.slice(4),
-      ...tier2.slice(4),
-      ...tier1.slice(4)
-    ];
+
+    const remainingT1 = tier1.slice(4);
+    const remainingT2 = tier2.slice(4);
+    const remainingT3 = tier3.slice(4);
 
     setMarket(initialMarket);
-    setDeck(initialDeck);
-    setNobles(NOBLE_PATRONS);
+    setDeckTier1(remainingT1);
+    setDeckTier2(remainingT2);
+    setDeckTier3(remainingT3);
+    setNobles(pickedNobles);
 
     return {
       market: initialMarket,
-      deck: initialDeck,
-      nobles: NOBLE_PATRONS,
+      deckTier1: remainingT1,
+      deckTier2: remainingT2,
+      deckTier3: remainingT3,
+      nobles: pickedNobles,
       gemBank: { ruby: 7, sapphire: 7, emerald: 7, amber: 7, onyx: 7, gold: 5 }
     };
   };
 
-  // Connect via P2P if room mode
   useEffect(() => {
     const initialData = setupBoard();
 
@@ -86,7 +87,6 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       p2p.init(
         roomName,
         playerOneName,
-        // onConnected
         ({ isHost, remoteName }) => {
           setIsWaitingForOpponent(false);
           setOpponentName(remoteName);
@@ -97,30 +97,34 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
             { ...prev[1], name: isHost ? remoteName : playerOneName }
           ]);
 
-          addLog(`🎮 Opponent ${remoteName} connected! Game is live.`);
+          addLog(`🎮 Opponent ${remoteName} connected! Shuffled decks synchronized.`);
 
-          // If Host, broadcast initial board state to Guest
           if (isHost) {
             p2p.send({
               type: 'INIT_STATE',
               market: initialData.market,
-              deck: initialData.deck,
+              deckTier1: initialData.deckTier1,
+              deckTier2: initialData.deckTier2,
+              deckTier3: initialData.deckTier3,
               nobles: initialData.nobles,
               gemBank: initialData.gemBank,
               hostName: playerOneName,
             });
           }
         },
-        // onDataReceived (sync game state from other player)
         (data) => {
           if (data.type === 'INIT_STATE') {
             setMarket(data.market);
-            setDeck(data.deck);
+            setDeckTier1(data.deckTier1);
+            setDeckTier2(data.deckTier2);
+            setDeckTier3(data.deckTier3);
             setNobles(data.nobles);
             setGemBank(data.gemBank);
           } else if (data.type === 'GAME_SYNC') {
             setMarket(data.market);
-            setDeck(data.deck);
+            setDeckTier1(data.deckTier1);
+            setDeckTier2(data.deckTier2);
+            setDeckTier3(data.deckTier3);
             setNobles(data.nobles);
             setGemBank(data.gemBank);
             setPlayers(data.players);
@@ -129,7 +133,6 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
             if (data.newLog) addLog(data.newLog);
           }
         },
-        // onDisconnected
         () => {
           addLog('⚠️ Opponent disconnected.');
           setIsWaitingForOpponent(true);
@@ -145,13 +148,14 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
   const activePlayer = players[activePlayerIdx];
   const isMyTurn = !roomName || (activePlayerIdx === myPlayerIndex);
 
-  // Broadcast game state to peer
   const broadcastState = (updatedState) => {
     if (roomName) {
       p2p.send({
         type: 'GAME_SYNC',
         market: updatedState.market ?? market,
-        deck: updatedState.deck ?? deck,
+        deckTier1: updatedState.deckTier1 ?? deckTier1,
+        deckTier2: updatedState.deckTier2 ?? deckTier2,
+        deckTier3: updatedState.deckTier3 ?? deckTier3,
         nobles: updatedState.nobles ?? nobles,
         gemBank: updatedState.gemBank ?? gemBank,
         players: updatedState.players ?? players,
@@ -308,16 +312,19 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       };
     });
 
-    // Replace card on market from deck
+    // Replace card on market from corresponding shuffled tier deck
     let nextMarket = { ...market };
-    let nextDeck = [...deck];
+    let nextT1 = [...deckTier1];
+    let nextT2 = [...deckTier2];
+    let nextT3 = [...deckTier3];
+
     if (!fromReserved) {
-      const tierCards = nextMarket[card.tier] || [];
-      const replacement = nextDeck.find(c => c.tier === card.tier);
-      nextMarket[card.tier] = tierCards.map(c => c.id === card.id ? replacement : c).filter(Boolean);
-      if (replacement) {
-        nextDeck = nextDeck.filter(c => c.id !== replacement.id);
-      }
+      let replacement = null;
+      if (card.tier === 1 && nextT1.length > 0) replacement = nextT1.shift();
+      if (card.tier === 2 && nextT2.length > 0) replacement = nextT2.shift();
+      if (card.tier === 3 && nextT3.length > 0) replacement = nextT3.shift();
+
+      nextMarket[card.tier] = (nextMarket[card.tier] || []).map(c => c.id === card.id ? replacement : c).filter(Boolean);
     }
 
     const nextTurn = activePlayerIdx === 0 ? 1 : 0;
@@ -327,7 +334,9 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     setNobles(remainingNobles);
     setPlayers(nextPlayers);
     setMarket(nextMarket);
-    setDeck(nextDeck);
+    setDeckTier1(nextT1);
+    setDeckTier2(nextT2);
+    setDeckTier3(nextT3);
     setActivePlayerIdx(nextTurn);
     addLog(actionMsg);
 
@@ -343,7 +352,9 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       nobles: remainingNobles,
       players: nextPlayers,
       market: nextMarket,
-      deck: nextDeck,
+      deckTier1: nextT1,
+      deckTier2: nextT2,
+      deckTier3: nextT3,
       activePlayerIdx: nextTurn,
       winner: newWinner,
       newLog: actionMsg
@@ -380,13 +391,16 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     });
 
     let nextMarket = { ...market };
-    let nextDeck = [...deck];
-    const tierCards = nextMarket[card.tier] || [];
-    const replacement = nextDeck.find(c => c.tier === card.tier);
-    nextMarket[card.tier] = tierCards.map(c => c.id === card.id ? replacement : c).filter(Boolean);
-    if (replacement) {
-      nextDeck = nextDeck.filter(c => c.id !== replacement.id);
-    }
+    let nextT1 = [...deckTier1];
+    let nextT2 = [...deckTier2];
+    let nextT3 = [...deckTier3];
+
+    let replacement = null;
+    if (card.tier === 1 && nextT1.length > 0) replacement = nextT1.shift();
+    if (card.tier === 2 && nextT2.length > 0) replacement = nextT2.shift();
+    if (card.tier === 3 && nextT3.length > 0) replacement = nextT3.shift();
+
+    nextMarket[card.tier] = (nextMarket[card.tier] || []).map(c => c.id === card.id ? replacement : c).filter(Boolean);
 
     const nextTurn = activePlayerIdx === 0 ? 1 : 0;
     const actionMsg = `📌 ${activePlayer.name} reserved ${card.name}${gainedGold ? ' and took 1 Gold wildcard' : ''}.`;
@@ -394,7 +408,9 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     setGemBank(nextBank);
     setPlayers(nextPlayers);
     setMarket(nextMarket);
-    setDeck(nextDeck);
+    setDeckTier1(nextT1);
+    setDeckTier2(nextT2);
+    setDeckTier3(nextT3);
     setActivePlayerIdx(nextTurn);
     addLog(actionMsg);
 
@@ -402,7 +418,9 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       gemBank: nextBank,
       players: nextPlayers,
       market: nextMarket,
-      deck: nextDeck,
+      deckTier1: nextT1,
+      deckTier2: nextT2,
+      deckTier3: nextT3,
       activePlayerIdx: nextTurn,
       newLog: actionMsg
     });
@@ -420,7 +438,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col pb-16 md:pb-0">
-      {/* WAITING ROOM MODAL (Until Opponent Connects) */}
+      {/* Waiting Room Modal */}
       {isWaitingForOpponent && roomName && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
           <div className="bg-slate-900 border-2 border-amber-500/80 rounded-3xl p-6 md:p-8 max-w-md w-full text-center shadow-2xl relative">
@@ -447,12 +465,12 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
             </div>
 
             <p className="text-[11px] text-slate-400 mt-3">
-              Send this room name or link to your friend. As soon as they type <strong>#{roomName}</strong> or click the link, the game will start automatically!
+              Send this link to your friend. As soon as they join, the game will start with freshly shuffled decks!
             </p>
 
             <button
               onClick={onExitToLobby}
-              className="mt-6 text-xs text-slate-500 hover:text-white"
+              className="mt-6 text-xs text-slate-500 hover:text-white cursor-pointer"
             >
               Cancel & Exit to Lobby
             </button>
@@ -502,10 +520,11 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
 
           <button
             onClick={() => window.location.reload()}
-            title="Reset Board"
-            className="p-1.5 md:p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer"
+            title="Reshuffle & Restart Match"
+            className="p-1.5 md:p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-all cursor-pointer flex items-center gap-1 text-xs"
           >
-            <RotateCcw className="w-3.5 h-3.5 md:w-4 md:h-4" />
+            <Shuffle className="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-400" />
+            <span className="hidden sm:inline font-bold">Reshuffle</span>
           </button>
         </div>
       </header>
@@ -537,7 +556,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
 
       {/* Main Board Layout */}
       <div className="flex-1 max-w-7xl mx-auto w-full p-2.5 md:p-4 grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6 items-start">
-        {/* Left Column: Noble Patrons & Gem Bank */}
+        {/* Left Column: Nobles & Bank */}
         <div className={`space-y-4 md:space-y-6 ${mobileTab !== 'bank' ? 'hidden md:block' : 'block'}`}>
           <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 md:p-4 shadow-xl">
             <h3 className="text-xs font-black uppercase text-amber-400 flex items-center gap-1.5 mb-2.5">
@@ -606,37 +625,37 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
                 );
               })}
             </div>
-            <p className="text-[10px] text-slate-500 mt-2.5 leading-relaxed">
-              Pick 3 different colors OR 2 identical (if 4+ in bank). Click "Take" to claim.
-            </p>
           </div>
         </div>
 
-        {/* Center: Card Market */}
+        {/* Center: Market Cards */}
         <div className={`lg:col-span-2 space-y-3.5 ${mobileTab !== 'market' ? 'hidden md:block' : 'block'}`}>
-          {[3, 2, 1].map(tier => (
-            <div key={tier} className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-2.5 md:p-3 shadow-lg">
-              <div className="flex items-center justify-between mb-2 px-1">
-                <span className="text-xs font-black uppercase text-slate-300 tracking-wider">
-                  {tier === 3 ? 'Tier III (Legendary Heroes)' : tier === 2 ? 'Tier II (Skilled Champions)' : 'Tier I (Recruits & Apprentices)'}
-                </span>
-                <span className="text-[10px] text-slate-500 font-bold">
-                  Deck: {deck.filter(c => c.tier === tier).length} left
-                </span>
+          {[3, 2, 1].map(tier => {
+            const remainingDeckCount = tier === 3 ? deckTier3.length : tier === 2 ? deckTier2.length : deckTier1.length;
+            return (
+              <div key={tier} className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-2.5 md:p-3 shadow-lg">
+                <div className="flex items-center justify-between mb-2 px-1">
+                  <span className="text-xs font-black uppercase text-slate-300 tracking-wider">
+                    {tier === 3 ? 'Tier III (Legendary Heroes)' : tier === 2 ? 'Tier II (Skilled Champions)' : 'Tier I (Recruits & Apprentices)'}
+                  </span>
+                  <span className="text-[10px] text-amber-400 font-bold bg-slate-800 px-2 py-0.5 rounded-full">
+                    Deck: {remainingDeckCount} in deck
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-2.5">
+                  {(market[tier] || []).map(card => (
+                    <SplendorCard
+                      key={card.id}
+                      card={card}
+                      canAfford={checkCanAfford(activePlayer, card) && isMyTurn}
+                      onBuy={(c) => buyCard(c, false)}
+                      onReserve={(c) => reserveCard(c)}
+                    />
+                  ))}
+                </div>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 md:gap-2.5">
-                {(market[tier] || []).map(card => (
-                  <SplendorCard
-                    key={card.id}
-                    card={card}
-                    canAfford={checkCanAfford(activePlayer, card) && isMyTurn}
-                    onBuy={(c) => buyCard(c, false)}
-                    onReserve={(c) => reserveCard(c)}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Right: Players & Telemetry */}

@@ -1,4 +1,4 @@
-import { REAL_ANIME_CHARACTERS, NOBLE_PATRONS as NOBLES } from './reliableCharacters';
+import { EXPANDED_CHARACTERS, NOBLE_PATRONS as ALL_NOBLES } from './reliableCharacters';
 
 export const GEM_TYPES = [
   { id: 'ruby', name: 'Ruby (Fire)', color: 'bg-rose-600', text: 'text-rose-400', border: 'border-rose-500' },
@@ -9,11 +9,34 @@ export const GEM_TYPES = [
   { id: 'gold', name: 'Gold (Wildcard)', color: 'bg-yellow-400', text: 'text-yellow-950 font-black', border: 'border-yellow-300', isWildcard: true },
 ];
 
-export function getSplendorDeck() {
-  return REAL_ANIME_CHARACTERS.map((char, index) => ({
-    ...char,
-    id: `card_${char.tier}_${index}`,
-  }));
+// Fisher-Yates array shuffle algorithm
+export function shuffleArray(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
-export const NOBLE_PATRONS = NOBLES;
+// Generate randomized, fully shuffled decks for a match
+export function getShuffledSplendorDecks() {
+  const cards = EXPANDED_CHARACTERS.map((char, index) => ({
+    ...char,
+    id: `card_${char.tier}_${index}_${Math.random().toString(36).substr(2, 4)}`,
+  }));
+
+  const tier1 = shuffleArray(cards.filter(c => c.tier === 1));
+  const tier2 = shuffleArray(cards.filter(c => c.tier === 2));
+  const tier3 = shuffleArray(cards.filter(c => c.tier === 3));
+
+  // Pick 3 random Nobles out of the noble pool for each match
+  const shuffledNobles = shuffleArray(ALL_NOBLES).slice(0, 3);
+
+  return {
+    tier1,
+    tier2,
+    tier3,
+    nobles: shuffledNobles
+  };
+}
