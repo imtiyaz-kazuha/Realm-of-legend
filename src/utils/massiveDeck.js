@@ -3831,7 +3831,7 @@ export const NOBLE_PATRONS = [
     "id": "n13",
     "name": "Guts",
     "title": "The Black Swordsman",
-    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b422-VqN2vM5F1n6r.png",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b422-XTaiTuvRohsV.png",
     "points": 3,
     "requires": {
       "onyx": 4,
@@ -3842,7 +3842,7 @@ export const NOBLE_PATRONS = [
     "id": "n14",
     "name": "Jotaro Kujo",
     "title": "Star Platinum Stand Master",
-    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b4010-0h8XU6lD9n0c.png",
+    "image": "https://s4.anilist.co/file/anilistcdn/character/large/b4003-gWDSEGbeOAll.png",
     "points": 3,
     "requires": {
       "sapphire": 4,
