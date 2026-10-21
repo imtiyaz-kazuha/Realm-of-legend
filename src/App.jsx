@@ -8,15 +8,52 @@ export default function App() {
   const [playerName, setPlayerName] = useState('Player 1');
   const [isAiMode, setIsAiMode] = useState(false);
 
-  // Check URL query for direct room links: ?room=dragon-ball
+  // Sync state with URL hash: #/home, #/ai, #/local, #/room/<roomName>
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const roomParam = params.get('room');
-    if (roomParam) {
-      setRoomName(roomParam);
-      setIsAiMode(false);
-      setInGame(true);
-    }
+    const parseHashRoute = () => {
+      const hash = window.location.hash;
+      const searchParams = new URLSearchParams(window.location.search);
+      const queryRoom = searchParams.get('room');
+
+      if (hash.startsWith('#/room/')) {
+        const rName = hash.replace('#/room/', '').trim();
+        if (rName) {
+          setRoomName(rName);
+          setIsAiMode(false);
+          setInGame(true);
+          return;
+        }
+      } else if (hash.startsWith('#/ai')) {
+        setRoomName('');
+        setIsAiMode(true);
+        setInGame(true);
+        return;
+      } else if (hash.startsWith('#/local')) {
+        setRoomName('');
+        setIsAiMode(false);
+        setInGame(true);
+        return;
+      } else if (queryRoom) {
+        // Backward compatibility with ?room=
+        setRoomName(queryRoom);
+        setIsAiMode(false);
+        setInGame(true);
+        window.location.hash = `#/room/${queryRoom}`;
+        return;
+      } else {
+        // Default to #/home
+        setInGame(false);
+        setIsAiMode(false);
+        setRoomName('');
+        if (!hash || hash === '#' || hash === '#/') {
+          window.location.hash = '#/home';
+        }
+      }
+    };
+
+    parseHashRoute();
+    window.addEventListener('hashchange', parseHashRoute);
+    return () => window.removeEventListener('hashchange', parseHashRoute);
   }, []);
 
   const handleStartLocal = (name) => {
@@ -24,6 +61,7 @@ export default function App() {
     setRoomName('');
     setIsAiMode(false);
     setInGame(true);
+    window.location.hash = '#/local';
   };
 
   const handleStartAi = (name) => {
@@ -31,16 +69,15 @@ export default function App() {
     setRoomName('');
     setIsAiMode(true);
     setInGame(true);
+    window.location.hash = '#/ai';
   };
 
   const handleJoinRoom = (room, name) => {
     setPlayerName(name || 'Player 1');
     setRoomName(room);
     setIsAiMode(false);
-    // Update URL without reload so user can share link
-    const newUrl = `${window.location.pathname}?room=${room}`;
-    window.history.pushState({ path: newUrl }, '', newUrl);
     setInGame(true);
+    window.location.hash = `#/room/${room}`;
   };
 
   const handleCreateRoom = (name) => {
@@ -49,9 +86,9 @@ export default function App() {
   };
 
   const handleExitToLobby = () => {
-    window.history.pushState({}, '', window.location.pathname);
     setIsAiMode(false);
     setInGame(false);
+    window.location.hash = '#/home';
   };
 
   if (!inGame) {
