@@ -3,10 +3,11 @@ import { GEM_TYPES, getShuffledSplendorDecks } from '../utils/splendorData';
 import { p2p } from '../utils/multiplayer';
 import { sendDiscordMatchWebhook } from '../utils/discordWebhook';
 import { computeAiMove } from '../utils/aiEngine';
+import { sfx } from '../utils/sfx';
 import SplendorCard from './SplendorCard';
 import PlayerBoard from './PlayerBoard';
 import confetti from 'canvas-confetti';
-import { Trophy, Crown, CircleDot, Info, ArrowLeft, Layers, Loader2, Copy, Check, Shuffle, Bot, LayoutGrid, Users as UsersIcon, ScrollText } from 'lucide-react';
+import { Trophy, Crown, CircleDot, Info, ArrowLeft, Layers, Loader2, Copy, Check, Shuffle, Bot, LayoutGrid, Users as UsersIcon, ScrollText, Volume2, VolumeX } from 'lucide-react';
 
 export default function SplendorGame({ roomName, playerOneName, isAiMode = false, onExitToLobby }) {
   const [isWaitingForOpponent, setIsWaitingForOpponent] = useState(Boolean(roomName && !isAiMode));
@@ -21,6 +22,12 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
   const [copiedLink, setCopiedLink] = useState(false);
   const [isAiThinking, setIsAiThinking] = useState(false);
   const [mobileTab, setMobileTab] = useState('market'); // 'market', 'bank', 'players', 'log'
+  const [soundEnabled, setSoundEnabled] = useState(true);
+
+  const toggleSound = () => {
+    sfx.enabled = !soundEnabled;
+    setSoundEnabled(!soundEnabled);
+  };
 
   const [deckTier1, setDeckTier1] = useState([]);
   const [deckTier2, setDeckTier2] = useState([]);
@@ -233,6 +240,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
       }
       next.push(gemId);
     }
+    sfx.playCoin();
     setSelectedTokens(next);
   };
 
@@ -240,6 +248,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
     if (selectedTokens.length === 0) return;
     if (!isMyTurn) return;
 
+    sfx.playCoin();
     const currentTurn = activePlayerIdx;
     const nextTurn = currentTurn === 0 ? 1 : 0;
 
@@ -309,6 +318,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
     let nextScore = activePlayer.score + (card.prestige || 0);
 
     let remainingNobles = [...nobles];
+    let visitedByNoble = false;
     remainingNobles = remainingNobles.filter(n => {
       let meetsReq = true;
       for (const [reqGem, reqCount] of Object.entries(n.requires)) {
@@ -319,11 +329,18 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
       }
       if (meetsReq) {
         nextScore += n.points;
+        visitedByNoble = true;
         addLog(`👑 ${activePlayer.name} visited by ${n.name}! (+${n.points} pts)`);
         return false;
       }
       return true;
     });
+
+    if (visitedByNoble) {
+      sfx.playNoble();
+    } else {
+      sfx.playBuy();
+    }
 
     const nextPlayers = players.map((p, idx) => {
       if (idx !== currentTurn) return p;
@@ -410,6 +427,8 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
 
     const currentTurn = activePlayerIdx;
     const nextTurn = currentTurn === 0 ? 1 : 0;
+
+    sfx.playReserve();
 
     let gainedGold = false;
     let nextBank = { ...gemBank };
@@ -738,6 +757,18 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
               {isMyTurn ? 'YOUR TURN' : activePlayer.name}
             </span>
           </div>
+
+          <button
+            onClick={toggleSound}
+            title={soundEnabled ? 'Mute Sounds' : 'Unmute Sounds'}
+            className="p-1 px-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-all cursor-pointer flex items-center"
+          >
+            {soundEnabled ? (
+              <Volume2 className="w-3.5 h-3.5 text-amber-400" />
+            ) : (
+              <VolumeX className="w-3.5 h-3.5 text-rose-400" />
+            )}
+          </button>
 
           <button
             onClick={() => window.location.reload()}

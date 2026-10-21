@@ -1,16 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { GEM_TYPES } from '../utils/splendorData';
-import { Trophy, BookmarkPlus } from 'lucide-react';
+import { Trophy, BookmarkPlus, Sparkles } from 'lucide-react';
 
 export default function SplendorCard({ card, onBuy, onReserve, canAfford, isReserved = false }) {
+  const [isSpawning, setIsSpawning] = useState(true);
+  const [isBuyingVfx, setIsBuyingVfx] = useState(false);
   const bonusGemObj = GEM_TYPES.find(g => g.id === card.bonusGem);
+
+  // Trigger spawn animation whenever a new card occupies this slot
+  useEffect(() => {
+    setIsSpawning(true);
+    const timer = setTimeout(() => setIsSpawning(false), 500);
+    return () => clearTimeout(timer);
+  }, [card.id]);
+
+  const handleBuyClick = () => {
+    if (!canAfford) return;
+    setIsBuyingVfx(true);
+    setTimeout(() => {
+      onBuy(card);
+      setIsBuyingVfx(false);
+    }, 380);
+  };
 
   return (
     <div className={`relative group rounded-xl overflow-hidden border bg-slate-900 flex flex-col justify-between transition-all duration-150 shadow-md h-full w-full min-h-[140px] md:min-h-0 aspect-[3/4] md:aspect-auto ${
+      isBuyingVfx ? 'animate-card-buy-vfx z-30' : isSpawning ? 'animate-card-spawn' : ''
+    } ${
       canAfford 
         ? 'border-amber-400 ring-1 ring-amber-400 shadow-amber-500/15' 
         : 'border-slate-800'
     }`}>
+      {/* VFX Sparkle Burst on Purchase */}
+      {isBuyingVfx && (
+        <div className="absolute inset-0 z-40 bg-gradient-to-tr from-amber-400/40 via-yellow-200/60 to-rose-400/40 flex items-center justify-center animate-pulse pointer-events-none">
+          <Sparkles className="w-12 h-12 text-yellow-200 animate-spin" />
+        </div>
+      )}
+
       {/* Top Bar: Prestige & Gem Discount */}
       <div className="flex items-center justify-between px-1.5 sm:px-2 py-0.5 bg-black/85 backdrop-blur-sm z-10 flex-shrink-0">
         <div>
@@ -76,8 +103,8 @@ export default function SplendorCard({ card, onBuy, onReserve, canAfford, isRese
           )}
 
           <button
-            onClick={() => onBuy(card)}
-            disabled={!canAfford}
+            onClick={handleBuyClick}
+            disabled={!canAfford || isBuyingVfx}
             className={`px-1.5 sm:px-2 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-black transition-all ${
               canAfford
                 ? 'bg-amber-400 hover:bg-amber-300 text-slate-950 shadow active:scale-95 cursor-pointer'
