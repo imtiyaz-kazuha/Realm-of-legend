@@ -5,12 +5,20 @@ export async function sendDiscordMatchWebhook(webhookUrl, matchData) {
     return;
   }
 
-  const { winner, loser, winnerScore, loserScore, roomName, turnsCount } = matchData;
+  const { winner, loser, winnerScore, loserScore, roomName, isAiMode } = matchData;
+
+  const modeTitle = isAiMode 
+    ? '🤖 Player VS Athena AI Match' 
+    : roomName 
+    ? `🌐 Online Room #${roomName}` 
+    : '⚔️ Local Match';
 
   const embed = {
-    title: '⚔️ Realm of Legends: Match Concluded! 🏆',
-    description: `A battle of champions has ended in **${roomName ? `#${roomName}` : 'Local Match'}**!`,
-    color: 0xf59e0b, // Amber Gold
+    title: isAiMode 
+      ? (winner.includes('AI') ? '💀 Machine Supremacy: Athena AI Won!' : '🏆 Hero Victorious: Athena AI Defeated!')
+      : '⚔️ Realm of Legends: Match Concluded! 🏆',
+    description: `A battle of champions has ended in **${modeTitle}**!`,
+    color: isAiMode ? (winner.includes('AI') ? 0xef4444 : 0x10b981) : 0xf59e0b,
     thumbnail: {
       url: 'https://s4.anilist.co/file/anilistcdn/character/large/b127691-9zqh1xpIubn7.png' // Satoru Gojo
     },
@@ -27,7 +35,7 @@ export async function sendDiscordMatchWebhook(webhookUrl, matchData) {
       },
       {
         name: '📜 Match Details',
-        value: `Room: \`${roomName || 'Local Pass & Play'}\`\nVictory Condition: \`Reached 15 Prestige\``,
+        value: `Mode: \`${modeTitle}\`\nVictory Condition: \`Reached 15 Prestige\``,
         inline: false
       }
     ],

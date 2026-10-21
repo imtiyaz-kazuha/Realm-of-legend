@@ -395,7 +395,8 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
           loser: otherPlayer.name,
           winnerScore: nextScore,
           loserScore: otherPlayer.score,
-          roomName: roomName || null
+          roomName: roomName || null,
+          isAiMode: Boolean(isAiMode)
         });
       }
       return;
@@ -614,6 +615,19 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
         if (nextScore >= 15) {
           setWinner(aiPlayer.name);
           addLog(`💀 Athena AI reached 15 Prestige and claimed the Realm!`);
+
+          const savedWebhook = localStorage.getItem('rol_discord_webhook');
+          if (savedWebhook) {
+            const humanPlayer = nextPlayers[0];
+            sendDiscordMatchWebhook(savedWebhook, {
+              winner: aiPlayer.name,
+              loser: humanPlayer.name,
+              winnerScore: nextScore,
+              loserScore: humanPlayer.score,
+              roomName: null,
+              isAiMode: true
+            });
+          }
         }
       } else if (move.type === 'RESERVE_CARD') {
         const card = move.card;
