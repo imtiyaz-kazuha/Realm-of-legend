@@ -38,26 +38,26 @@ export default function SplendorCard({ card, onBuy, onReserve, canAfford, isRese
         </div>
       )}
 
-      {/* Top Bar: Transparent overlay with Prestige (left) & Permanent Gem Discount (right) */}
-      <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-1.5 sm:px-2 py-1 bg-gradient-to-b from-black/80 via-black/40 to-transparent z-10 flex-shrink-0">
-        <div>
+      {/* Top Bar: Ultra subtle transparent gradient with floating Prestige & Gem Discount */}
+      <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-1.5 sm:px-2 py-1 bg-gradient-to-b from-black/40 to-transparent z-10 flex-shrink-0 pointer-events-none">
+        <div className="pointer-events-auto">
           {card.prestige > 0 ? (
-            <span className="text-[10px] sm:text-[11px] font-black text-amber-400 flex items-center gap-0.5 bg-black/60 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-amber-500/50 shadow-sm">
+            <span className="text-[10px] sm:text-[11px] font-black text-amber-400 flex items-center gap-0.5 bg-black/40 backdrop-blur-md px-1.5 py-0.5 rounded-md border border-amber-500/40 shadow-sm">
               <Trophy className="w-2.5 h-2.5 text-amber-400" />
               {card.prestige}
             </span>
           ) : (
-            <span className="text-[8px] sm:text-[9px] text-white/70 font-black uppercase tracking-wider bg-black/40 backdrop-blur-xs px-1 rounded">T{card.tier}</span>
+            <span className="text-[8px] sm:text-[9px] text-white/80 font-black uppercase tracking-wider bg-black/30 backdrop-blur-xs px-1 rounded">T{card.tier}</span>
           )}
         </div>
 
         {/* Permanent Card Gem Discount */}
-        <div className={`w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full ${bonusGemObj?.color} border border-white/90 shadow-md flex items-center justify-center`} title={`Permanent ${bonusGemObj?.name} Discount`}>
+        <div className={`pointer-events-auto w-4 h-4 sm:w-4.5 sm:h-4.5 rounded-full ${bonusGemObj?.color} border border-white/90 shadow-md flex items-center justify-center`} title={`Permanent ${bonusGemObj?.name} Discount`}>
           <span className="w-1 h-1 rounded-full bg-white/90" />
         </div>
       </div>
 
-      {/* Character Image: Full card height background */}
+      {/* Character Image: 100% crystal clear portrait, zero dark overlay */}
       <div className="relative flex-1 min-h-0 w-full overflow-hidden bg-slate-950">
         <img 
           src={card.image} 
@@ -65,15 +65,14 @@ export default function SplendorCard({ card, onBuy, onReserve, canAfford, isRese
           className="w-full h-full object-cover object-[center_30%]" 
           loading="lazy" 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80" />
       </div>
 
-      {/* Unified Bottom Info & Action Bar: Name & Price on bottom left, buttons on bottom right */}
-      <div className="px-2 py-1.5 bg-gradient-to-t from-black/95 via-black/75 to-transparent flex items-end justify-between gap-1.5 flex-shrink-0 z-10">
+      {/* Floating Transparent Bottom Bar: 10% dark gradient so picture behind is completely see-through */}
+      <div className="absolute bottom-0 left-0 right-0 px-2 py-1 bg-gradient-to-t from-black/50 via-black/20 to-transparent flex items-end justify-between gap-1.5 flex-shrink-0 z-10">
         {/* Left: Name, Series, and Cost Gems Chips */}
         <div className="min-w-0 flex-1">
-          <h4 className="text-[10px] sm:text-[11px] font-black text-white truncate drop-shadow leading-tight">{card.name}</h4>
-          <p className="text-[7.5px] sm:text-[8px] text-slate-400 truncate leading-none mb-1">{card.series}</p>
+          <h4 className="text-[10px] sm:text-[11px] font-black text-white truncate drop-shadow-[0_1.5px_3px_rgba(0,0,0,0.9)] leading-tight">{card.name}</h4>
+          <p className="text-[7.5px] sm:text-[8px] text-slate-200 truncate leading-none mb-1 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">{card.series}</p>
           
           {/* Horizontal Cost Badges */}
           <div className="flex items-center gap-1 flex-wrap">
@@ -82,7 +81,7 @@ export default function SplendorCard({ card, onBuy, onReserve, canAfford, isRese
               return (
                 <div 
                   key={gemId}
-                  className={`flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full ${gem?.color} text-[8px] sm:text-[9px] font-black text-white border border-white/70 shadow-xs`}
+                  className={`flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full ${gem?.color} text-[8px] sm:text-[9px] font-black text-white border border-white/90 shadow-md`}
                   title={`${amount} ${gem?.name}`}
                 >
                   {amount}
@@ -98,7 +97,7 @@ export default function SplendorCard({ card, onBuy, onReserve, canAfford, isRese
             <button
               onClick={() => onReserve(card)}
               title="Reserve & Take 1 Gold Wildcard"
-              className="p-1 rounded bg-black/60 hover:bg-slate-700 text-slate-300 border border-slate-700/60 backdrop-blur-xs transition-all cursor-pointer"
+              className="p-1 rounded bg-black/40 hover:bg-black/70 text-slate-200 border border-white/20 backdrop-blur-xs transition-all cursor-pointer shadow"
             >
               <BookmarkPlus className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
             </button>
@@ -110,7 +109,7 @@ export default function SplendorCard({ card, onBuy, onReserve, canAfford, isRese
             className={`px-2 py-1 rounded text-[8.5px] sm:text-[9.5px] font-black transition-all backdrop-blur-xs ${
               canAfford
                 ? 'bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-md active:scale-95 cursor-pointer ring-1 ring-amber-300/80'
-                : 'bg-black/60 text-slate-500 border border-slate-800/80 cursor-not-allowed opacity-50'
+                : 'bg-black/40 text-slate-400 border border-white/20 cursor-not-allowed opacity-60'
             }`}
           >
             Buy
