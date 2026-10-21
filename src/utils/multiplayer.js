@@ -60,9 +60,12 @@ class MultiplayerSync {
   setupConnection(myPlayerName) {
     if (!this.conn) return;
 
+    let hasConnected = false;
+
     this.conn.on('open', () => {
       console.log('P2P connection open!');
-      if (this.onConnected) {
+      if (!hasConnected && this.onConnected) {
+        hasConnected = true;
         this.onConnected({
           isHost: this.isHost,
           remoteName: this.conn.metadata?.playerName || (this.isHost ? 'Guest' : 'Host')

@@ -79,27 +79,79 @@ export default function PlayerBoard({ player, isCurrentTurn, onPlayReserved, che
 
       {/* Reserved Cards */}
       {player.reserved.length > 0 && (
-        <div className="mt-2.5 pt-2 border-t border-slate-800">
-          <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1">
-            <Bookmark className="w-3 h-3 text-amber-400" />
-            Reserved ({player.reserved.length}/3)
+        <div className="mt-2 pt-1.5 border-t border-slate-800">
+          <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center justify-between">
+            <span className="flex items-center gap-1">
+              <Bookmark className="w-3 h-3 text-amber-400" />
+              Reserved ({player.reserved.length}/3)
+            </span>
+            <span className="text-[8px] text-slate-500 font-normal">Click to recruit</span>
           </div>
-          <div className="flex gap-1.5 overflow-x-auto pb-1">
+          <div className="flex flex-col gap-1.5 overflow-y-auto max-h-36 pr-0.5">
             {player.reserved.map(card => {
               const canAfford = checkCanAfford(player, card);
+              const bonusGemObj = GEM_TYPES.find(g => g.id === card.bonusGem);
               return (
                 <div 
                   key={card.id}
                   onClick={() => isCurrentTurn && canAfford && onPlayReserved(card)}
-                  className={`flex items-center gap-1.5 p-1 rounded-lg border text-[10px] cursor-pointer transition-all flex-shrink-0 ${
-                    canAfford 
-                      ? 'border-amber-400 bg-amber-500/20 text-amber-300 hover:scale-105 shadow' 
-                      : 'border-slate-800 bg-slate-900 text-slate-500 opacity-60'
+                  className={`flex items-center justify-between gap-1.5 p-1.5 rounded-xl border text-[10px] transition-all ${
+                    canAfford && isCurrentTurn
+                      ? 'border-amber-400 bg-amber-500/15 text-amber-300 hover:scale-[1.02] shadow cursor-pointer ring-1 ring-amber-400/50' 
+                      : canAfford
+                      ? 'border-amber-500/40 bg-slate-900/90 text-slate-300'
+                      : 'border-slate-800 bg-slate-950/80 text-slate-400 opacity-70'
                   }`}
-                  title={canAfford ? 'Click to recruit reserved card' : 'Need more gems'}
+                  title={canAfford ? (isCurrentTurn ? 'Click to recruit reserved card' : 'Can recruit on your turn') : 'Need more gems to recruit'}
                 >
-                  <img src={card.image} className="w-5 h-5 rounded object-cover" />
-                  <span className="font-bold truncate max-w-[70px]">{card.name}</span>
+                  {/* Left: Thumbnail & Name & Element */}
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <img src={card.image} className="w-7 h-7 rounded-lg object-cover flex-shrink-0 border border-slate-700" />
+                    <div className="min-w-0 flex flex-col">
+                      <span className="font-bold text-[10px] text-white truncate max-w-[75px] md:max-w-[95px] leading-tight">
+                        {card.name}
+                      </span>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        {/* Bonus element badge */}
+                        <span 
+                          className={`w-2.5 h-2.5 rounded-full ${bonusGemObj?.color} border border-white/60 flex-shrink-0`} 
+                          title={`+1 ${bonusGemObj?.name} Bonus`} 
+                        />
+                        {/* Prestige points */}
+                        {card.prestige > 0 ? (
+                          <span className="text-[8.5px] font-black text-amber-400 flex items-center gap-0.5">
+                            <Trophy className="w-2 h-2 text-amber-400" />
+                            {card.prestige}
+                          </span>
+                        ) : (
+                          <span className="text-[8px] text-slate-500 font-bold">0 pts</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right: Cost Badges */}
+                  <div className="flex items-center gap-0.5 flex-shrink-0">
+                    {Object.entries(card.cost).map(([gemId, costAmount]) => {
+                      const gemObj = GEM_TYPES.find(g => g.id === gemId);
+                      const playerBonus = player.bonuses[gemId] || 0;
+                      const effectiveNeed = Math.max(0, costAmount - playerBonus);
+                      const playerHas = (player.tokens[gemId] || 0) + (player.tokens.gold || 0);
+                      const isSatisfied = playerHas >= effectiveNeed;
+
+                      return (
+                        <span 
+                          key={gemId} 
+                          className={`w-4 h-4 rounded-full ${gemObj?.color} text-[8.5px] font-black flex items-center justify-center text-white border shadow-xs ${
+                            isSatisfied ? 'border-white/80 ring-1 ring-white/30' : 'border-black/50 opacity-60'
+                          }`}
+                          title={`Cost: ${costAmount} ${gemObj?.name} (After discounts: ${effectiveNeed})`}
+                        >
+                          {costAmount}
+                        </span>
+                      );
+                    })}
+                  </div>
                 </div>
               );
             })}

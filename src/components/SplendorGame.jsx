@@ -80,18 +80,24 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     const initialData = setupBoard();
 
     if (roomName) {
+      let isHostUser = false;
       p2p.init(
         roomName,
         playerOneName,
         ({ isHost, remoteName }) => {
+          isHostUser = isHost;
           setIsWaitingForOpponent(false);
           setOpponentName(remoteName);
-          setMyPlayerIndex(isHost ? 0 : 1);
+          const myIdx = isHost ? 0 : 1;
+          setMyPlayerIndex(myIdx);
 
-          setPlayers(prev => [
-            { ...prev[0], name: isHost ? playerOneName : remoteName },
-            { ...prev[1], name: isHost ? remoteName : playerOneName }
-          ]);
+          setPlayers(prev => {
+            const next = [
+              { ...prev[0], name: isHost ? playerOneName : remoteName },
+              { ...prev[1], name: isHost ? remoteName : playerOneName }
+            ];
+            return next;
+          });
 
           addLog(`🎮 Opponent ${remoteName} connected! Game is live.`);
 
@@ -216,11 +222,14 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     if (selectedTokens.length === 0) return;
     if (!isMyTurn) return;
 
+    const currentTurn = activePlayerIdx;
+    const nextTurn = currentTurn === 0 ? 1 : 0;
+
     const nextBank = { ...gemBank };
     selectedTokens.forEach(g => { nextBank[g] -= 1; });
 
     const nextPlayers = players.map((p, idx) => {
-      if (idx !== activePlayerIdx) return p;
+      if (idx !== currentTurn) return p;
       const updatedTokens = { ...p.tokens };
       selectedTokens.forEach(g => {
         updatedTokens[g] = (updatedTokens[g] || 0) + 1;
@@ -228,7 +237,6 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       return { ...p, tokens: updatedTokens };
     });
 
-    const nextTurn = activePlayerIdx === 0 ? 1 : 0;
     const actionMsg = `${activePlayer.name} took ${selectedTokens.length} gems (${selectedTokens.join(', ')}).`;
 
     setGemBank(nextBank);
@@ -254,6 +262,9 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       alert('You cannot afford this card yet!');
       return;
     }
+
+    const currentTurn = activePlayerIdx;
+    const nextTurn = currentTurn === 0 ? 1 : 0;
 
     let remainingTokens = { ...activePlayer.tokens };
     let returnedToBank = { ...gemBank };
@@ -297,7 +308,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     });
 
     const nextPlayers = players.map((p, idx) => {
-      if (idx !== activePlayerIdx) return p;
+      if (idx !== currentTurn) return p;
       return {
         ...p,
         score: nextScore,
@@ -322,7 +333,6 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       nextMarket[card.tier] = (nextMarket[card.tier] || []).map(c => c.id === card.id ? replacement : c).filter(Boolean);
     }
 
-    const nextTurn = activePlayerIdx === 0 ? 1 : 0;
     const actionMsg = `✨ ${activePlayer.name} recruited ${card.name} (+${card.prestige} pts)!`;
 
     setGemBank(returnedToBank);
@@ -380,6 +390,9 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       return;
     }
 
+    const currentTurn = activePlayerIdx;
+    const nextTurn = currentTurn === 0 ? 1 : 0;
+
     let gainedGold = false;
     let nextBank = { ...gemBank };
     if (nextBank.gold > 0) {
@@ -388,7 +401,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     }
 
     const nextPlayers = players.map((p, idx) => {
-      if (idx !== activePlayerIdx) return p;
+      if (idx !== currentTurn) return p;
       return {
         ...p,
         reserved: [...p.reserved, card],
@@ -411,7 +424,6 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
 
     nextMarket[card.tier] = (nextMarket[card.tier] || []).map(c => c.id === card.id ? replacement : c).filter(Boolean);
 
-    const nextTurn = activePlayerIdx === 0 ? 1 : 0;
     const actionMsg = `📌 ${activePlayer.name} reserved ${card.name}.`;
 
     setGemBank(nextBank);
