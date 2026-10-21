@@ -34,7 +34,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
   const [deckTier3, setDeckTier3] = useState([]);
 
   const [market, setMarket] = useState({ 1: [], 2: [], 3: [] });
-  const [gemBank, setGemBank] = useState({ ruby: 7, sapphire: 7, emerald: 7, amber: 7, onyx: 7, gold: 5 });
+  const [gemBank, setGemBank] = useState({ ruby: 4, sapphire: 4, emerald: 4, amber: 4, onyx: 4, gold: 5 });
   const [nobles, setNobles] = useState([]);
   const [selectedTokens, setSelectedTokens] = useState([]);
   const [winner, setWinner] = useState(null);
@@ -88,7 +88,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
       deckTier2: remainingT2,
       deckTier3: remainingT3,
       nobles: pickedNobles,
-      gemBank: { ruby: 7, sapphire: 7, emerald: 7, amber: 7, onyx: 7, gold: 5 }
+      gemBank: { ruby: 4, sapphire: 4, emerald: 4, amber: 4, onyx: 4, gold: 5 }
     };
   };
 

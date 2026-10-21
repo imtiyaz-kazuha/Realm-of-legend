@@ -62,54 +62,38 @@ export default function SplendorCard({ card, onBuy, onReserve, canAfford, isRese
         <img 
           src={card.image} 
           alt={card.name} 
-          className="w-full h-full object-cover object-[center_14%]" 
+          className="w-full h-full object-cover object-[center_30%]" 
           loading="lazy" 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-90" />
-        
-        {/* Vertical Price Stack on Left (Desktop & Tablet: md+) */}
-        <div className="hidden md:flex absolute left-1.5 top-8 bottom-7 flex-col justify-end gap-1 z-10 pointer-events-none">
-          {Object.entries(card.cost).map(([gemId, amount]) => {
-            const gem = GEM_TYPES.find(g => g.id === gemId);
-            return (
-              <div 
-                key={gemId}
-                className={`flex items-center justify-center w-4 h-4 lg:w-4.5 lg:h-4.5 rounded-full ${gem?.color} text-[8.5px] lg:text-[9.5px] font-black text-white border border-white/80 shadow-md backdrop-blur-xs`}
-                title={`${amount} ${gem?.name}`}
-              >
-                {amount}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Character Title Overlay */}
-        <div className="absolute bottom-1.5 left-1.5 right-1.5 md:left-6.5">
-          <h4 className="text-[10px] sm:text-[11px] font-black text-white truncate drop-shadow leading-tight">{card.name}</h4>
-          <p className="text-[7.5px] sm:text-[8px] text-slate-300 truncate leading-none drop-shadow">{card.series}</p>
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-80" />
       </div>
 
-      {/* Footer Bar: On desktop/tablet, transparent minimal action bar (buttons on right). On mobile, includes horizontal prices */}
-      <div className="px-1.5 py-1 bg-gradient-to-t from-black/90 via-black/60 to-transparent flex items-center justify-between gap-1 flex-shrink-0 z-10">
-        {/* Horizontal prices for mobile only */}
-        <div className="flex md:hidden items-center gap-0.5 sm:gap-1 flex-wrap">
-          {Object.entries(card.cost).map(([gemId, amount]) => {
-            const gem = GEM_TYPES.find(g => g.id === gemId);
-            return (
-              <div 
-                key={gemId}
-                className={`flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full ${gem?.color} text-[8px] sm:text-[9px] font-black text-white border border-white/40 shadow-xs`}
-                title={`${amount} ${gem?.name}`}
-              >
-                {amount}
-              </div>
-            );
-          })}
+      {/* Unified Bottom Info & Action Bar: Name & Price on bottom left, buttons on bottom right */}
+      <div className="px-2 py-1.5 bg-gradient-to-t from-black/95 via-black/75 to-transparent flex items-end justify-between gap-1.5 flex-shrink-0 z-10">
+        {/* Left: Name, Series, and Cost Gems Chips */}
+        <div className="min-w-0 flex-1">
+          <h4 className="text-[10px] sm:text-[11px] font-black text-white truncate drop-shadow leading-tight">{card.name}</h4>
+          <p className="text-[7.5px] sm:text-[8px] text-slate-400 truncate leading-none mb-1">{card.series}</p>
+          
+          {/* Horizontal Cost Badges */}
+          <div className="flex items-center gap-1 flex-wrap">
+            {Object.entries(card.cost).map(([gemId, amount]) => {
+              const gem = GEM_TYPES.find(g => g.id === gemId);
+              return (
+                <div 
+                  key={gemId}
+                  className={`flex items-center justify-center w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full ${gem?.color} text-[8px] sm:text-[9px] font-black text-white border border-white/70 shadow-xs`}
+                  title={`${amount} ${gem?.name}`}
+                >
+                  {amount}
+                </div>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Action Buttons: Pushed to right */}
-        <div className="flex items-center gap-1 flex-shrink-0 ml-auto">
+        {/* Right: Action Buttons */}
+        <div className="flex items-center gap-1 flex-shrink-0 mb-0.5">
           {onReserve && !isReserved && (
             <button
               onClick={() => onReserve(card)}
@@ -123,7 +107,7 @@ export default function SplendorCard({ card, onBuy, onReserve, canAfford, isRese
           <button
             onClick={handleBuyClick}
             disabled={!canAfford || isBuyingVfx}
-            className={`px-2 py-0.5 rounded text-[8.5px] sm:text-[9.5px] font-black transition-all backdrop-blur-xs ${
+            className={`px-2 py-1 rounded text-[8.5px] sm:text-[9.5px] font-black transition-all backdrop-blur-xs ${
               canAfford
                 ? 'bg-amber-400 hover:bg-amber-300 text-slate-950 shadow-md active:scale-95 cursor-pointer ring-1 ring-amber-300/80'
                 : 'bg-black/60 text-slate-500 border border-slate-800/80 cursor-not-allowed opacity-50'
