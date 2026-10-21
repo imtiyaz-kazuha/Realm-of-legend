@@ -1,6 +1,6 @@
 import React from 'react';
 import { GEM_TYPES } from '../utils/splendorData';
-import { Trophy, Bookmark, Layers } from 'lucide-react';
+import { Trophy, Bookmark, Layers, Crown } from 'lucide-react';
 
 export default function PlayerBoard({ player, isCurrentTurn, onPlayReserved, checkCanAfford }) {
   const gemCountTotal = Object.values(player.tokens).reduce((a, b) => a + b, 0);
@@ -32,11 +32,29 @@ export default function PlayerBoard({ player, isCurrentTurn, onPlayReserved, che
           </div>
         </div>
 
-        {/* Score */}
-        <div className="flex items-center gap-1 bg-amber-500/20 border border-amber-500/40 px-2.5 py-1 rounded-xl text-amber-400 font-black text-sm">
-          <Trophy className="w-3.5 h-3.5" />
-          <span>{player.score}</span>
-          <span className="text-[9px] text-amber-300 font-semibold uppercase">/15</span>
+        {/* Score & Acquired Nobles Pill */}
+        <div className="flex items-center gap-1.5">
+          {/* Acquired Nobles mini avatar stack */}
+          {(player.nobles || []).length > 0 && (
+            <div className="flex items-center -space-x-1.5 bg-slate-950/80 border border-amber-500/50 px-1.5 py-0.5 rounded-lg shadow-sm" title={`Visited by ${player.nobles.length} Noble(s)`}>
+              <Crown className="w-3 h-3 text-amber-400 mr-1" />
+              {player.nobles.map(n => (
+                <img 
+                  key={n.id} 
+                  src={n.image} 
+                  alt={n.name} 
+                  title={`Noble Patron: ${n.name} (+3 pts)`}
+                  className="w-5 h-5 rounded-full object-cover border border-amber-400/80 shadow" 
+                />
+              ))}
+            </div>
+          )}
+
+          <div className="flex items-center gap-1 bg-amber-500/20 border border-amber-500/40 px-2.5 py-1 rounded-xl text-amber-400 font-black text-sm">
+            <Trophy className="w-3.5 h-3.5" />
+            <span>{player.score}</span>
+            <span className="text-[9px] text-amber-300 font-semibold uppercase">/15</span>
+          </div>
         </div>
       </div>
 

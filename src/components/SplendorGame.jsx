@@ -49,6 +49,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
       bonuses: { ruby: 0, sapphire: 0, emerald: 0, amber: 0, onyx: 0 },
       purchased: [],
       reserved: [],
+      nobles: [],
     },
     {
       id: 2,
@@ -58,6 +59,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
       bonuses: { ruby: 0, sapphire: 0, emerald: 0, amber: 0, onyx: 0 },
       purchased: [],
       reserved: [],
+      nobles: [],
     }
   ]);
 
@@ -319,6 +321,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
 
     let remainingNobles = [...nobles];
     let visitedByNoble = false;
+    let newlyAcquiredNobles = [];
     remainingNobles = remainingNobles.filter(n => {
       let meetsReq = true;
       for (const [reqGem, reqCount] of Object.entries(n.requires)) {
@@ -330,6 +333,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
       if (meetsReq) {
         nextScore += n.points;
         visitedByNoble = true;
+        newlyAcquiredNobles.push(n);
         addLog(`👑 ${activePlayer.name} visited by ${n.name}! (+${n.points} pts)`);
         return false;
       }
@@ -350,7 +354,8 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
         tokens: remainingTokens,
         bonuses: nextBonuses,
         purchased: [...p.purchased, card],
-        reserved: fromReserved ? p.reserved.filter(c => c.id !== card.id) : p.reserved
+        reserved: fromReserved ? p.reserved.filter(c => c.id !== card.id) : p.reserved,
+        nobles: [...(p.nobles || []), ...newlyAcquiredNobles]
       };
     });
 
@@ -558,6 +563,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
         let nextScore = aiPlayer.score + (card.prestige || 0);
 
         let remainingNobles = [...nobles];
+        let newlyAcquiredNobles = [];
         remainingNobles = remainingNobles.filter(n => {
           let meetsReq = true;
           for (const [reqGem, reqCount] of Object.entries(n.requires)) {
@@ -568,6 +574,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
           }
           if (meetsReq) {
             nextScore += n.points;
+            newlyAcquiredNobles.push(n);
             addLog(`👑 ${aiPlayer.name} visited by ${n.name}! (+${n.points} pts)`);
             return false;
           }
@@ -582,7 +589,8 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
             tokens: remainingTokens,
             bonuses: nextBonuses,
             purchased: [...p.purchased, card],
-            reserved: fromReserved ? p.reserved.filter(c => c.id !== card.id) : p.reserved
+            reserved: fromReserved ? p.reserved.filter(c => c.id !== card.id) : p.reserved,
+            nobles: [...(p.nobles || []), ...newlyAcquiredNobles]
           };
         });
 
