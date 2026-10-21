@@ -1,17 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GEM_TYPES, getShuffledSplendorDecks } from '../utils/splendorData';
 import { p2p } from '../utils/multiplayer';
 import { sendDiscordMatchWebhook } from '../utils/discordWebhook';
+import { computeAiMove } from '../utils/aiEngine';
 import SplendorCard from './SplendorCard';
 import PlayerBoard from './PlayerBoard';
 import confetti from 'canvas-confetti';
-import { Trophy, Crown, CircleDot, Info, ArrowLeft, Layers, Loader2, Copy, Check, Shuffle } from 'lucide-react';
+import { Trophy, Crown, CircleDot, Info, ArrowLeft, Layers, Loader2, Copy, Check, Shuffle, Bot } from 'lucide-react';
 
-export default function SplendorGame({ roomName, playerOneName, onExitToLobby }) {
-  const [isWaitingForOpponent, setIsWaitingForOpponent] = useState(Boolean(roomName));
-  const [opponentName, setOpponentName] = useState(roomName ? 'Waiting for opponent...' : 'Player 2');
+export default function SplendorGame({ roomName, playerOneName, isAiMode = false, onExitToLobby }) {
+  const [isWaitingForOpponent, setIsWaitingForOpponent] = useState(Boolean(roomName && !isAiMode));
+  const [opponentName, setOpponentName] = useState(
+    isAiMode 
+      ? 'Athena AI (Master)' 
+      : roomName 
+      ? 'Waiting for opponent...' 
+      : 'Player 2'
+  );
   const [myPlayerIndex, setMyPlayerIndex] = useState(0);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [isAiThinking, setIsAiThinking] = useState(false);
 
   const [deckTier1, setDeckTier1] = useState([]);
   const [deckTier2, setDeckTier2] = useState([]);
@@ -79,7 +87,7 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
   useEffect(() => {
     const initialData = setupBoard();
 
-    if (roomName) {
+    if (roomName && !isAiMode) {
       let isHostUser = false;
       p2p.init(
         roomName,
@@ -144,11 +152,20 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
       return () => {
         p2p.destroy();
       };
+    } else if (isAiMode) {
+      setIsWaitingForOpponent(false);
+      setOpponentName('Athena AI (Master)');
+      setMyPlayerIndex(0);
+      setPlayers(prev => [
+        { ...prev[0], name: playerOneName || 'Player 1' },
+        { ...prev[1], name: 'Athena AI (Master)' }
+      ]);
+      addLog(`🤖 Athena AI initialized with Grandmaster Anime Strategy.`);
     }
-  }, [roomName]);
+  }, [roomName, isAiMode]);
 
   const activePlayer = players[activePlayerIdx];
-  const isMyTurn = !roomName || (activePlayerIdx === myPlayerIndex);
+  const isMyTurn = !roomName ? (isAiMode ? activePlayerIdx === 0 : true) : (activePlayerIdx === myPlayerIndex);
 
   const broadcastState = (updatedState) => {
     if (roomName) {
@@ -447,6 +464,188 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
     });
   };
 
+  // AI Turn Execution
+  useEffect(() => {
+    if (!isAiMode || winner || activePlayerIdx !== 1) return;
+
+    setIsAiThinking(true);
+    const aiTimer = setTimeout(() => {
+      const aiPlayer = players[1];
+      const humanPlayer = players[0];
+
+      const move = computeAiMove({
+        aiPlayer,
+        humanPlayer,
+        market,
+        nobles,
+        gemBank,
+        difficulty: 'hard'
+      });
+
+      if (!move) {
+        // AI passes if no valid move
+        setActivePlayerIdx(0);
+        addLog(`🤖 Athena AI passed turn.`);
+        setIsAiThinking(false);
+        return;
+      }
+
+      if (move.type === 'TAKE_GEMS') {
+        const nextBank = { ...gemBank };
+        move.gems.forEach(g => { nextBank[g] -= 1; });
+
+        const nextPlayers = players.map((p, idx) => {
+          if (idx !== 1) return p;
+          const updatedTokens = { ...p.tokens };
+          move.gems.forEach(g => {
+            updatedTokens[g] = (updatedTokens[g] || 0) + 1;
+          });
+          return { ...p, tokens: updatedTokens };
+        });
+
+        const actionMsg = `🤖 Athena AI collected [${move.gems.join(', ')}].`;
+        setGemBank(nextBank);
+        setPlayers(nextPlayers);
+        setActivePlayerIdx(0);
+        addLog(actionMsg);
+      } else if (move.type === 'BUY_CARD') {
+        const card = move.card;
+        const fromReserved = move.fromReserved;
+
+        let remainingTokens = { ...aiPlayer.tokens };
+        let returnedToBank = { ...gemBank };
+
+        for (const [gemId, costAmount] of Object.entries(card.cost)) {
+          const bonus = aiPlayer.bonuses[gemId] || 0;
+          let needed = Math.max(0, costAmount - bonus);
+
+          if (needed > 0) {
+            const canPay = Math.min(remainingTokens[gemId] || 0, needed);
+            remainingTokens[gemId] -= canPay;
+            returnedToBank[gemId] += canPay;
+            needed -= canPay;
+
+            if (needed > 0) {
+              remainingTokens.gold -= needed;
+              returnedToBank.gold += needed;
+            }
+          }
+        }
+
+        const nextBonuses = { ...aiPlayer.bonuses };
+        nextBonuses[card.bonusGem] = (nextBonuses[card.bonusGem] || 0) + 1;
+        let nextScore = aiPlayer.score + (card.prestige || 0);
+
+        let remainingNobles = [...nobles];
+        remainingNobles = remainingNobles.filter(n => {
+          let meetsReq = true;
+          for (const [reqGem, reqCount] of Object.entries(n.requires)) {
+            if ((nextBonuses[reqGem] || 0) < reqCount) {
+              meetsReq = false;
+              break;
+            }
+          }
+          if (meetsReq) {
+            nextScore += n.points;
+            addLog(`👑 ${aiPlayer.name} visited by ${n.name}! (+${n.points} pts)`);
+            return false;
+          }
+          return true;
+        });
+
+        const nextPlayers = players.map((p, idx) => {
+          if (idx !== 1) return p;
+          return {
+            ...p,
+            score: nextScore,
+            tokens: remainingTokens,
+            bonuses: nextBonuses,
+            purchased: [...p.purchased, card],
+            reserved: fromReserved ? p.reserved.filter(c => c.id !== card.id) : p.reserved
+          };
+        });
+
+        let nextMarket = { ...market };
+        let nextT1 = [...deckTier1];
+        let nextT2 = [...deckTier2];
+        let nextT3 = [...deckTier3];
+
+        if (!fromReserved) {
+          let replacement = null;
+          if (card.tier === 1 && nextT1.length > 0) replacement = nextT1.shift();
+          if (card.tier === 2 && nextT2.length > 0) replacement = nextT2.shift();
+          if (card.tier === 3 && nextT3.length > 0) replacement = nextT3.shift();
+
+          nextMarket[card.tier] = (nextMarket[card.tier] || []).map(c => c.id === card.id ? replacement : c).filter(Boolean);
+        }
+
+        const actionMsg = `🤖 Athena AI recruited ${card.name} (+${card.prestige} pts)!`;
+
+        setGemBank(returnedToBank);
+        setNobles(remainingNobles);
+        setPlayers(nextPlayers);
+        setMarket(nextMarket);
+        setDeckTier1(nextT1);
+        setDeckTier2(nextT2);
+        setDeckTier3(nextT3);
+        setActivePlayerIdx(0);
+        addLog(actionMsg);
+
+        if (nextScore >= 15) {
+          setWinner(aiPlayer.name);
+          addLog(`💀 Athena AI reached 15 Prestige and claimed the Realm!`);
+        }
+      } else if (move.type === 'RESERVE_CARD') {
+        const card = move.card;
+        let gainedGold = false;
+        let nextBank = { ...gemBank };
+        if (nextBank.gold > 0) {
+          nextBank.gold -= 1;
+          gainedGold = true;
+        }
+
+        const nextPlayers = players.map((p, idx) => {
+          if (idx !== 1) return p;
+          return {
+            ...p,
+            reserved: [...p.reserved, card],
+            tokens: {
+              ...p.tokens,
+              gold: p.tokens.gold + (gainedGold ? 1 : 0)
+            }
+          };
+        });
+
+        let nextMarket = { ...market };
+        let nextT1 = [...deckTier1];
+        let nextT2 = [...deckTier2];
+        let nextT3 = [...deckTier3];
+
+        let replacement = null;
+        if (card.tier === 1 && nextT1.length > 0) replacement = nextT1.shift();
+        if (card.tier === 2 && nextT2.length > 0) replacement = nextT2.shift();
+        if (card.tier === 3 && nextT3.length > 0) replacement = nextT3.shift();
+
+        nextMarket[card.tier] = (nextMarket[card.tier] || []).map(c => c.id === card.id ? replacement : c).filter(Boolean);
+
+        const actionMsg = `🤖 Athena AI strategically reserved ${card.name}${gainedGold ? ' (+1 Gold)' : ''}.`;
+
+        setGemBank(nextBank);
+        setPlayers(nextPlayers);
+        setMarket(nextMarket);
+        setDeckTier1(nextT1);
+        setDeckTier2(nextT2);
+        setDeckTier3(nextT3);
+        setActivePlayerIdx(0);
+        addLog(actionMsg);
+      }
+
+      setIsAiThinking(false);
+    }, 850);
+
+    return () => clearTimeout(aiTimer);
+  }, [isAiMode, activePlayerIdx, winner, players, market, nobles, gemBank, deckTier1, deckTier2, deckTier3]);
+
   const addLog = (msg) => {
     setLog(prev => [msg, ...prev].slice(0, 15));
   };
@@ -513,9 +712,21 @@ export default function SplendorGame({ roomName, playerOneName, onExitToLobby })
               #{roomName}
             </span>
           )}
+          {isAiMode && (
+            <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[9px] px-1.5 py-0.5 rounded font-black flex items-center gap-1">
+              <Bot className="w-2.5 h-2.5" />
+              VS AI
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-2">
+          {isAiThinking && (
+            <div className="flex items-center gap-1 text-[9px] text-emerald-400 font-bold bg-emerald-950/80 border border-emerald-500/30 px-2 py-0.5 rounded-lg animate-pulse">
+              <Loader2 className="w-2.5 h-2.5 animate-spin" />
+              AI Thinking...
+            </div>
+          )}
           <div className={`px-2 py-0.5 rounded-lg text-[10px] font-bold flex items-center gap-1 border ${
             isMyTurn 
               ? 'bg-amber-500/20 border-amber-500/50 text-amber-300 shadow animate-pulse' 
