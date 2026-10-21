@@ -6,7 +6,7 @@ export default function SplendorCard({ card, onBuy, onReserve, canAfford, isRese
   const bonusGemObj = GEM_TYPES.find(g => g.id === card.bonusGem);
 
   return (
-    <div className={`relative group rounded-xl overflow-hidden border bg-slate-900 flex flex-col justify-between transition-all duration-150 shadow-md h-full w-full min-h-0 ${
+    <div className={`relative group rounded-xl overflow-hidden border bg-slate-900 flex flex-col justify-between transition-all duration-150 shadow-md h-full w-full min-h-[140px] md:min-h-0 aspect-[3/4] md:aspect-auto ${
       canAfford 
         ? 'border-amber-400 ring-1 ring-amber-400 shadow-amber-500/15' 
         : 'border-slate-800'

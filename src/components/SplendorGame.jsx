@@ -657,7 +657,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
   };
 
   return (
-    <div className="h-screen w-screen bg-slate-950 text-slate-100 flex flex-col overflow-hidden p-1.5 sm:p-2 md:p-2.5">
+    <div className="min-h-screen md:h-screen w-screen bg-slate-950 text-slate-100 flex flex-col md:overflow-hidden p-1.5 sm:p-2 md:p-2.5">
       {/* Waiting Room Modal */}
       {isWaitingForOpponent && roomName && (
         <div className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
@@ -749,17 +749,20 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
         </div>
       </header>
 
-      {/* Main Single-Screen Grid Layout: Exactly 100% viewport height, zero vertical scroll */}
-      <div className="flex-1 min-h-0 grid grid-cols-12 gap-1.5 sm:gap-2 items-stretch overflow-hidden">
-        {/* Left Column (2 Cols): Nobles & Gem Bank */}
-        <div className="col-span-12 md:col-span-3 lg:col-span-2 flex flex-col justify-between gap-1.5 overflow-hidden">
+      {/* Main Layout: On desktop/tablet (md+), strictly fits 100% viewport. On mobile, naturally scrollable with gorgeous card aspect ratios */}
+      <div className="flex-1 min-h-0 flex flex-col md:grid md:grid-cols-12 gap-2 md:gap-1.5 lg:gap-2 items-stretch md:overflow-hidden pb-8 md:pb-0">
+        
+        {/* Left Column (Nobles & Gem Bank): 
+            Desktop: Left 2-3 cols. Mobile: Compact cards */}
+        <div className="md:col-span-3 lg:col-span-2 flex flex-col sm:flex-row md:flex-col justify-between gap-1.5 md:overflow-hidden flex-shrink-0">
+          
           {/* Noble Patrons */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-1.5 sm:p-2 shadow flex-1 flex flex-col justify-between min-h-0 overflow-hidden">
-            <h3 className="text-[10px] font-black uppercase text-amber-400 flex items-center gap-1 mb-0.5 flex-shrink-0">
+          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-1.5 sm:p-2 shadow flex-1 flex flex-col justify-between min-h-0">
+            <h3 className="text-[10px] font-black uppercase text-amber-400 flex items-center gap-1 mb-1 flex-shrink-0">
               <Crown className="w-3 h-3" />
               Nobles (3 Pts)
             </h3>
-            <div className="space-y-1 flex-1 flex flex-col justify-around min-h-0">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-1 gap-1 md:flex-1 md:flex md:flex-col md:justify-around min-h-0">
               {nobles.map(noble => (
                 <div key={noble.id} className="flex items-center gap-2 bg-slate-950/80 border border-slate-800/80 p-1 rounded-lg">
                   <img src={noble.image} className="w-8 h-8 rounded-md object-cover flex-shrink-0" />
@@ -798,7 +801,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
               )}
             </div>
 
-            <div className="grid grid-cols-3 gap-1 text-center">
+            <div className="grid grid-cols-6 sm:grid-cols-3 md:grid-cols-3 gap-1 text-center">
               {GEM_TYPES.map(gem => {
                 const count = gemBank[gem.id] || 0;
                 const isSelected = selectedTokens.includes(gem.id);
@@ -816,7 +819,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
                     <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full ${gem.color} border border-white/60 shadow flex items-center justify-center text-[10px] sm:text-[11px] font-black text-white`}>
                       {count}
                     </div>
-                    <span className="text-[8.5px] font-bold text-slate-300 mt-0.5 capitalize">{gem.name.split(' ')[0]}</span>
+                    <span className="text-[8px] sm:text-[8.5px] font-bold text-slate-300 mt-0.5 capitalize truncate w-full">{gem.name.split(' ')[0]}</span>
                   </button>
                 );
               })}
@@ -824,13 +827,13 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
           </div>
         </div>
 
-        {/* Center: All 3 Tiers (Tier 3, Tier 2, Tier 1) - Divided into 3 equal flex-1 rows */}
-        <div className="col-span-12 md:col-span-6 lg:col-span-7 flex flex-col justify-between gap-1.5 min-h-0 overflow-hidden">
+        {/* Center: All 3 Tiers (Tier 3, Tier 2, Tier 1) */}
+        <div className="md:col-span-6 lg:col-span-7 flex flex-col justify-between gap-2 md:gap-1.5 min-h-0 md:overflow-hidden">
           {[3, 2, 1].map(tier => {
             const count = tier === 3 ? deckTier3.length : tier === 2 ? deckTier2.length : deckTier1.length;
             return (
-              <div key={tier} className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-1 sm:p-1.5 flex-1 flex flex-col justify-between min-h-0 shadow-sm overflow-hidden">
-                <div className="flex items-center justify-between px-1 mb-0.5 flex-shrink-0">
+              <div key={tier} className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-1.5 sm:p-2 md:p-1 lg:p-1.5 flex-1 flex flex-col justify-between min-h-0 shadow-sm md:overflow-hidden">
+                <div className="flex items-center justify-between px-1 mb-1 md:mb-0.5 flex-shrink-0">
                   <span className="text-[9.5px] sm:text-[10px] font-black uppercase text-slate-300 tracking-wider">
                     {tier === 3 ? 'Tier III (Legendary)' : tier === 2 ? 'Tier II (Champions)' : 'Tier I (Recruits)'}
                   </span>
@@ -838,7 +841,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
                     Deck: {count} left
                   </span>
                 </div>
-                <div className="grid grid-cols-4 gap-1 sm:gap-1.5 flex-1 min-h-0 items-stretch">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 md:gap-1 lg:gap-1.5 flex-1 min-h-0 items-stretch">
                   {(market[tier] || []).map(card => (
                     <SplendorCard
                       key={card.id}
@@ -855,7 +858,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
         </div>
 
         {/* Right Column: Players & Telemetry */}
-        <div className="col-span-12 md:col-span-3 lg:col-span-3 flex flex-col justify-between gap-1.5 min-h-0 overflow-hidden">
+        <div className="md:col-span-3 lg:col-span-3 flex flex-col justify-between gap-2 md:gap-1.5 min-h-0 md:overflow-hidden">
           <div className="space-y-1.5 flex-shrink-0">
             {players.map((p, idx) => (
               <PlayerBoard
@@ -869,12 +872,12 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
           </div>
 
           {/* Telemetry Log */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-1.5 sm:p-2 shadow flex-1 flex flex-col justify-between min-h-0 overflow-hidden">
+          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-1.5 sm:p-2 shadow flex-1 flex flex-col justify-between min-h-0 md:overflow-hidden">
             <h4 className="text-[9.5px] font-black uppercase text-slate-400 flex items-center gap-1 mb-0.5 flex-shrink-0">
               <Info className="w-3 h-3 text-indigo-400" />
               Game Telemetry Log
             </h4>
-            <div className="space-y-0.5 flex-1 overflow-y-auto text-[9.5px] font-mono text-slate-300 pr-1">
+            <div className="space-y-0.5 flex-1 overflow-y-auto max-h-36 md:max-h-none text-[9.5px] font-mono text-slate-300 pr-1">
               {log.map((entry, i) => (
                 <p key={i} className="leading-tight py-0.5 border-b border-slate-850 truncate">{entry}</p>
               ))}
