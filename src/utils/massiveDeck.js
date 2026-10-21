@@ -8,8 +8,9 @@ export const TIER_3_CARDS = [
     "prestige": 3,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
       "sapphire": 3,
+      "emerald": 5,
+      "amber": 3,
       "onyx": 3
     }
   },
@@ -18,12 +19,13 @@ export const TIER_3_CARDS = [
     "series": "Shingeki no Kyojin",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b45627-CR68RyZmddGG.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 3,
     "bonusGem": "sapphire",
     "cost": {
-      "ruby": 4,
+      "emerald": 3,
       "amber": 3,
-      "sapphire": 2
+      "onyx": 3,
+      "sapphire": 5
     }
   },
   {
@@ -31,12 +33,10 @@ export const TIER_3_CARDS = [
     "series": "ONE PIECE",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "emerald",
     "cost": {
-      "emerald": 4,
-      "sapphire": 3,
-      "ruby": 2
+      "amber": 7
     }
   },
   {
@@ -44,12 +44,12 @@ export const TIER_3_CARDS = [
     "series": "HUNTER×HUNTER",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b27-Z5O02kQUydpT.jpg",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "amber",
     "cost": {
-      "emerald": 4,
-      "ruby": 3,
-      "amber": 2
+      "onyx": 6,
+      "amber": 3,
+      "ruby": 3
     }
   },
   {
@@ -60,8 +60,9 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "onyx",
     "cost": {
-      "ruby": 4,
-      "onyx": 3
+      "onyx": 3,
+      "ruby": 6,
+      "sapphire": 3
     }
   },
   {
@@ -69,12 +70,13 @@ export const TIER_3_CARDS = [
     "series": "ONE PIECE",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b62-S7oAeA9WInjV.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "ruby",
     "cost": {
-      "onyx": 4,
-      "sapphire": 3,
-      "amber": 2
+      "sapphire": 6,
+      "emerald": 3,
+      "amber": 2,
+      "onyx": 1
     }
   },
   {
@@ -82,11 +84,11 @@ export const TIER_3_CARDS = [
     "series": "Code Geass: Hangyaku no Lelouch",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b417-gVLmIJu9phcK.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 5,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 5,
-      "ruby": 3
+      "emerald": 7,
+      "amber": 3
     }
   },
   {
@@ -94,11 +96,11 @@ export const TIER_3_CARDS = [
     "series": "Re:Zero kara Hajimeru Isekai Seikatsu",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b88572-IzTwXEHSobRs.jpg",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 5,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 5,
-      "emerald": 3
+      "amber": 3,
+      "onyx": 7
     }
   },
   {
@@ -106,11 +108,13 @@ export const TIER_3_CARDS = [
     "series": "DEATH NOTE",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b71-1W4panC53vfs.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 3,
     "bonusGem": "amber",
     "cost": {
+      "onyx": 3,
       "amber": 5,
-      "ruby": 3
+      "ruby": 3,
+      "sapphire": 3
     }
   },
   {
@@ -121,8 +125,10 @@ export const TIER_3_CARDS = [
     "prestige": 3,
     "bonusGem": "onyx",
     "cost": {
-      "emerald": 5,
-      "sapphire": 3
+      "onyx": 3,
+      "ruby": 3,
+      "sapphire": 3,
+      "emerald": 5
     }
   },
   {
@@ -133,9 +139,7 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 3,
-      "onyx": 3
+      "sapphire": 7
     }
   },
   {
@@ -143,12 +147,12 @@ export const TIER_3_CARDS = [
     "series": "Mob Psycho 100",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b89334-OPj1hCzvrt7X.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "sapphire",
     "cost": {
-      "ruby": 4,
+      "emerald": 6,
       "amber": 3,
-      "sapphire": 2
+      "onyx": 3
     }
   },
   {
@@ -156,12 +160,12 @@ export const TIER_3_CARDS = [
     "series": "Kenpuu Denki Berserk",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b422-XTaiTuvRohsV.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "emerald",
     "cost": {
-      "emerald": 4,
-      "sapphire": 3,
-      "ruby": 2
+      "amber": 3,
+      "onyx": 6,
+      "emerald": 3
     }
   },
   {
@@ -172,9 +176,10 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "amber",
     "cost": {
-      "emerald": 4,
-      "ruby": 3,
-      "amber": 2
+      "onyx": 6,
+      "amber": 3,
+      "ruby": 2,
+      "sapphire": 1
     }
   },
   {
@@ -185,8 +190,8 @@ export const TIER_3_CARDS = [
     "prestige": 5,
     "bonusGem": "onyx",
     "cost": {
-      "ruby": 4,
-      "onyx": 3
+      "onyx": 7,
+      "ruby": 3
     }
   },
   {
@@ -194,12 +199,11 @@ export const TIER_3_CARDS = [
     "series": "Steins;Gate",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b34470-Jw2LXZBL5R8i.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 5,
     "bonusGem": "ruby",
     "cost": {
-      "onyx": 4,
       "sapphire": 3,
-      "amber": 2
+      "emerald": 7
     }
   },
   {
@@ -207,11 +211,13 @@ export const TIER_3_CARDS = [
     "series": "Vinland Saga",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b10138-zOPrka0ddZOR.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 3,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 5,
-      "ruby": 3
+      "emerald": 3,
+      "amber": 5,
+      "onyx": 3,
+      "sapphire": 3
     }
   },
   {
@@ -219,11 +225,13 @@ export const TIER_3_CARDS = [
     "series": "Chainsaw Man",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b137080-UHcynYNjb5ZU.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 3,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 5,
-      "emerald": 3
+      "amber": 3,
+      "onyx": 3,
+      "emerald": 3,
+      "ruby": 5
     }
   },
   {
@@ -231,11 +239,10 @@ export const TIER_3_CARDS = [
     "series": "NARUTO",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b14-9Kb1E5oel1ke.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "amber",
     "cost": {
-      "amber": 5,
-      "ruby": 3
+      "onyx": 7
     }
   },
   {
@@ -246,7 +253,8 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "onyx",
     "cost": {
-      "emerald": 5,
+      "onyx": 6,
+      "ruby": 3,
       "sapphire": 3
     }
   },
@@ -255,12 +263,12 @@ export const TIER_3_CARDS = [
     "series": "Jujutsu Kaisen",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b127212-FVm2tD0erQ5B.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
       "sapphire": 3,
-      "onyx": 3
+      "emerald": 6,
+      "amber": 3
     }
   },
   {
@@ -268,12 +276,13 @@ export const TIER_3_CARDS = [
     "series": "Seishun Buta Yarou wa Bunny Girl Senpai no Yume wo Minai",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b127222-Jh5hhP7vZ7s1.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "sapphire",
     "cost": {
-      "ruby": 4,
+      "emerald": 6,
       "amber": 3,
-      "sapphire": 2
+      "onyx": 2,
+      "sapphire": 1
     }
   },
   {
@@ -281,12 +290,11 @@ export const TIER_3_CARDS = [
     "series": "Steins;Gate",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b35252-DY9TW6pusqeh.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 5,
     "bonusGem": "emerald",
     "cost": {
-      "emerald": 4,
-      "sapphire": 3,
-      "ruby": 2
+      "amber": 7,
+      "onyx": 3
     }
   },
   {
@@ -297,9 +305,8 @@ export const TIER_3_CARDS = [
     "prestige": 5,
     "bonusGem": "amber",
     "cost": {
-      "emerald": 4,
-      "ruby": 3,
-      "amber": 2
+      "onyx": 3,
+      "amber": 7
     }
   },
   {
@@ -310,8 +317,10 @@ export const TIER_3_CARDS = [
     "prestige": 3,
     "bonusGem": "onyx",
     "cost": {
-      "ruby": 4,
-      "onyx": 3
+      "onyx": 3,
+      "ruby": 5,
+      "sapphire": 3,
+      "emerald": 3
     }
   },
   {
@@ -319,12 +328,13 @@ export const TIER_3_CARDS = [
     "series": "DEATH NOTE",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b80-26EhwSsSqQ50.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 3,
     "bonusGem": "ruby",
     "cost": {
-      "onyx": 4,
       "sapphire": 3,
-      "amber": 2
+      "emerald": 3,
+      "amber": 3,
+      "onyx": 5
     }
   },
   {
@@ -332,11 +342,10 @@ export const TIER_3_CARDS = [
     "series": "Kaguya-sama wa Kokurasetai: Tensaitachi no Renai Zunousen",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b120649-NPaWaIpWy60E.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 5,
-      "ruby": 3
+      "emerald": 7
     }
   },
   {
@@ -344,10 +353,11 @@ export const TIER_3_CARDS = [
     "series": "Mob Psycho 100",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b89616-dXmdOc7L6SDi.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 5,
+      "amber": 6,
+      "onyx": 3,
       "emerald": 3
     }
   },
@@ -359,7 +369,8 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "amber",
     "cost": {
-      "amber": 5,
+      "onyx": 3,
+      "amber": 6,
       "ruby": 3
     }
   },
@@ -368,11 +379,13 @@ export const TIER_3_CARDS = [
     "series": "Violet Evergarden",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b90169-4wr1Zehnsac8.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "onyx",
     "cost": {
-      "emerald": 5,
-      "sapphire": 3
+      "onyx": 6,
+      "ruby": 3,
+      "sapphire": 2,
+      "emerald": 1
     }
   },
   {
@@ -380,12 +393,11 @@ export const TIER_3_CARDS = [
     "series": "Hagane no Renkinjutsushi",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b11-TA5Nuk7EDUZG.jpg",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 5,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 3,
-      "onyx": 3
+      "sapphire": 7,
+      "emerald": 3
     }
   },
   {
@@ -393,12 +405,11 @@ export const TIER_3_CARDS = [
     "series": "NARUTO",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b17-phjcWCkRuIhu.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 5,
     "bonusGem": "sapphire",
     "cost": {
-      "ruby": 4,
-      "amber": 3,
-      "sapphire": 2
+      "emerald": 3,
+      "amber": 7
     }
   },
   {
@@ -406,12 +417,13 @@ export const TIER_3_CARDS = [
     "series": "Kimetsu no Yaiba",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b126071-BTNEc1nRIv68.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 3,
     "bonusGem": "emerald",
     "cost": {
-      "emerald": 4,
-      "sapphire": 3,
-      "ruby": 2
+      "amber": 3,
+      "onyx": 5,
+      "emerald": 3,
+      "ruby": 3
     }
   },
   {
@@ -422,9 +434,10 @@ export const TIER_3_CARDS = [
     "prestige": 3,
     "bonusGem": "amber",
     "cost": {
-      "emerald": 4,
+      "onyx": 3,
+      "amber": 3,
       "ruby": 3,
-      "amber": 2
+      "sapphire": 5
     }
   },
   {
@@ -435,8 +448,7 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "onyx",
     "cost": {
-      "ruby": 4,
-      "onyx": 3
+      "onyx": 7
     }
   },
   {
@@ -444,12 +456,12 @@ export const TIER_3_CARDS = [
     "series": "Sono Bisque Doll wa Koi wo Suru",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b133676-kV2czE3C8Qls.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "ruby",
     "cost": {
-      "onyx": 4,
-      "sapphire": 3,
-      "amber": 2
+      "sapphire": 6,
+      "emerald": 3,
+      "amber": 3
     }
   },
   {
@@ -457,11 +469,12 @@ export const TIER_3_CARDS = [
     "series": "Boku no Hero Academia",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b89220-KNBwaVFAR8FD.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 5,
-      "ruby": 3
+      "emerald": 3,
+      "amber": 6,
+      "onyx": 3
     }
   },
   {
@@ -472,8 +485,10 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 5,
-      "emerald": 3
+      "amber": 6,
+      "onyx": 3,
+      "emerald": 2,
+      "ruby": 1
     }
   },
   {
@@ -484,8 +499,8 @@ export const TIER_3_CARDS = [
     "prestige": 5,
     "bonusGem": "amber",
     "cost": {
-      "amber": 5,
-      "ruby": 3
+      "onyx": 7,
+      "amber": 3
     }
   },
   {
@@ -493,11 +508,11 @@ export const TIER_3_CARDS = [
     "series": "Vinland Saga",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b13020-ZdiYlNmpRUNS.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 5,
     "bonusGem": "onyx",
     "cost": {
-      "emerald": 5,
-      "sapphire": 3
+      "onyx": 3,
+      "ruby": 7
     }
   },
   {
@@ -505,11 +520,12 @@ export const TIER_3_CARDS = [
     "series": "Boku no Hero Academia",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b88892-bdOha3lNcaN6.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 3,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
       "sapphire": 3,
+      "emerald": 5,
+      "amber": 3,
       "onyx": 3
     }
   },
@@ -518,12 +534,13 @@ export const TIER_3_CARDS = [
     "series": "Re:Zero kara Hajimeru Isekai Seikatsu",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b88575-Ayu8UPDA8NS6.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 3,
     "bonusGem": "sapphire",
     "cost": {
-      "ruby": 4,
+      "emerald": 3,
       "amber": 3,
-      "sapphire": 2
+      "onyx": 3,
+      "sapphire": 5
     }
   },
   {
@@ -531,12 +548,10 @@ export const TIER_3_CARDS = [
     "series": "Bungou Stray Dogs",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b89198-qKmRTw4Y3PRC.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "emerald",
     "cost": {
-      "emerald": 4,
-      "sapphire": 3,
-      "ruby": 2
+      "amber": 7
     }
   },
   {
@@ -547,9 +562,9 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "amber",
     "cost": {
-      "emerald": 4,
-      "ruby": 3,
-      "amber": 2
+      "onyx": 6,
+      "amber": 3,
+      "ruby": 3
     }
   },
   {
@@ -557,11 +572,12 @@ export const TIER_3_CARDS = [
     "series": "Go-toubun no Hanayome",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b126375-dEe9IyQ9By09.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "onyx",
     "cost": {
-      "ruby": 4,
-      "onyx": 3
+      "onyx": 3,
+      "ruby": 6,
+      "sapphire": 3
     }
   },
   {
@@ -569,12 +585,13 @@ export const TIER_3_CARDS = [
     "series": "Gintama",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b672-cP5VPriN67xJ.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "ruby",
     "cost": {
-      "onyx": 4,
-      "sapphire": 3,
-      "amber": 2
+      "sapphire": 6,
+      "emerald": 3,
+      "amber": 2,
+      "onyx": 1
     }
   },
   {
@@ -582,11 +599,11 @@ export const TIER_3_CARDS = [
     "series": "Re:Zero kara Hajimeru Isekai Seikatsu",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b88573-F8yMTK9GhnTA.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 5,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 5,
-      "ruby": 3
+      "emerald": 7,
+      "amber": 3
     }
   },
   {
@@ -597,8 +614,8 @@ export const TIER_3_CARDS = [
     "prestige": 5,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 5,
-      "emerald": 3
+      "amber": 3,
+      "onyx": 7
     }
   },
   {
@@ -609,8 +626,10 @@ export const TIER_3_CARDS = [
     "prestige": 3,
     "bonusGem": "amber",
     "cost": {
+      "onyx": 3,
       "amber": 5,
-      "ruby": 3
+      "ruby": 3,
+      "sapphire": 3
     }
   },
   {
@@ -618,11 +637,13 @@ export const TIER_3_CARDS = [
     "series": "HUNTER×HUNTER",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b30-lyFExKyDhefc.jpg",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 3,
     "bonusGem": "onyx",
     "cost": {
-      "emerald": 5,
-      "sapphire": 3
+      "onyx": 3,
+      "ruby": 3,
+      "sapphire": 3,
+      "emerald": 5
     }
   },
   {
@@ -630,12 +651,10 @@ export const TIER_3_CARDS = [
     "series": "Dr. STONE",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b124142-XUO1g7wRqkaT.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 3,
-      "onyx": 3
+      "sapphire": 7
     }
   },
   {
@@ -643,12 +662,12 @@ export const TIER_3_CARDS = [
     "series": "ONE PIECE",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b305-6lisPmHtCnLT.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "sapphire",
     "cost": {
-      "ruby": 4,
+      "emerald": 6,
       "amber": 3,
-      "sapphire": 2
+      "onyx": 3
     }
   },
   {
@@ -659,9 +678,9 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "emerald",
     "cost": {
-      "emerald": 4,
-      "sapphire": 3,
-      "ruby": 2
+      "amber": 3,
+      "onyx": 6,
+      "emerald": 3
     }
   },
   {
@@ -669,12 +688,13 @@ export const TIER_3_CARDS = [
     "series": "Kaguya-sama wa Kokurasetai: Tensaitachi no Renai Zunousen",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b125886-TQbmqAaSgBLS.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "amber",
     "cost": {
-      "emerald": 4,
-      "ruby": 3,
-      "amber": 2
+      "onyx": 6,
+      "amber": 3,
+      "ruby": 2,
+      "sapphire": 1
     }
   },
   {
@@ -682,11 +702,11 @@ export const TIER_3_CARDS = [
     "series": "Na Honjaman Level Up",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b129928-BCEjVaP0AQSw.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 5,
     "bonusGem": "onyx",
     "cost": {
-      "ruby": 4,
-      "onyx": 3
+      "onyx": 7,
+      "ruby": 3
     }
   },
   {
@@ -694,12 +714,11 @@ export const TIER_3_CARDS = [
     "series": "Darling in the Franxx",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b124381-2gAVq76HPfL2.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 5,
     "bonusGem": "ruby",
     "cost": {
-      "onyx": 4,
       "sapphire": 3,
-      "amber": 2
+      "emerald": 7
     }
   },
   {
@@ -707,11 +726,13 @@ export const TIER_3_CARDS = [
     "series": "Saiki Kusuo no Ψ-nan (ONA)",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b90107-ZULW5HlPX1uU.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 3,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 5,
-      "ruby": 3
+      "emerald": 3,
+      "amber": 5,
+      "onyx": 3,
+      "sapphire": 3
     }
   },
   {
@@ -722,8 +743,10 @@ export const TIER_3_CARDS = [
     "prestige": 3,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 5,
-      "emerald": 3
+      "amber": 3,
+      "onyx": 3,
+      "emerald": 3,
+      "ruby": 5
     }
   },
   {
@@ -734,8 +757,7 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "amber",
     "cost": {
-      "amber": 5,
-      "ruby": 3
+      "onyx": 7
     }
   },
   {
@@ -743,10 +765,11 @@ export const TIER_3_CARDS = [
     "series": "Hori-san to Miyamura-kun",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b66173-g8eU1LGWPB8O.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "onyx",
     "cost": {
-      "emerald": 5,
+      "onyx": 6,
+      "ruby": 3,
       "sapphire": 3
     }
   },
@@ -755,12 +778,12 @@ export const TIER_3_CARDS = [
     "series": "Bakemonogatari",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b22037-sY7GWSKYr2Nl.jpg",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
       "sapphire": 3,
-      "onyx": 3
+      "emerald": 6,
+      "amber": 3
     }
   },
   {
@@ -771,9 +794,10 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "sapphire",
     "cost": {
-      "ruby": 4,
+      "emerald": 6,
       "amber": 3,
-      "sapphire": 2
+      "onyx": 2,
+      "sapphire": 1
     }
   },
   {
@@ -784,9 +808,8 @@ export const TIER_3_CARDS = [
     "prestige": 5,
     "bonusGem": "emerald",
     "cost": {
-      "emerald": 4,
-      "sapphire": 3,
-      "ruby": 2
+      "amber": 7,
+      "onyx": 3
     }
   },
   {
@@ -794,12 +817,11 @@ export const TIER_3_CARDS = [
     "series": "Shin Seiki Evangelion",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b94-d631a3Z2KPvd.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 5,
     "bonusGem": "amber",
     "cost": {
-      "emerald": 4,
-      "ruby": 3,
-      "amber": 2
+      "onyx": 3,
+      "amber": 7
     }
   },
   {
@@ -807,11 +829,13 @@ export const TIER_3_CARDS = [
     "series": "Chainsaw Man",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b137081-TSrUR3mUJL6r.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 3,
     "bonusGem": "onyx",
     "cost": {
-      "ruby": 4,
-      "onyx": 3
+      "onyx": 3,
+      "ruby": 5,
+      "sapphire": 3,
+      "emerald": 3
     }
   },
   {
@@ -819,12 +843,13 @@ export const TIER_3_CARDS = [
     "series": "BLEACH",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b5-a7bkJgjhhigE.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 3,
     "bonusGem": "ruby",
     "cost": {
-      "onyx": 4,
       "sapphire": 3,
-      "amber": 2
+      "emerald": 3,
+      "amber": 3,
+      "onyx": 5
     }
   },
   {
@@ -832,11 +857,10 @@ export const TIER_3_CARDS = [
     "series": "Kaguya-sama wa Kokurasetai: Tensaitachi no Renai Zunousen",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b121102-tiQFxnSEIAwm.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 5,
-      "ruby": 3
+      "emerald": 7
     }
   },
   {
@@ -847,7 +871,8 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 5,
+      "amber": 6,
+      "onyx": 3,
       "emerald": 3
     }
   },
@@ -856,10 +881,11 @@ export const TIER_3_CARDS = [
     "series": "Cowboy Bebop",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b1-ChxaldmieFlQ.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "amber",
     "cost": {
-      "amber": 5,
+      "onyx": 3,
+      "amber": 6,
       "ruby": 3
     }
   },
@@ -868,11 +894,13 @@ export const TIER_3_CARDS = [
     "series": "HUNTER×HUNTER",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b31-FZckOuu7L1un.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "onyx",
     "cost": {
-      "emerald": 5,
-      "sapphire": 3
+      "onyx": 6,
+      "ruby": 3,
+      "sapphire": 2,
+      "emerald": 1
     }
   },
   {
@@ -880,12 +908,11 @@ export const TIER_3_CARDS = [
     "series": "SPY×FAMILY",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b138102-ZOAu9jI2d5ke.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 5,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 3,
-      "onyx": 3
+      "sapphire": 7,
+      "emerald": 3
     }
   },
   {
@@ -896,9 +923,8 @@ export const TIER_3_CARDS = [
     "prestige": 5,
     "bonusGem": "sapphire",
     "cost": {
-      "ruby": 4,
-      "amber": 3,
-      "sapphire": 2
+      "emerald": 3,
+      "amber": 7
     }
   },
   {
@@ -909,9 +935,10 @@ export const TIER_3_CARDS = [
     "prestige": 3,
     "bonusGem": "emerald",
     "cost": {
-      "emerald": 4,
-      "sapphire": 3,
-      "ruby": 2
+      "amber": 3,
+      "onyx": 5,
+      "emerald": 3,
+      "ruby": 3
     }
   },
   {
@@ -919,12 +946,13 @@ export const TIER_3_CARDS = [
     "series": "Boku no Hero Academia",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b89028-8w1I9o1ISHMg.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 3,
     "bonusGem": "amber",
     "cost": {
-      "emerald": 4,
+      "onyx": 3,
+      "amber": 3,
       "ruby": 3,
-      "amber": 2
+      "sapphire": 5
     }
   },
   {
@@ -932,11 +960,10 @@ export const TIER_3_CARDS = [
     "series": "Shingeki no Kyojin",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b71121-7R7CnQd3lHgt.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "onyx",
     "cost": {
-      "ruby": 4,
-      "onyx": 3
+      "onyx": 7
     }
   },
   {
@@ -944,12 +971,12 @@ export const TIER_3_CARDS = [
     "series": "Kimetsu no Yaiba",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b129131-FZrQ7lSlxmEr.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "ruby",
     "cost": {
-      "onyx": 4,
-      "sapphire": 3,
-      "amber": 2
+      "sapphire": 6,
+      "emerald": 3,
+      "amber": 3
     }
   },
   {
@@ -960,8 +987,9 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 5,
-      "ruby": 3
+      "emerald": 3,
+      "amber": 6,
+      "onyx": 3
     }
   },
   {
@@ -969,11 +997,13 @@ export const TIER_3_CARDS = [
     "series": "Tensei Shitara Slime Datta Ken",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b123962-eL9yGV0NLMF7.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 5,
-      "emerald": 3
+      "amber": 6,
+      "onyx": 3,
+      "emerald": 2,
+      "ruby": 1
     }
   },
   {
@@ -981,11 +1011,11 @@ export const TIER_3_CARDS = [
     "series": "Jujutsu Kaisen",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b133704-8wLTGjc234q2.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 5,
     "bonusGem": "amber",
     "cost": {
-      "amber": 5,
-      "ruby": 3
+      "onyx": 7,
+      "amber": 3
     }
   },
   {
@@ -993,11 +1023,11 @@ export const TIER_3_CARDS = [
     "series": "Jujutsu Kaisen",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b133700-f6sOO3TcgLV6.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 5,
     "bonusGem": "onyx",
     "cost": {
-      "emerald": 5,
-      "sapphire": 3
+      "onyx": 3,
+      "ruby": 7
     }
   },
   {
@@ -1005,11 +1035,12 @@ export const TIER_3_CARDS = [
     "series": "NARUTO",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b13-SISLEw1oAD7a.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 3,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
       "sapphire": 3,
+      "emerald": 5,
+      "amber": 3,
       "onyx": 3
     }
   },
@@ -1021,9 +1052,10 @@ export const TIER_3_CARDS = [
     "prestige": 3,
     "bonusGem": "sapphire",
     "cost": {
-      "ruby": 4,
+      "emerald": 3,
       "amber": 3,
-      "sapphire": 2
+      "onyx": 3,
+      "sapphire": 5
     }
   },
   {
@@ -1034,9 +1066,7 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "emerald",
     "cost": {
-      "emerald": 4,
-      "sapphire": 3,
-      "ruby": 2
+      "amber": 7
     }
   },
   {
@@ -1044,12 +1074,12 @@ export const TIER_3_CARDS = [
     "series": "Shingeki no Kyojin",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b46496-Mu86MENd5wNB.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "amber",
     "cost": {
-      "emerald": 4,
-      "ruby": 3,
-      "amber": 2
+      "onyx": 6,
+      "amber": 3,
+      "ruby": 3
     }
   },
   {
@@ -1057,11 +1087,12 @@ export const TIER_3_CARDS = [
     "series": "Noragami",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b84677-PFmohzIXD1ud.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "onyx",
     "cost": {
-      "ruby": 4,
-      "onyx": 3
+      "onyx": 3,
+      "ruby": 6,
+      "sapphire": 3
     }
   },
   {
@@ -1072,9 +1103,10 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "ruby",
     "cost": {
-      "onyx": 4,
-      "sapphire": 3,
-      "amber": 2
+      "sapphire": 6,
+      "emerald": 3,
+      "amber": 2,
+      "onyx": 1
     }
   },
   {
@@ -1085,8 +1117,8 @@ export const TIER_3_CARDS = [
     "prestige": 5,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 5,
-      "ruby": 3
+      "emerald": 7,
+      "amber": 3
     }
   },
   {
@@ -1094,11 +1126,11 @@ export const TIER_3_CARDS = [
     "series": "Yahari Ore no Seishun Love Come wa Machigatteiru.",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b67065-Dhec6tE2yWA9.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 5,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 5,
-      "emerald": 3
+      "amber": 3,
+      "onyx": 7
     }
   },
   {
@@ -1106,11 +1138,13 @@ export const TIER_3_CARDS = [
     "series": "Kimetsu no Yaiba",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b130050-qsLThJs5VIbz.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 3,
     "bonusGem": "amber",
     "cost": {
+      "onyx": 3,
       "amber": 5,
-      "ruby": 3
+      "ruby": 3,
+      "sapphire": 3
     }
   },
   {
@@ -1118,11 +1152,13 @@ export const TIER_3_CARDS = [
     "series": "Bakemonogatari",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b22036-Ed3CjwPlDLp4.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 3,
     "bonusGem": "onyx",
     "cost": {
-      "emerald": 5,
-      "sapphire": 3
+      "onyx": 3,
+      "ruby": 3,
+      "sapphire": 3,
+      "emerald": 5
     }
   },
   {
@@ -1130,12 +1166,10 @@ export const TIER_3_CARDS = [
     "series": "Bocchi the Rock!",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b257562-Ru35NYPfsqhY.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 3,
-      "onyx": 3
+      "sapphire": 7
     }
   },
   {
@@ -1146,9 +1180,9 @@ export const TIER_3_CARDS = [
     "prestige": 4,
     "bonusGem": "sapphire",
     "cost": {
-      "ruby": 4,
+      "emerald": 6,
       "amber": 3,
-      "sapphire": 2
+      "onyx": 3
     }
   },
   {
@@ -1156,12 +1190,12 @@ export const TIER_3_CARDS = [
     "series": "Fate/stay night",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b497-Yg5pNmC8kxzs.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "emerald",
     "cost": {
-      "emerald": 4,
-      "sapphire": 3,
-      "ruby": 2
+      "amber": 3,
+      "onyx": 6,
+      "emerald": 3
     }
   },
   {
@@ -1169,12 +1203,13 @@ export const TIER_3_CARDS = [
     "series": "Jujutsu Kaisen",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b133701-rCQuDpHr3UZL.png",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "amber",
     "cost": {
-      "emerald": 4,
-      "ruby": 3,
-      "amber": 2
+      "onyx": 6,
+      "amber": 3,
+      "ruby": 2,
+      "sapphire": 1
     }
   },
   {
@@ -1182,11 +1217,11 @@ export const TIER_3_CARDS = [
     "series": "Go-toubun no Hanayome",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b126373-CWeyXb822uDN.png",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 5,
     "bonusGem": "onyx",
     "cost": {
-      "ruby": 4,
-      "onyx": 3
+      "onyx": 7,
+      "ruby": 3
     }
   },
   {
@@ -1197,9 +1232,8 @@ export const TIER_3_CARDS = [
     "prestige": 5,
     "bonusGem": "ruby",
     "cost": {
-      "onyx": 4,
       "sapphire": 3,
-      "amber": 2
+      "emerald": 7
     }
   },
   {
@@ -1210,8 +1244,10 @@ export const TIER_3_CARDS = [
     "prestige": 3,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 5,
-      "ruby": 3
+      "emerald": 3,
+      "amber": 5,
+      "onyx": 3,
+      "sapphire": 3
     }
   },
   {
@@ -1219,11 +1255,13 @@ export const TIER_3_CARDS = [
     "series": "Jujutsu Kaisen",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b129571-GHJk7gviHOOw.jpg",
     "tier": 3,
-    "prestige": 4,
+    "prestige": 3,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 5,
-      "emerald": 3
+      "amber": 3,
+      "onyx": 3,
+      "emerald": 3,
+      "ruby": 5
     }
   },
   {
@@ -1231,11 +1269,10 @@ export const TIER_3_CARDS = [
     "series": "Koe no Katachi",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b80243-RzxE51iUU5eq.png",
     "tier": 3,
-    "prestige": 5,
+    "prestige": 4,
     "bonusGem": "amber",
     "cost": {
-      "amber": 5,
-      "ruby": 3
+      "onyx": 7
     }
   },
   {
@@ -1243,10 +1280,11 @@ export const TIER_3_CARDS = [
     "series": "Shin Seiki Evangelion",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/86-cA1zL7fyls8E.jpg",
     "tier": 3,
-    "prestige": 3,
+    "prestige": 4,
     "bonusGem": "onyx",
     "cost": {
-      "emerald": 5,
+      "onyx": 6,
+      "ruby": 3,
       "sapphire": 3
     }
   }
@@ -1261,8 +1299,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 2
+      "sapphire": 2,
+      "emerald": 2,
+      "amber": 3
     }
   },
   {
@@ -1270,11 +1309,12 @@ export const TIER_2_CARDS = [
     "series": "Kimetsu no Yaiba",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b129133-VlTPowwt68rJ.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 4,
-      "onyx": 1
+      "emerald": 2,
+      "amber": 3,
+      "onyx": 3
     }
   },
   {
@@ -1285,8 +1325,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 3,
-      "amber": 2
+      "amber": 3,
+      "onyx": 2,
+      "emerald": 2
     }
   },
   {
@@ -1297,8 +1338,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "amber",
     "cost": {
-      "onyx": 3,
-      "emerald": 2
+      "onyx": 5
     }
   },
   {
@@ -1306,11 +1346,12 @@ export const TIER_2_CARDS = [
     "series": "Shin Seiki Evangelion",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b1259-afTQkZ5SVMOn.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 3,
-      "ruby": 2
+      "onyx": 4,
+      "ruby": 2,
+      "sapphire": 1
     }
   },
   {
@@ -1321,9 +1362,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "sapphire": 2,
-      "onyx": 1
+      "sapphire": 5,
+      "emerald": 3
     }
   },
   {
@@ -1331,12 +1371,12 @@ export const TIER_2_CARDS = [
     "series": "Go-toubun no Hanayome",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b126372-DtorHRgQaYUJ.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 3,
-      "ruby": 2,
-      "amber": 2
+      "emerald": 4,
+      "amber": 3,
+      "onyx": 1
     }
   },
   {
@@ -1344,11 +1384,10 @@ export const TIER_2_CARDS = [
     "series": "Black Clover",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b124440-Lpdo6y8cljV6.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 4,
-      "ruby": 2
+      "amber": 6
     }
   },
   {
@@ -1359,8 +1398,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "amber",
     "cost": {
-      "amber": 4,
-      "emerald": 2
+      "onyx": 2,
+      "amber": 2,
+      "ruby": 3
     }
   },
   {
@@ -1368,11 +1408,12 @@ export const TIER_2_CARDS = [
     "series": "Koe no Katachi",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b80491-NK6pxb6oH61P.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 4,
-      "sapphire": 2
+      "onyx": 2,
+      "ruby": 3,
+      "sapphire": 3
     }
   },
   {
@@ -1383,8 +1424,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 2
+      "sapphire": 3,
+      "emerald": 2,
+      "amber": 2
     }
   },
   {
@@ -1395,8 +1437,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 4,
-      "onyx": 1
+      "emerald": 5
     }
   },
   {
@@ -1404,11 +1445,12 @@ export const TIER_2_CARDS = [
     "series": "Ansatsu Kyoushitsu: Jump Festa 2013 Special",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b71933-HQ1TSjlrJ8Hv.jpg",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 3,
-      "amber": 2
+      "amber": 4,
+      "onyx": 2,
+      "emerald": 1
     }
   },
   {
@@ -1419,8 +1461,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "amber",
     "cost": {
-      "onyx": 3,
-      "emerald": 2
+      "onyx": 5,
+      "amber": 3
     }
   },
   {
@@ -1428,11 +1470,12 @@ export const TIER_2_CARDS = [
     "series": "Chainsaw Man",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b148740-ceAibPxLW8rR.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 3,
-      "ruby": 2
+      "onyx": 4,
+      "ruby": 3,
+      "sapphire": 1
     }
   },
   {
@@ -1440,12 +1483,10 @@ export const TIER_2_CARDS = [
     "series": "ONE PIECE",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b13767-U604OJN9dxCn.jpg",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "sapphire": 2,
-      "onyx": 1
+      "sapphire": 6
     }
   },
   {
@@ -1456,9 +1497,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 3,
-      "ruby": 2,
-      "amber": 2
+      "emerald": 2,
+      "amber": 2,
+      "onyx": 3
     }
   },
   {
@@ -1466,11 +1507,12 @@ export const TIER_2_CARDS = [
     "series": "Sword Art Online",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b36828-j5ib0adAzGMx.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 4,
-      "ruby": 2
+      "amber": 2,
+      "onyx": 3,
+      "emerald": 3
     }
   },
   {
@@ -1481,8 +1523,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "amber",
     "cost": {
-      "amber": 4,
-      "emerald": 2
+      "onyx": 3,
+      "amber": 2,
+      "ruby": 2
     }
   },
   {
@@ -1493,8 +1536,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 4,
-      "sapphire": 2
+      "onyx": 5
     }
   },
   {
@@ -1502,11 +1544,12 @@ export const TIER_2_CARDS = [
     "series": "Tokyo卍Revengers",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b145341-CuPldCLZMvvf.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 2
+      "sapphire": 4,
+      "emerald": 2,
+      "amber": 1
     }
   },
   {
@@ -1517,8 +1560,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 4,
-      "onyx": 1
+      "emerald": 5,
+      "amber": 3
     }
   },
   {
@@ -1526,11 +1569,12 @@ export const TIER_2_CARDS = [
     "series": "Houseki no Kuni PV",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b123385-ild8gXk13xcO.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 3,
-      "amber": 2
+      "amber": 4,
+      "onyx": 3,
+      "emerald": 1
     }
   },
   {
@@ -1538,11 +1582,10 @@ export const TIER_2_CARDS = [
     "series": "Yakusoku no Neverland",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b121724-SJTdODjeO7e6.jpg",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "amber",
     "cost": {
-      "onyx": 3,
-      "emerald": 2
+      "onyx": 6
     }
   },
   {
@@ -1553,8 +1596,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 3,
-      "ruby": 2
+      "onyx": 2,
+      "ruby": 2,
+      "sapphire": 3
     }
   },
   {
@@ -1562,12 +1606,12 @@ export const TIER_2_CARDS = [
     "series": "Jujutsu Kaisen",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b157115-kdhRYQdVhH95.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
       "sapphire": 2,
-      "onyx": 1
+      "emerald": 3,
+      "amber": 3
     }
   },
   {
@@ -1579,8 +1623,8 @@ export const TIER_2_CARDS = [
     "bonusGem": "sapphire",
     "cost": {
       "emerald": 3,
-      "ruby": 2,
-      "amber": 2
+      "amber": 2,
+      "onyx": 2
     }
   },
   {
@@ -1591,8 +1635,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 4,
-      "ruby": 2
+      "amber": 5
     }
   },
   {
@@ -1600,11 +1643,12 @@ export const TIER_2_CARDS = [
     "series": "Vagabond",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b6194-HOyr8E7FCFHJ.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "amber",
     "cost": {
-      "amber": 4,
-      "emerald": 2
+      "onyx": 4,
+      "amber": 2,
+      "ruby": 1
     }
   },
   {
@@ -1615,8 +1659,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 4,
-      "sapphire": 2
+      "onyx": 5,
+      "ruby": 3
     }
   },
   {
@@ -1624,11 +1668,12 @@ export const TIER_2_CARDS = [
     "series": "Dragon Ball",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/246-wsRRr6z1kii8.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 2
+      "sapphire": 4,
+      "emerald": 3,
+      "amber": 1
     }
   },
   {
@@ -1636,11 +1681,10 @@ export const TIER_2_CARDS = [
     "series": "Kanojo, Okarishimasu",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b154224-7dJ09BKEnG3v.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 4,
-      "onyx": 1
+      "emerald": 6
     }
   },
   {
@@ -1651,8 +1695,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 3,
-      "amber": 2
+      "amber": 2,
+      "onyx": 2,
+      "emerald": 3
     }
   },
   {
@@ -1660,11 +1705,12 @@ export const TIER_2_CARDS = [
     "series": "Shingeki no Kyojin",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b125659-O37MZQWibV7g.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "amber",
     "cost": {
-      "onyx": 3,
-      "emerald": 2
+      "onyx": 2,
+      "amber": 3,
+      "ruby": 3
     }
   },
   {
@@ -1675,8 +1721,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 3,
-      "ruby": 2
+      "onyx": 3,
+      "ruby": 2,
+      "sapphire": 2
     }
   },
   {
@@ -1687,9 +1734,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "sapphire": 2,
-      "onyx": 1
+      "sapphire": 5
     }
   },
   {
@@ -1697,12 +1742,12 @@ export const TIER_2_CARDS = [
     "series": "JoJo no Kimyou na Bouken (2000)",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b4004-w0OtWuvjhftG.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 3,
-      "ruby": 2,
-      "amber": 2
+      "emerald": 4,
+      "amber": 2,
+      "onyx": 1
     }
   },
   {
@@ -1713,8 +1758,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 4,
-      "ruby": 2
+      "amber": 5,
+      "onyx": 3
     }
   },
   {
@@ -1722,11 +1767,12 @@ export const TIER_2_CARDS = [
     "series": "Kimetsu no Yaiba",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b136070-MC9LLxJsHyHE.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "amber",
     "cost": {
-      "amber": 4,
-      "emerald": 2
+      "onyx": 4,
+      "amber": 3,
+      "ruby": 1
     }
   },
   {
@@ -1734,11 +1780,10 @@ export const TIER_2_CARDS = [
     "series": "HUNTER×HUNTER (2011)",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b23277-EYmIxzL64Mji.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 4,
-      "sapphire": 2
+      "onyx": 6
     }
   },
   {
@@ -1749,8 +1794,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 2
+      "sapphire": 2,
+      "emerald": 2,
+      "amber": 3
     }
   },
   {
@@ -1758,11 +1804,12 @@ export const TIER_2_CARDS = [
     "series": "Shigatsu wa Kimi no Uso",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b69411-lxM0FRvWHqlv.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 4,
-      "onyx": 1
+      "emerald": 2,
+      "amber": 3,
+      "onyx": 3
     }
   },
   {
@@ -1773,8 +1820,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 3,
-      "amber": 2
+      "amber": 3,
+      "onyx": 2,
+      "emerald": 2
     }
   },
   {
@@ -1785,8 +1833,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "amber",
     "cost": {
-      "onyx": 3,
-      "emerald": 2
+      "onyx": 5
     }
   },
   {
@@ -1794,11 +1841,12 @@ export const TIER_2_CARDS = [
     "series": "ONE PIECE",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b2072-Lc6jEdsueJUK.jpg",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 3,
-      "ruby": 2
+      "onyx": 4,
+      "ruby": 2,
+      "sapphire": 1
     }
   },
   {
@@ -1809,9 +1857,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "sapphire": 2,
-      "onyx": 1
+      "sapphire": 5,
+      "emerald": 3
     }
   },
   {
@@ -1819,12 +1866,12 @@ export const TIER_2_CARDS = [
     "series": "Sword Art Online",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b36765-BnLbXg0Tzzh9.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 3,
-      "ruby": 2,
-      "amber": 2
+      "emerald": 4,
+      "amber": 3,
+      "onyx": 1
     }
   },
   {
@@ -1832,11 +1879,10 @@ export const TIER_2_CARDS = [
     "series": "Boku no Hero Academia",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b89225-XBgvUhI9naVI.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 4,
-      "ruby": 2
+      "amber": 6
     }
   },
   {
@@ -1847,8 +1893,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "amber",
     "cost": {
-      "amber": 4,
-      "emerald": 2
+      "onyx": 2,
+      "amber": 2,
+      "ruby": 3
     }
   },
   {
@@ -1856,11 +1903,12 @@ export const TIER_2_CARDS = [
     "series": "Kakegurui",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b121889-ABsurpy5SjOW.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 4,
-      "sapphire": 2
+      "onyx": 2,
+      "ruby": 3,
+      "sapphire": 3
     }
   },
   {
@@ -1871,8 +1919,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 2
+      "sapphire": 3,
+      "emerald": 2,
+      "amber": 2
     }
   },
   {
@@ -1883,8 +1932,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 4,
-      "onyx": 1
+      "emerald": 5
     }
   },
   {
@@ -1892,11 +1940,12 @@ export const TIER_2_CARDS = [
     "series": "JoJo no Kimyou na Bouken: Diamond wa Kudakenai",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b13085-CkmgXL7SSLxL.jpg",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 3,
-      "amber": 2
+      "amber": 4,
+      "onyx": 2,
+      "emerald": 1
     }
   },
   {
@@ -1907,8 +1956,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "amber",
     "cost": {
-      "onyx": 3,
-      "emerald": 2
+      "onyx": 5,
+      "amber": 3
     }
   },
   {
@@ -1916,11 +1965,12 @@ export const TIER_2_CARDS = [
     "series": "MONSTER",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b718-b6ZZVp822lw0.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 3,
-      "ruby": 2
+      "onyx": 4,
+      "ruby": 3,
+      "sapphire": 1
     }
   },
   {
@@ -1928,12 +1978,10 @@ export const TIER_2_CARDS = [
     "series": "Jibaku Shounen Hanako-kun",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b128651-GaZImkP2Of1R.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "sapphire": 2,
-      "onyx": 1
+      "sapphire": 6
     }
   },
   {
@@ -1944,9 +1992,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 3,
-      "ruby": 2,
-      "amber": 2
+      "emerald": 2,
+      "amber": 2,
+      "onyx": 3
     }
   },
   {
@@ -1954,11 +2002,12 @@ export const TIER_2_CARDS = [
     "series": "Mushoku Tensei: Isekai Ittara Honki Dasu",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b88348-bIe5XnXdRpmX.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 4,
-      "ruby": 2
+      "amber": 2,
+      "onyx": 3,
+      "emerald": 3
     }
   },
   {
@@ -1969,8 +2018,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "amber",
     "cost": {
-      "amber": 4,
-      "emerald": 2
+      "onyx": 3,
+      "amber": 2,
+      "ruby": 2
     }
   },
   {
@@ -1981,8 +2031,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 4,
-      "sapphire": 2
+      "onyx": 5
     }
   },
   {
@@ -1990,11 +2039,12 @@ export const TIER_2_CARDS = [
     "series": "Toradora!",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b12064-7PDN3ylIeAZn.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 2
+      "sapphire": 4,
+      "emerald": 2,
+      "amber": 1
     }
   },
   {
@@ -2005,8 +2055,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 4,
-      "onyx": 1
+      "emerald": 5,
+      "amber": 3
     }
   },
   {
@@ -2014,11 +2064,12 @@ export const TIER_2_CARDS = [
     "series": "Kenpuu Denki Berserk",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b424-Jfrsf8I7zBps.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 3,
-      "amber": 2
+      "amber": 4,
+      "onyx": 3,
+      "emerald": 1
     }
   },
   {
@@ -2026,11 +2077,10 @@ export const TIER_2_CARDS = [
     "series": "Tokyo Ghoul",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b87277-oUaqrI1iBzu6.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "amber",
     "cost": {
-      "onyx": 3,
-      "emerald": 2
+      "onyx": 6
     }
   },
   {
@@ -2041,8 +2091,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 3,
-      "ruby": 2
+      "onyx": 2,
+      "ruby": 2,
+      "sapphire": 3
     }
   },
   {
@@ -2050,12 +2101,12 @@ export const TIER_2_CARDS = [
     "series": "Kono Subarashii Sekai ni Shukufuku wo!",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b89362-ibkc0eoECaW1.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
       "sapphire": 2,
-      "onyx": 1
+      "emerald": 3,
+      "amber": 3
     }
   },
   {
@@ -2067,8 +2118,8 @@ export const TIER_2_CARDS = [
     "bonusGem": "sapphire",
     "cost": {
       "emerald": 3,
-      "ruby": 2,
-      "amber": 2
+      "amber": 2,
+      "onyx": 2
     }
   },
   {
@@ -2079,8 +2130,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 4,
-      "ruby": 2
+      "amber": 5
     }
   },
   {
@@ -2088,11 +2138,12 @@ export const TIER_2_CARDS = [
     "series": "BLACK LAGOON",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b458-tlKqPcuR287U.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "amber",
     "cost": {
-      "amber": 4,
-      "emerald": 2
+      "onyx": 4,
+      "amber": 2,
+      "ruby": 1
     }
   },
   {
@@ -2103,8 +2154,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 4,
-      "sapphire": 2
+      "onyx": 5,
+      "ruby": 3
     }
   },
   {
@@ -2112,11 +2163,12 @@ export const TIER_2_CARDS = [
     "series": "Haikyuu!!",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b67329-k7mDdqQ6rJ4w.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 2
+      "sapphire": 4,
+      "emerald": 3,
+      "amber": 1
     }
   },
   {
@@ -2124,11 +2176,10 @@ export const TIER_2_CARDS = [
     "series": "serial experiments lain",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b2219-K3wzEOVwdUhL.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 4,
-      "onyx": 1
+      "emerald": 6
     }
   },
   {
@@ -2139,8 +2190,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 3,
-      "amber": 2
+      "amber": 2,
+      "onyx": 2,
+      "emerald": 3
     }
   },
   {
@@ -2148,11 +2200,12 @@ export const TIER_2_CARDS = [
     "series": "Kimetsu no Yaiba",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b136071-99Kexnnn2PiV.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "amber",
     "cost": {
-      "onyx": 3,
-      "emerald": 2
+      "onyx": 2,
+      "amber": 3,
+      "ruby": 3
     }
   },
   {
@@ -2163,8 +2216,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 3,
-      "ruby": 2
+      "onyx": 3,
+      "ruby": 2,
+      "sapphire": 2
     }
   },
   {
@@ -2175,9 +2229,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "sapphire": 2,
-      "onyx": 1
+      "sapphire": 5
     }
   },
   {
@@ -2185,12 +2237,12 @@ export const TIER_2_CARDS = [
     "series": "Komi-san wa Komyushou desu.",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b121956-5FbIbcd6gAZW.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 3,
-      "ruby": 2,
-      "amber": 2
+      "emerald": 4,
+      "amber": 2,
+      "onyx": 1
     }
   },
   {
@@ -2201,8 +2253,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 4,
-      "ruby": 2
+      "amber": 5,
+      "onyx": 3
     }
   },
   {
@@ -2210,11 +2262,12 @@ export const TIER_2_CARDS = [
     "series": "Chuunibyou demo Koi ga Shitai!",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b65865-AC0ru7cDXUgK.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "amber",
     "cost": {
-      "amber": 4,
-      "emerald": 2
+      "onyx": 4,
+      "amber": 3,
+      "ruby": 1
     }
   },
   {
@@ -2222,11 +2275,10 @@ export const TIER_2_CARDS = [
     "series": "Bakemonogatari",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b22055-EaTsy30ihdgb.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 4,
-      "sapphire": 2
+      "onyx": 6
     }
   },
   {
@@ -2237,8 +2289,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 2
+      "sapphire": 2,
+      "emerald": 2,
+      "amber": 3
     }
   },
   {
@@ -2246,11 +2299,12 @@ export const TIER_2_CARDS = [
     "series": "Jujutsu Kaisen",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b162722-btzdghBizxKS.jpg",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 4,
-      "onyx": 1
+      "emerald": 2,
+      "amber": 3,
+      "onyx": 3
     }
   },
   {
@@ -2261,8 +2315,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 3,
-      "amber": 2
+      "amber": 3,
+      "onyx": 2,
+      "emerald": 2
     }
   },
   {
@@ -2273,8 +2328,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "amber",
     "cost": {
-      "onyx": 3,
-      "emerald": 2
+      "onyx": 5
     }
   },
   {
@@ -2282,11 +2336,12 @@ export const TIER_2_CARDS = [
     "series": "NARUTO",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b1662-4E5J0LX9jZKZ.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 3,
-      "ruby": 2
+      "onyx": 4,
+      "ruby": 2,
+      "sapphire": 1
     }
   },
   {
@@ -2297,9 +2352,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "sapphire": 2,
-      "onyx": 1
+      "sapphire": 5,
+      "emerald": 3
     }
   },
   {
@@ -2307,12 +2361,12 @@ export const TIER_2_CARDS = [
     "series": "BLEACH",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b6-25WoBeWMZXBc.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 3,
-      "ruby": 2,
-      "amber": 2
+      "emerald": 4,
+      "amber": 3,
+      "onyx": 1
     }
   },
   {
@@ -2320,11 +2374,10 @@ export const TIER_2_CARDS = [
     "series": "Dragon Ball GT",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b913-NIFkKazWM8VO.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 4,
-      "ruby": 2
+      "amber": 6
     }
   },
   {
@@ -2335,8 +2388,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "amber",
     "cost": {
-      "amber": 4,
-      "emerald": 2
+      "onyx": 2,
+      "amber": 2,
+      "ruby": 3
     }
   },
   {
@@ -2344,11 +2398,12 @@ export const TIER_2_CARDS = [
     "series": "JoJo no Kimyou na Bouken: Steel Ball Run",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b19492-gvMnKxhUhT9V.jpg",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 4,
-      "sapphire": 2
+      "onyx": 2,
+      "ruby": 3,
+      "sapphire": 3
     }
   },
   {
@@ -2359,8 +2414,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 3,
-      "sapphire": 2
+      "sapphire": 3,
+      "emerald": 2,
+      "amber": 2
     }
   },
   {
@@ -2371,8 +2427,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 4,
-      "onyx": 1
+      "emerald": 5
     }
   },
   {
@@ -2380,11 +2435,12 @@ export const TIER_2_CARDS = [
     "series": "Dandadan",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b222594-24Jn7qlI5spH.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 3,
-      "amber": 2
+      "amber": 4,
+      "onyx": 2,
+      "emerald": 1
     }
   },
   {
@@ -2395,8 +2451,8 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "amber",
     "cost": {
-      "onyx": 3,
-      "emerald": 2
+      "onyx": 5,
+      "amber": 3
     }
   },
   {
@@ -2404,11 +2460,12 @@ export const TIER_2_CARDS = [
     "series": "Jujutsu Kaisen",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b137975-6TH7PiLWJaqy.png",
     "tier": 2,
-    "prestige": 1,
+    "prestige": 2,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 3,
-      "ruby": 2
+      "onyx": 4,
+      "ruby": 3,
+      "sapphire": 1
     }
   },
   {
@@ -2416,12 +2473,10 @@ export const TIER_2_CARDS = [
     "series": "DEATH NOTE",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b75-IkEpzO21LgFy.jpg",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 3,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "sapphire": 2,
-      "onyx": 1
+      "sapphire": 6
     }
   },
   {
@@ -2432,9 +2487,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 3,
-      "ruby": 2,
-      "amber": 2
+      "emerald": 2,
+      "amber": 2,
+      "onyx": 3
     }
   },
   {
@@ -2442,11 +2497,12 @@ export const TIER_2_CARDS = [
     "series": "Lycoris Recoil",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b260329-1Z5n1QgViEBI.png",
     "tier": 2,
-    "prestige": 2,
+    "prestige": 1,
     "bonusGem": "emerald",
     "cost": {
-      "sapphire": 4,
-      "ruby": 2
+      "amber": 2,
+      "onyx": 3,
+      "emerald": 3
     }
   },
   {
@@ -2457,8 +2513,9 @@ export const TIER_2_CARDS = [
     "prestige": 1,
     "bonusGem": "amber",
     "cost": {
-      "amber": 4,
-      "emerald": 2
+      "onyx": 3,
+      "amber": 2,
+      "ruby": 2
     }
   },
   {
@@ -2469,8 +2526,7 @@ export const TIER_2_CARDS = [
     "prestige": 2,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 4,
-      "sapphire": 2
+      "onyx": 5
     }
   }
 ];
@@ -2481,11 +2537,13 @@ export const TIER_1_CARDS = [
     "series": "FAIRY TAIL",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b5189-GR1xdok9SFsN.jpg",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 1,
-      "sapphire": 2
+      "sapphire": 1,
+      "emerald": 1,
+      "amber": 1,
+      "onyx": 1
     }
   },
   {
@@ -2496,8 +2554,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 2,
-      "amber": 1
+      "emerald": 1,
+      "amber": 2,
+      "onyx": 1,
+      "sapphire": 1
     }
   },
   {
@@ -2508,7 +2568,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 3
+      "amber": 2,
+      "onyx": 2
     }
   },
   {
@@ -2519,9 +2580,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "sapphire": 1,
-      "emerald": 1,
-      "ruby": 1
+      "onyx": 1,
+      "amber": 2,
+      "ruby": 2
     }
   },
   {
@@ -2529,11 +2590,10 @@ export const TIER_1_CARDS = [
     "series": "Ookami to Koushinryou",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b7373-1BH0gELuZmHD.jpg",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 2,
-      "onyx": 1
+      "onyx": 3
     }
   },
   {
@@ -2544,8 +2604,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "emerald": 2
+      "sapphire": 3,
+      "emerald": 1,
+      "amber": 1
     }
   },
   {
@@ -2556,7 +2617,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 3
+      "emerald": 2,
+      "amber": 1,
+      "onyx": 1,
+      "sapphire": 1
     }
   },
   {
@@ -2564,12 +2628,10 @@ export const TIER_1_CARDS = [
     "series": "Kage no Jitsuryokusha ni Naritakute!",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b136837-3WR22FYet8Hv.jpg",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "emerald",
     "cost": {
-      "amber": 1,
-      "sapphire": 1,
-      "onyx": 1
+      "amber": 4
     }
   },
   {
@@ -2577,12 +2639,13 @@ export const TIER_1_CARDS = [
     "series": "Shokugeki no Souma",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b75216-KDU8333eIcqf.jpg",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "ruby": 1,
+      "onyx": 1,
       "amber": 1,
-      "emerald": 1
+      "ruby": 1,
+      "sapphire": 1
     }
   },
   {
@@ -2593,8 +2656,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 2,
-      "ruby": 1
+      "onyx": 1,
+      "ruby": 2,
+      "sapphire": 1,
+      "emerald": 1
     }
   },
   {
@@ -2605,8 +2670,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 1,
-      "sapphire": 2
+      "sapphire": 2,
+      "emerald": 2
     }
   },
   {
@@ -2617,8 +2682,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 2,
-      "amber": 1
+      "emerald": 1,
+      "amber": 2,
+      "onyx": 2
     }
   },
   {
@@ -2626,10 +2692,10 @@ export const TIER_1_CARDS = [
     "series": "Fate/stay night",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b10010-fNspzan5MzNk.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 3
+      "amber": 3
     }
   },
   {
@@ -2640,8 +2706,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "sapphire": 1,
-      "emerald": 1,
+      "onyx": 3,
+      "amber": 1,
       "ruby": 1
     }
   },
@@ -2653,8 +2719,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 2,
-      "onyx": 1
+      "onyx": 2,
+      "ruby": 1,
+      "sapphire": 1,
+      "emerald": 1
     }
   },
   {
@@ -2662,11 +2730,10 @@ export const TIER_1_CARDS = [
     "series": "Bungou Stray Dogs",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b89853-06qMPkrGlgP1.png",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "emerald": 2
+      "sapphire": 4
     }
   },
   {
@@ -2674,10 +2741,13 @@ export const TIER_1_CARDS = [
     "series": "Yofukashi no Uta",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b168774-zoB9InjmXYq2.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 3
+      "emerald": 1,
+      "amber": 1,
+      "onyx": 1,
+      "sapphire": 1
     }
   },
   {
@@ -2689,8 +2759,9 @@ export const TIER_1_CARDS = [
     "bonusGem": "emerald",
     "cost": {
       "amber": 1,
-      "sapphire": 1,
-      "onyx": 1
+      "onyx": 2,
+      "emerald": 1,
+      "ruby": 1
     }
   },
   {
@@ -2701,9 +2772,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "ruby": 1,
-      "amber": 1,
-      "emerald": 1
+      "onyx": 2,
+      "amber": 2
     }
   },
   {
@@ -2714,8 +2784,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 2,
-      "ruby": 1
+      "onyx": 1,
+      "ruby": 2,
+      "sapphire": 2
     }
   },
   {
@@ -2723,11 +2794,10 @@ export const TIER_1_CARDS = [
     "series": "Ao no Hako",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b218648-kXxXy8lPkeGV.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 1,
-      "sapphire": 2
+      "sapphire": 3
     }
   },
   {
@@ -2738,8 +2808,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 2,
-      "amber": 1
+      "emerald": 3,
+      "amber": 1,
+      "onyx": 1
     }
   },
   {
@@ -2750,7 +2821,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 3
+      "amber": 2,
+      "onyx": 1,
+      "emerald": 1,
+      "ruby": 1
     }
   },
   {
@@ -2758,12 +2832,10 @@ export const TIER_1_CARDS = [
     "series": "Enen no Shouboutai",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b130848-AuuIm6GR8ody.jpg",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "amber",
     "cost": {
-      "sapphire": 1,
-      "emerald": 1,
-      "ruby": 1
+      "onyx": 4
     }
   },
   {
@@ -2771,11 +2843,13 @@ export const TIER_1_CARDS = [
     "series": "Kanojo, Okarishimasu",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b128106-zSTsuULvz6PX.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 2,
-      "onyx": 1
+      "onyx": 1,
+      "ruby": 1,
+      "sapphire": 1,
+      "emerald": 1
     }
   },
   {
@@ -2786,8 +2860,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "emerald": 2
+      "sapphire": 1,
+      "emerald": 2,
+      "amber": 1,
+      "onyx": 1
     }
   },
   {
@@ -2798,7 +2874,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 3
+      "emerald": 2,
+      "amber": 2
     }
   },
   {
@@ -2810,8 +2887,8 @@ export const TIER_1_CARDS = [
     "bonusGem": "emerald",
     "cost": {
       "amber": 1,
-      "sapphire": 1,
-      "onyx": 1
+      "onyx": 2,
+      "emerald": 2
     }
   },
   {
@@ -2819,12 +2896,10 @@ export const TIER_1_CARDS = [
     "series": "Soul Eater",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b8455-0Ztel4ew5bNd.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "ruby": 1,
-      "amber": 1,
-      "emerald": 1
+      "onyx": 3
     }
   },
   {
@@ -2835,8 +2910,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 2,
-      "ruby": 1
+      "onyx": 3,
+      "ruby": 1,
+      "sapphire": 1
     }
   },
   {
@@ -2847,8 +2923,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 1,
-      "sapphire": 2
+      "sapphire": 2,
+      "emerald": 1,
+      "amber": 1,
+      "onyx": 1
     }
   },
   {
@@ -2856,11 +2934,10 @@ export const TIER_1_CARDS = [
     "series": "Kimetsu no Yaiba",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b136072-xVwyRUKdpybi.png",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 2,
-      "amber": 1
+      "emerald": 4
     }
   },
   {
@@ -2868,10 +2945,13 @@ export const TIER_1_CARDS = [
     "series": "One Punch Man",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b73979-tVi9maPID881.jpg",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 3
+      "amber": 1,
+      "onyx": 1,
+      "emerald": 1,
+      "ruby": 1
     }
   },
   {
@@ -2882,9 +2962,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "sapphire": 1,
-      "emerald": 1,
-      "ruby": 1
+      "onyx": 1,
+      "amber": 2,
+      "ruby": 1,
+      "sapphire": 1
     }
   },
   {
@@ -2895,8 +2976,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 2,
-      "onyx": 1
+      "onyx": 2,
+      "ruby": 2
     }
   },
   {
@@ -2907,8 +2988,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "emerald": 2
+      "sapphire": 1,
+      "emerald": 2,
+      "amber": 2
     }
   },
   {
@@ -2916,10 +2998,10 @@ export const TIER_1_CARDS = [
     "series": "One Punch Man",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b89277-xBGb4B5YISXg.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 3
+      "emerald": 3
     }
   },
   {
@@ -2930,9 +3012,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "amber": 1,
-      "sapphire": 1,
-      "onyx": 1
+      "amber": 3,
+      "onyx": 1,
+      "emerald": 1
     }
   },
   {
@@ -2943,9 +3025,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "ruby": 1,
+      "onyx": 2,
       "amber": 1,
-      "emerald": 1
+      "ruby": 1,
+      "sapphire": 1
     }
   },
   {
@@ -2953,11 +3036,10 @@ export const TIER_1_CARDS = [
     "series": "[Oshi no Ko]",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b172759-cccVhJ2fQA92.png",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 2,
-      "ruby": 1
+      "onyx": 4
     }
   },
   {
@@ -2965,11 +3047,13 @@ export const TIER_1_CARDS = [
     "series": "Dororo to Hyakkimaru",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b14864-MMntDWi2EkyR.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 1,
-      "sapphire": 2
+      "sapphire": 1,
+      "emerald": 1,
+      "amber": 1,
+      "onyx": 1
     }
   },
   {
@@ -2980,8 +3064,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 2,
-      "amber": 1
+      "emerald": 1,
+      "amber": 2,
+      "onyx": 1,
+      "sapphire": 1
     }
   },
   {
@@ -2992,7 +3078,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 3
+      "amber": 2,
+      "onyx": 2
     }
   },
   {
@@ -3003,9 +3090,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "sapphire": 1,
-      "emerald": 1,
-      "ruby": 1
+      "onyx": 1,
+      "amber": 2,
+      "ruby": 2
     }
   },
   {
@@ -3013,11 +3100,10 @@ export const TIER_1_CARDS = [
     "series": "Bocchi the Rock!",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b264529-BvEusZnJLD2Y.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 2,
-      "onyx": 1
+      "onyx": 3
     }
   },
   {
@@ -3028,8 +3114,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "emerald": 2
+      "sapphire": 3,
+      "emerald": 1,
+      "amber": 1
     }
   },
   {
@@ -3040,7 +3127,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 3
+      "emerald": 2,
+      "amber": 1,
+      "onyx": 1,
+      "sapphire": 1
     }
   },
   {
@@ -3048,12 +3138,10 @@ export const TIER_1_CARDS = [
     "series": "Yahari Ore no Seishun Love Come wa Machigatteiru.",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b67069-6B3xnHfJUO0F.png",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "emerald",
     "cost": {
-      "amber": 1,
-      "sapphire": 1,
-      "onyx": 1
+      "amber": 4
     }
   },
   {
@@ -3061,12 +3149,13 @@ export const TIER_1_CARDS = [
     "series": "K-ON!",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b19565-7gMiEAm7NGNK.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "ruby": 1,
+      "onyx": 1,
       "amber": 1,
-      "emerald": 1
+      "ruby": 1,
+      "sapphire": 1
     }
   },
   {
@@ -3077,8 +3166,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 2,
-      "ruby": 1
+      "onyx": 1,
+      "ruby": 2,
+      "sapphire": 1,
+      "emerald": 1
     }
   },
   {
@@ -3089,8 +3180,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 1,
-      "sapphire": 2
+      "sapphire": 2,
+      "emerald": 2
     }
   },
   {
@@ -3101,8 +3192,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 2,
-      "amber": 1
+      "emerald": 1,
+      "amber": 2,
+      "onyx": 2
     }
   },
   {
@@ -3110,10 +3202,10 @@ export const TIER_1_CARDS = [
     "series": "K-ON!",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b19566-XKsMgf370b4m.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 3
+      "amber": 3
     }
   },
   {
@@ -3124,8 +3216,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "sapphire": 1,
-      "emerald": 1,
+      "onyx": 3,
+      "amber": 1,
       "ruby": 1
     }
   },
@@ -3137,8 +3229,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 2,
-      "onyx": 1
+      "onyx": 2,
+      "ruby": 1,
+      "sapphire": 1,
+      "emerald": 1
     }
   },
   {
@@ -3146,11 +3240,10 @@ export const TIER_1_CARDS = [
     "series": "Blue Lock",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b162969-WGnGyVQrFi0X.png",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "emerald": 2
+      "sapphire": 4
     }
   },
   {
@@ -3158,10 +3251,13 @@ export const TIER_1_CARDS = [
     "series": "Gintama",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b674-w8wCh0A5Qa8R.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 3
+      "emerald": 1,
+      "amber": 1,
+      "onyx": 1,
+      "sapphire": 1
     }
   },
   {
@@ -3173,8 +3269,9 @@ export const TIER_1_CARDS = [
     "bonusGem": "emerald",
     "cost": {
       "amber": 1,
-      "sapphire": 1,
-      "onyx": 1
+      "onyx": 2,
+      "emerald": 1,
+      "ruby": 1
     }
   },
   {
@@ -3185,9 +3282,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "ruby": 1,
-      "amber": 1,
-      "emerald": 1
+      "onyx": 2,
+      "amber": 2
     }
   },
   {
@@ -3198,8 +3294,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 2,
-      "ruby": 1
+      "onyx": 1,
+      "ruby": 2,
+      "sapphire": 2
     }
   },
   {
@@ -3207,11 +3304,10 @@ export const TIER_1_CARDS = [
     "series": "Sousou no Frieren",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b184313-CQl6GSt4RSny.jpg",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 1,
-      "sapphire": 2
+      "sapphire": 3
     }
   },
   {
@@ -3222,8 +3318,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 2,
-      "amber": 1
+      "emerald": 3,
+      "amber": 1,
+      "onyx": 1
     }
   },
   {
@@ -3234,7 +3331,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 3
+      "amber": 2,
+      "onyx": 1,
+      "emerald": 1,
+      "ruby": 1
     }
   },
   {
@@ -3242,12 +3342,10 @@ export const TIER_1_CARDS = [
     "series": "Re:Zero kara Hajimeru Isekai Seikatsu",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b129330-ZUtYw4n7N0uH.png",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "amber",
     "cost": {
-      "sapphire": 1,
-      "emerald": 1,
-      "ruby": 1
+      "onyx": 4
     }
   },
   {
@@ -3255,11 +3353,13 @@ export const TIER_1_CARDS = [
     "series": "Mirai Nikki OVA",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b4963-7ZMcCtXW5hkY.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 2,
-      "onyx": 1
+      "onyx": 1,
+      "ruby": 1,
+      "sapphire": 1,
+      "emerald": 1
     }
   },
   {
@@ -3270,8 +3370,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "emerald": 2
+      "sapphire": 1,
+      "emerald": 2,
+      "amber": 1,
+      "onyx": 1
     }
   },
   {
@@ -3282,7 +3384,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 3
+      "emerald": 2,
+      "amber": 2
     }
   },
   {
@@ -3294,8 +3397,8 @@ export const TIER_1_CARDS = [
     "bonusGem": "emerald",
     "cost": {
       "amber": 1,
-      "sapphire": 1,
-      "onyx": 1
+      "onyx": 2,
+      "emerald": 2
     }
   },
   {
@@ -3303,12 +3406,10 @@ export const TIER_1_CARDS = [
     "series": "Steins;Gate",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b35253-u6QVgLLyHq2W.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "ruby": 1,
-      "amber": 1,
-      "emerald": 1
+      "onyx": 3
     }
   },
   {
@@ -3319,8 +3420,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 2,
-      "ruby": 1
+      "onyx": 3,
+      "ruby": 1,
+      "sapphire": 1
     }
   },
   {
@@ -3331,8 +3433,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 1,
-      "sapphire": 2
+      "sapphire": 2,
+      "emerald": 1,
+      "amber": 1,
+      "onyx": 1
     }
   },
   {
@@ -3340,11 +3444,10 @@ export const TIER_1_CARDS = [
     "series": "Enen no Shouboutai",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/n120462-oSWdz2MhkbDE.png",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 2,
-      "amber": 1
+      "emerald": 4
     }
   },
   {
@@ -3352,10 +3455,13 @@ export const TIER_1_CARDS = [
     "series": "ONE PIECE",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b727-wUJx7M1z5xON.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 3
+      "amber": 1,
+      "onyx": 1,
+      "emerald": 1,
+      "ruby": 1
     }
   },
   {
@@ -3366,9 +3472,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "sapphire": 1,
-      "emerald": 1,
-      "ruby": 1
+      "onyx": 1,
+      "amber": 2,
+      "ruby": 1,
+      "sapphire": 1
     }
   },
   {
@@ -3379,8 +3486,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 2,
-      "onyx": 1
+      "onyx": 2,
+      "ruby": 2
     }
   },
   {
@@ -3391,8 +3498,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "emerald": 2
+      "sapphire": 1,
+      "emerald": 2,
+      "amber": 2
     }
   },
   {
@@ -3400,10 +3508,10 @@ export const TIER_1_CARDS = [
     "series": "Saiki Kusuo no Ψ-nan (ONA)",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b90112-KVRcvbKBKLxY.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 3
+      "emerald": 3
     }
   },
   {
@@ -3414,9 +3522,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "amber": 1,
-      "sapphire": 1,
-      "onyx": 1
+      "amber": 3,
+      "onyx": 1,
+      "emerald": 1
     }
   },
   {
@@ -3427,9 +3535,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "ruby": 1,
+      "onyx": 2,
       "amber": 1,
-      "emerald": 1
+      "ruby": 1,
+      "sapphire": 1
     }
   },
   {
@@ -3437,11 +3546,10 @@ export const TIER_1_CARDS = [
     "series": "Toaru Majutsu no Index",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b13701-aFJLRPGAWAae.png",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 2,
-      "ruby": 1
+      "onyx": 4
     }
   },
   {
@@ -3449,11 +3557,13 @@ export const TIER_1_CARDS = [
     "series": "Yakusoku no Neverland",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b121725-LQciVJOjnMVh.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 1,
-      "sapphire": 2
+      "sapphire": 1,
+      "emerald": 1,
+      "amber": 1,
+      "onyx": 1
     }
   },
   {
@@ -3464,8 +3574,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 2,
-      "amber": 1
+      "emerald": 1,
+      "amber": 2,
+      "onyx": 1,
+      "sapphire": 1
     }
   },
   {
@@ -3476,7 +3588,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 3
+      "amber": 2,
+      "onyx": 2
     }
   },
   {
@@ -3487,9 +3600,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "sapphire": 1,
-      "emerald": 1,
-      "ruby": 1
+      "onyx": 1,
+      "amber": 2,
+      "ruby": 2
     }
   },
   {
@@ -3497,11 +3610,10 @@ export const TIER_1_CARDS = [
     "series": "SK∞",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b195120-ndTbU0TpVLWw.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 2,
-      "onyx": 1
+      "onyx": 3
     }
   },
   {
@@ -3512,8 +3624,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "emerald": 2
+      "sapphire": 3,
+      "emerald": 1,
+      "amber": 1
     }
   },
   {
@@ -3524,7 +3637,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 3
+      "emerald": 2,
+      "amber": 1,
+      "onyx": 1,
+      "sapphire": 1
     }
   },
   {
@@ -3532,12 +3648,10 @@ export const TIER_1_CARDS = [
     "series": "Kaichou wa Maid-sama!",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b14523-yFjXVeK6c6IE.png",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "emerald",
     "cost": {
-      "amber": 1,
-      "sapphire": 1,
-      "onyx": 1
+      "amber": 4
     }
   },
   {
@@ -3545,12 +3659,13 @@ export const TIER_1_CARDS = [
     "series": "Kamisama Hajimemashita",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b18344-2d8Ao1wHDZ7U.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "ruby": 1,
+      "onyx": 1,
       "amber": 1,
-      "emerald": 1
+      "ruby": 1,
+      "sapphire": 1
     }
   },
   {
@@ -3561,8 +3676,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 2,
-      "ruby": 1
+      "onyx": 1,
+      "ruby": 2,
+      "sapphire": 1,
+      "emerald": 1
     }
   },
   {
@@ -3573,8 +3690,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 1,
-      "sapphire": 2
+      "sapphire": 2,
+      "emerald": 2
     }
   },
   {
@@ -3585,8 +3702,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "emerald": 2,
-      "amber": 1
+      "emerald": 1,
+      "amber": 2,
+      "onyx": 2
     }
   },
   {
@@ -3594,10 +3712,10 @@ export const TIER_1_CARDS = [
     "series": "Overlord",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b89103-ZsnA0r77GHsR.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "emerald",
     "cost": {
-      "onyx": 3
+      "amber": 3
     }
   },
   {
@@ -3608,8 +3726,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "sapphire": 1,
-      "emerald": 1,
+      "onyx": 3,
+      "amber": 1,
       "ruby": 1
     }
   },
@@ -3621,8 +3739,10 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "amber": 2,
-      "onyx": 1
+      "onyx": 2,
+      "ruby": 1,
+      "sapphire": 1,
+      "emerald": 1
     }
   },
   {
@@ -3630,11 +3750,10 @@ export const TIER_1_CARDS = [
     "series": "Kuroshitsuji",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b10863-DsfonbP2CATa.png",
     "tier": 1,
-    "prestige": 0,
+    "prestige": 1,
     "bonusGem": "ruby",
     "cost": {
-      "ruby": 2,
-      "emerald": 2
+      "sapphire": 4
     }
   },
   {
@@ -3642,10 +3761,13 @@ export const TIER_1_CARDS = [
     "series": "Jigokuraku",
     "image": "https://s4.anilist.co/file/anilistcdn/character/large/b137260-xmSis8FmwhEE.png",
     "tier": 1,
-    "prestige": 1,
+    "prestige": 0,
     "bonusGem": "sapphire",
     "cost": {
-      "sapphire": 3
+      "emerald": 1,
+      "amber": 1,
+      "onyx": 1,
+      "sapphire": 1
     }
   },
   {
@@ -3657,8 +3779,9 @@ export const TIER_1_CARDS = [
     "bonusGem": "emerald",
     "cost": {
       "amber": 1,
-      "sapphire": 1,
-      "onyx": 1
+      "onyx": 2,
+      "emerald": 1,
+      "ruby": 1
     }
   },
   {
@@ -3669,9 +3792,8 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "amber",
     "cost": {
-      "ruby": 1,
-      "amber": 1,
-      "emerald": 1
+      "onyx": 2,
+      "amber": 2
     }
   },
   {
@@ -3682,8 +3804,9 @@ export const TIER_1_CARDS = [
     "prestige": 0,
     "bonusGem": "onyx",
     "cost": {
-      "onyx": 2,
-      "ruby": 1
+      "onyx": 1,
+      "ruby": 2,
+      "sapphire": 2
     }
   }
 ];
