@@ -63,7 +63,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
     }
   ]);
 
-  const [activePlayerIdx, setActivePlayerIdx] = useState(0);
+  const [activePlayerIdx, setActivePlayerIdx] = useState(() => Math.random() < 0.5 ? 0 : 1);
 
   const setupBoard = () => {
     const { tier1, tier2, tier3, nobles: pickedNobles } = getShuffledSplendorDecks();
@@ -120,6 +120,8 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
           addLog(`🎮 Opponent ${remoteName} connected! Game is live.`);
 
           if (isHost) {
+            const randomFirstTurn = Math.random() < 0.5 ? 0 : 1;
+            setActivePlayerIdx(randomFirstTurn);
             p2p.send({
               type: 'INIT_STATE',
               market: initialData.market,
@@ -129,6 +131,7 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
               nobles: initialData.nobles,
               gemBank: initialData.gemBank,
               hostName: playerOneName,
+              activePlayerIdx: randomFirstTurn
             });
           }
         },
