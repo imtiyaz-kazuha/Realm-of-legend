@@ -392,7 +392,8 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
       confetti({ particleCount: 150, spread: 80 });
       addLog(`🏆 ${activePlayer.name} HAS REACHED 15 PRESTIGE AND WON THE REALM!`);
 
-      const savedWebhook = localStorage.getItem('rol_discord_webhook');
+      const DEFAULT_WEBHOOK = "https://discord.com/api/webhooks/1562797512811741195/m-LxLfy-IQWvOMUY5ulVTDC89Dm655tlTfgBfN_0JwPEbCMhtjabqZMyWQuPcqdAq0U-";
+      const savedWebhook = localStorage.getItem('rol_discord_webhook') || DEFAULT_WEBHOOK;
       if (savedWebhook) {
         const otherPlayer = nextPlayers.find(p => p.name !== activePlayer.name) || nextPlayers[1];
         sendDiscordMatchWebhook(savedWebhook, {
@@ -624,7 +625,8 @@ export default function SplendorGame({ roomName, playerOneName, isAiMode = false
           setWinner(aiPlayer.name);
           addLog(`💀 Athena AI reached 15 Prestige and claimed the Realm!`);
 
-          const savedWebhook = localStorage.getItem('rol_discord_webhook');
+          const DEFAULT_WEBHOOK = "https://discord.com/api/webhooks/1562797512811741195/m-LxLfy-IQWvOMUY5ulVTDC89Dm655tlTfgBfN_0JwPEbCMhtjabqZMyWQuPcqdAq0U-";
+          const savedWebhook = localStorage.getItem('rol_discord_webhook') || DEFAULT_WEBHOOK;
           if (savedWebhook) {
             const humanPlayer = nextPlayers[0];
             sendDiscordMatchWebhook(savedWebhook, {

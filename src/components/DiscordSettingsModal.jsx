@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { X, Send, BellRing, Check, ShieldCheck } from 'lucide-react';
 
 export default function DiscordSettingsModal({ onClose }) {
+  const DEFAULT_WEBHOOK = "https://discord.com/api/webhooks/1562797512811741195/m-LxLfy-IQWvOMUY5ulVTDC89Dm655tlTfgBfN_0JwPEbCMhtjabqZMyWQuPcqdAq0U-";
   const [webhookUrl, setWebhookUrl] = useState(() => {
-    return localStorage.getItem('rol_discord_webhook') || '';
+    return localStorage.getItem('rol_discord_webhook') || DEFAULT_WEBHOOK;
   });
   const [saved, setSaved] = useState(false);
 

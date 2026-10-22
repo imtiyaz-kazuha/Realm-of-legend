@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Play, Users, Hash, ShieldCheck, Sparkles, Plus, ArrowRight, BookOpen, Trophy, MessageSquare, Bot, Zap } from 'lucide-react';
+import { Play, Users, Hash, ShieldCheck, Sparkles, Plus, ArrowRight, BookOpen, Trophy, MessageSquare, Bot, Zap, ArrowLeft } from 'lucide-react';
 import RulesModal from './RulesModal';
 import LeaderboardModal from './LeaderboardModal';
 import DiscordSettingsModal from './DiscordSettingsModal';
@@ -21,8 +21,16 @@ export default function LobbyMenu({ onStartLocal, onStartAi, onJoinRoom, onCreat
       {showDiscord && <DiscordSettingsModal onClose={() => setShowDiscord(false)} />}
 
       <div className="max-w-2xl w-full">
-        {/* Top Action Pills (Rules, Leaderboard, Discord Webhook) */}
+        {/* Top Action Pills (Rules, Leaderboard, Discord Webhook, Hub Exit) */}
         <div className="flex flex-wrap items-center justify-center gap-2 md:gap-3 mb-6">
+          <a
+            href="../home/"
+            className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-sky-400/60 rounded-xl text-xs font-bold text-sky-300 flex items-center gap-1.5 shadow transition-all active:scale-95 cursor-pointer no-underline"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-sky-400" />
+            ← Hub Portal
+          </a>
+
           <button
             onClick={() => setShowRules(true)}
             className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-amber-400/60 rounded-xl text-xs font-bold text-amber-300 flex items-center gap-1.5 shadow transition-all active:scale-95 cursor-pointer"
